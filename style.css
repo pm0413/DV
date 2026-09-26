@@ -1479,8 +1479,8 @@ button, input, textarea, select, option { font-family: 'Paperozi', sans-serif; }
 #left-content .sidebar-glyph{flex:0 0 26px;width:26px;font-size:22px;text-align:center;line-height:1;}
 #left-content .sidebar-label{font-size:12px;white-space:nowrap;}
 #left-area:not(.open) #left-content .sidebar-label{display:none;}
-#left-area.open ~ #main-area, #main-area {width:70%;}
-#right-area {width:30%;}
+#left-area.open ~ #main-area, #main-area {width:calc(100% - 350px);}
+#right-area {width:350px;}
 #left-area.open ~ #left-toggle,#left-toggle:not(.rail-expand){display:none;}
 .village-status {position:absolute;z-index:80;top:16px;right:16px;left:auto;width:clamp(145px,17vw,210px);padding:9px 11px;border:1px solid #e4e4e457;background:#161616c9;backdrop-filter:blur(6px);color:#f3f3f3;pointer-events:none;font-variant-numeric:tabular-nums;}
 .village-time-row{display:flex;align-items:center;gap:9px;}
@@ -2717,3 +2717,47 @@ body.light-mode #main-area .resident-request-reminder-detail{color:#6f665a;}
 @media (prefers-reduced-motion: reduce) {
   #main-area::after { transition:none; }
 }
+
+
+/* 장소 좌표 확인용 stat_0 마커 */
+#main-area .scene-coordinate-marker-layer{
+ position:absolute;
+ inset:0;
+ z-index:9;
+ pointer-events:none;
+ overflow:hidden;
+}
+#main-area .scene-coordinate-marker{
+ position:absolute;
+ transform:translate(-50%,-50%);
+ display:block;
+ width:14px;
+ height:14px;
+ font-family:'Material Symbols Outlined'!important;
+ font-style:normal;
+ font-weight:400;
+ font-size:14px;
+ line-height:14px;
+ letter-spacing:normal;
+ text-transform:none;
+ white-space:nowrap;
+ word-wrap:normal;
+ direction:ltr;
+ font-feature-settings:'liga';
+ -webkit-font-feature-settings:'liga';
+ font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
+ color:#fff;
+ opacity:.3;
+ animation:sceneCoordinateMarkerPulse 1.5s ease-in-out infinite;
+ text-align:center;
+ user-select:none;
+}
+
+@keyframes sceneCoordinateMarkerPulse{
+ 0%,100%{opacity:.18;}
+ 50%{opacity:.42;}
+}
+@media (prefers-reduced-motion:reduce){
+ #main-area .scene-coordinate-marker{animation:none;opacity:.3;}
+}
+

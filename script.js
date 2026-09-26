@@ -1391,19 +1391,19 @@ window.dowonSceneCharacters = characters;
 const SCENE_IMAGE_WIDTH = 1920;
 const SCENE_IMAGE_HEIGHT = 1080;
 const SCENE_ROUTES = [
- {name:'지붕 1',x:682,y:330,links:[3],jump:[3]},
- {name:'지붕 2',x:1288,y:268,links:[4],jump:[4]},
- {name:'별채',x:784,y:568,links:[1,5],jump:[1]},
- {name:'본채',x:1336,y:574,links:[2,5],jump:[2]},
- {name:'계단',x:1128,y:574,links:[3,4,10]},
- {name:'꽃밭',x:648,y:648,links:[8]},
- {name:'장독대',x:500,y:744,links:[8,9]},
- {name:'연못 1',x:802,y:740,links:[6,7,10]},
- {name:'연못 2',x:474,y:854,links:[7]},
- {name:'마당 1',x:872,y:728,links:[5,8,11]},
- {name:'마당 2',x:1474,y:784,links:[10,12,13]},
+ {name:'지붕 1',x:650,y:300,links:[3],jump:[3]},
+ {name:'지붕 2',x:1250,y:200,links:[4],jump:[4]},
+ {name:'별채',x:550,y:480,links:[1,5],jump:[1]},
+ {name:'본채',x:1300,y:500,links:[2,5],jump:[2]},
+ {name:'계단',x:1110,y:500,links:[3,4,10]},
+ {name:'꽃밭',x:600,y:650,links:[8]},
+ {name:'장독대',x:500,y:700,links:[8,9]},
+ {name:'연못 1',x:700,y:740,links:[6,7,10]},
+ {name:'연못 2',x:550,y:800,links:[7]},
+ {name:'마당 1',x:1000,y:700,links:[5,8,11]},
+ {name:'마당 2',x:1450,y:750,links:[10,12,13]},
  {name:'밭',x:1400,y:900,links:[11]},
- {name:'풀숲',x:1640,y:678,links:[11]}
+ {name:'풀숲',x:1550,y:700,links:[11]}
 ];
 window.dowonPlaceNames=SCENE_ROUTES.map(p=>p.name);
 const routeClock={previous:performance.now()};
@@ -1480,9 +1480,44 @@ function routePoint(number){
  return {x:p.x*scale+(width-SCENE_IMAGE_WIDTH*scale)/2,
          y:p.y*scale+(height-SCENE_IMAGE_HEIGHT*scale)/2};
 }
+// 장소 좌표 확인용 마커: Google Material Symbols의 stat_0(U+E697)를 각 실제 경로 좌표 중심에 표시합니다.
+const SCENE_COORD_MARKER_CLASS='scene-coordinate-marker';
+function ensureSceneCoordinateMarkers(){
+ let layer=mainArea.querySelector('.scene-coordinate-marker-layer');
+ if(!layer){
+  layer=document.createElement('div');
+  layer.className='scene-coordinate-marker-layer';
+  layer.setAttribute('aria-hidden','true');
+  mainArea.appendChild(layer);
+ }
+ while(layer.children.length<SCENE_ROUTES.length){
+  const marker=document.createElement('span');
+  marker.className=SCENE_COORD_MARKER_CLASS;
+  // ligature 문자열(stat_0) 대신 공식 codepoint를 직접 사용해 아이콘이 글자로 노출되지 않게 합니다.
+  marker.textContent='\ue697';
+  layer.appendChild(marker);
+ }
+ return layer;
+}
+function positionSceneCoordinateMarkers(){
+ const layer=ensureSceneCoordinateMarkers();
+ SCENE_ROUTES.forEach((route,index)=>{
+  const point=routePoint(index+1);
+  const marker=layer.children[index];
+  marker.style.left=`${point.x}px`;
+  marker.style.top=`${point.y}px`;
+  marker.title=route.name;
+ });
+}
+positionSceneCoordinateMarkers();
+window.addEventListener('resize',positionSceneCoordinateMarkers);
+
 function arrivalPoint(number){
  const p=routePoint(number);
- return {x:p.x+(Math.random()*28-14),y:p.y+(Math.random()*28-14)};
+ return {
+  x: p.x + (Math.random() * 28 - 14),
+  y: p.y + 20
+};
 }
 function shortestRoute(from,to){
  if(from===to)return [];
@@ -2080,11 +2115,31 @@ window.addEventListener('blur',()=>cancelResidentDrag(true));
    ================================================== */
 
 let lastSceneSize={width:mainArea.clientWidth,height:mainArea.clientHeight};
+function sceneCoverTransform(width,height){
+ const scale=Math.max(width/SCENE_IMAGE_WIDTH,height/SCENE_IMAGE_HEIGHT);
+ return {scale,offsetX:(width-SCENE_IMAGE_WIDTH*scale)/2,offsetY:(height-SCENE_IMAGE_HEIGHT*scale)/2};
+}
+function remapSceneScreenPoint(x,y,oldWidth,oldHeight,newWidth,newHeight){
+ const oldView=sceneCoverTransform(Math.max(1,oldWidth),Math.max(1,oldHeight));
+ const newView=sceneCoverTransform(Math.max(1,newWidth),Math.max(1,newHeight));
+ const sceneX=(x-oldView.offsetX)/oldView.scale;
+ const sceneY=(y-oldView.offsetY)/oldView.scale;
+ return {x:sceneX*newView.scale+newView.offsetX,y:sceneY*newView.scale+newView.offsetY};
+}
 window.addEventListener('resize',()=>{
-    const sx=mainArea.clientWidth/Math.max(1,lastSceneSize.width);
-    const sy=mainArea.clientHeight/Math.max(1,lastSceneSize.height);
-    for(const c of characters){if(c.routeNode){c.routeX*=sx;c.routeY*=sy;}}
-    lastSceneSize={width:mainArea.clientWidth,height:mainArea.clientHeight};
+ const newWidth=mainArea.clientWidth,newHeight=mainArea.clientHeight;
+ for(const c of characters){
+  if(!c.routeNode||!Number.isFinite(c.routeX)||!Number.isFinite(c.routeY))continue;
+  const mapped=remapSceneScreenPoint(c.routeX,c.routeY,lastSceneSize.width,lastSceneSize.height,newWidth,newHeight);
+  c.routeX=mapped.x;c.routeY=mapped.y;
+  if(c.arrival&&Number.isFinite(c.arrival.x)&&Number.isFinite(c.arrival.y)){
+   const arrivalMapped=remapSceneScreenPoint(c.arrival.x,c.arrival.y,lastSceneSize.width,lastSceneSize.height,newWidth,newHeight);
+   c.arrival.x=arrivalMapped.x;c.arrival.y=arrivalMapped.y;
+  }
+  c.element.style.left=`${c.routeX-c.element.offsetWidth/2}px`;
+  c.element.style.top=`${c.routeY-c.element.offsetHeight}px`;
+ }
+ lastSceneSize={width:newWidth,height:newHeight};
 });
 
 /* 가공품마다 독립된 6칸과 저장 키를 사용합니다.
