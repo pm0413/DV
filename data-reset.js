@@ -13,7 +13,7 @@
   if (!button) return;
 
   const warning = [
-    '전원생활일지의 모든 저장 데이터를 삭제합니다.',
+    '도화마을의 모든 저장 데이터를 삭제합니다.',
     '',
     '주민 이름·이미지·설정 및 주민 주문판 등록 정보까지 전부 삭제됩니다.',
     '밭·작물·창고·동전·가구·쾌적도·가공소 해금,',
@@ -39,7 +39,7 @@
       window.location.reload();
     } catch (error) {
       window.dowonFullResetInProgress = false;
-      console.error('전원생활일지 저장 데이터 초기화 준비 실패', error);
+      console.error('도화마을 저장 데이터 초기화 준비 실패', error);
       window.alert('저장 데이터를 삭제하지 못했습니다. 브라우저 저장소 사용 권한을 확인한 뒤 다시 시도해 주세요.');
     }
   });

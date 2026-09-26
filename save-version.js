@@ -1,4 +1,4 @@
-/* 전원생활일지 저장 스키마 버전 관리. 모든 게임 모듈보다 먼저 로드합니다. */
+/* 도화마을 저장 스키마 버전 관리. 모든 게임 모듈보다 먼저 로드합니다. */
 (()=>{'use strict';
  const META_KEY='dangcheong-dowon-save-schema-v1';
  const CURRENT_VERSION=1;

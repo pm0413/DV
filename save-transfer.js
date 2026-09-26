@@ -1,4 +1,4 @@
-/* 전원생활일지 기기 간 수동 저장 데이터 전송: 게임에 속한 키만 다룹니다. */
+/* 도화마을 기기 간 수동 저장 데이터 전송: 게임에 속한 키만 다룹니다. */
 (()=>{'use strict';
  const FORMAT='dowon-village-save',VERSION=1,PREFIX='dangcheong-dowon-';
  const CLOCK_KEY='dangcheong-dowon-village-clock-v2';
@@ -28,7 +28,7 @@
    const payload={format:FORMAT,version:VERSION,schemaVersion:window.dowonSaveSchema?.CURRENT_VERSION||1,exportedAt:new Date().toISOString(),entries};
    const date=new Date(),part=n=>String(n).padStart(2,'0');
    const stamp=`${date.getFullYear()}${part(date.getMonth()+1)}${part(date.getDate())}-${part(date.getHours())}${part(date.getMinutes())}`;
-   download(new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'}),`전원생활일지-저장데이터-${stamp}.json`);
+   download(new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'}),`도화마을-저장데이터-${stamp}.json`);
    showStatus(`저장 항목 ${count}개를 백업 파일로 내보냈습니다. 파일을 다른 기기로 옮겨 주세요.`);
   }catch(error){console.error('데이터 내보내기 실패',error);showStatus('백업 파일을 만들지 못했습니다. 브라우저의 저장소/다운로드 권한을 확인해 주세요.',true);}
  });
@@ -39,7 +39,7 @@
   try{
    if(file.size>60*1024*1024)throw new Error('파일 크기가 60MB를 초과합니다.');
    const input=JSON.parse(await file.text());
-   if(!input||input.format!==FORMAT||input.version!==VERSION||!input.entries||Array.isArray(input.entries)||typeof input.entries!=='object')throw new Error('전원생활일지 저장 데이터 파일이 아니거나 지원하지 않는 백업 형식입니다.');
+   if(!input||input.format!==FORMAT||input.version!==VERSION||!input.entries||Array.isArray(input.entries)||typeof input.entries!=='object')throw new Error('도화마을 저장 데이터 파일이 아니거나 지원하지 않는 백업 형식입니다.');
    const schema=window.dowonSaveSchema;
    const sourceSchemaVersion=Number.isSafeInteger(input.schemaVersion)?input.schemaVersion:(schema?.LEGACY_VERSION||1);
    const preparedEntries=schema?.prepareEntries?schema.prepareEntries(input.entries,sourceSchemaVersion):input.entries;
@@ -52,7 +52,7 @@
       !Number.isSafeInteger(backupClock.minute)||backupClock.minute<360||backupClock.minute>1440){
      throw new Error('백업 파일에 올바른 날짜·시간 기록이 없습니다. PC에서 다시 내보내 주세요.');
    }
-   if(!window.confirm('이 기기의 기존 전원생활일지 저장 기록을 백업 파일로 덮어씁니다.\n기존 기록을 먼저 내보내셨나요?\n\n가져온 뒤 게임을 새로고침합니다. 계속할까요?')){showStatus('가져오기를 취소했습니다.');return;}
+   if(!window.confirm('이 기기의 기존 도화마을 저장 기록을 백업 파일로 덮어씁니다.\n기존 기록을 먼저 내보내셨나요?\n\n가져온 뒤 게임을 새로고침합니다. 계속할까요?')){showStatus('가져오기를 취소했습니다.');return;}
    const previous=readCurrent();
    // 저장 파일에 들어 있던 날짜/분은 유지하고, 마지막 저장 시각만 이 기기의 현재 시각으로 재설정합니다.
    const exactClock={day:backupClock.day,minute:backupClock.minute,savedAt:Date.now()};

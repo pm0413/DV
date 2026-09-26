@@ -36,8 +36,17 @@
       key,name:data.name,image:`item/작물/${data.readyIcon}`,description:window.dowonItemDescriptions?.[key]?.description||`${data.name}을(를) 수확하면 도감에 등록됩니다.`
     }));
   }
+  // 가공품 도감 이름/이미지는 실제 창고에서 사용하는 파일명과 동일하게 유지한다.
   const processedCatalog={
-    chickenFeed:'닭 사료',egg:'달걀',sugar:'설탕',tofu:'두부',flour:'밀가루',saltedEgg:'소금달걀',ricePowder:'떡가루',eggPancake:'달걀지단',pickledVegetables:'절임채소',friedTofu:'유부',sachet:'향낭',clothDoll:'천인형',cottonFabric:'무명천',yarn:'실',hempCloth:'모시천',roastedSweetPotato:'군고구마',pumpkinSeed:'호박씨',eggBread:'계란빵',stickyRiceCake:'찹쌀떡',wool:'양털',brownSugar:'흑설탕',sheepFeed:'양 사료',roastedPotato:'군감자',grilledTofu:'구운두부',potatoStarch:'감자전분',sweetPotatoStarch:'고구마전분'
+    chickenFeed:'닭 사료',egg:'달걀',sugar:'설탕',tofu:'두부',flour:'밀가루',saltedEgg:'소금달걀',
+    ricePowder:'떡가루',eggPancake:'계란전',pickledVegetables:'절임채소',friedTofu:'유부',
+    sheepFeed:'양 사료',brownSugar:'흑설탕',wool:'양털',stickyRiceCake:'찹쌀떡',eggBread:'계란빵',
+    pumpkinSeed:'호박씨',roastedSweetPotato:'군고구마',hempCloth:'삼베',yarn:'털실',cottonFabric:'면직물',
+    clothDoll:'수국',sachet:'향주머니',roastedPotato:'구운감자',grilledTofu:'구운두부',potatoStarch:'감자전분',
+    sweetPotatoStarch:'고구마 전분',soyMilk:'두유',blackBeanPaste:'검은콩장',maltSyrup:'엿',hotteok:'호떡',
+    vegetablePancake:'채소전',potatoPancake:'감자전',pickledPotato:'절임감자',tofuStick:'푸주',
+    fermentedTofu:'두부유',tofuSkin:'두부피',steamedRiceCake:'증편',pumpkinRiceCake:'호박떡',
+    glassNoodles:'당면',driedBlackBeanPaste:'말린검은콩장'
   };
   function processedEntries(){
     return Object.entries(processedCatalog)
@@ -49,9 +58,47 @@
   }
   const FISH_COLLECTION_KEY='dangcheong-dowon-fishing-collection-v1';
   const fishCatalog=[
-    {key:'pearl-fish',grade:'A',name:'진주어',image:'item/낚시/A물고기/진주어.png'},
-    {key:'freshwater-fish',grade:'B',name:'민물고기',image:'item/낚시/B물고기/민물고기.png'},
-    {key:'shrimp',grade:'C',name:'새우',image:'item/낚시/C물고기/새우.png'}
+    {key:'fish-s-01',grade:'S',name:'낙화리',image:'item/낚시/S등급/낙화리.png'},
+    {key:'fish-s-02',grade:'S',name:'도화리',image:'item/낚시/S등급/도화리.png'},
+    {key:'fish-s-03',grade:'S',name:'만년화리',image:'item/낚시/S등급/만년화리.png'},
+    {key:'fish-s-04',grade:'S',name:'빙정어',image:'item/낚시/S등급/빙정어.png'},
+    {key:'fish-s-05',grade:'S',name:'성월어',image:'item/낚시/S등급/성월어.png'},
+    {key:'fish-s-06',grade:'S',name:'유광접어',image:'item/낚시/S등급/유광접어.png'},
+    {key:'fish-s-07',grade:'S',name:'자미성어',image:'item/낚시/S등급/자미성어.png'},
+    {key:'fish-s-08',grade:'S',name:'청엽어',image:'item/낚시/S등급/청엽어.png'},
+    {key:'fish-s-09',grade:'S',name:'청옥리',image:'item/낚시/S등급/청옥리.png'},
+    {key:'fish-s-10',grade:'S',name:'흑염어',image:'item/낚시/S등급/흑염어.png'},
+    {key:'fish-a-01',grade:'A',name:'가물치',image:'item/낚시/A등급/가물치.png'},
+    {key:'fish-a-02',grade:'A',name:'대두어',image:'item/낚시/A등급/대두어.png'},
+    {key:'fish-a-03',grade:'A',name:'무지개송어',image:'item/낚시/A등급/무지개송어.png'},
+    {key:'fish-a-04',grade:'A',name:'백련어',image:'item/낚시/A등급/백련어.png'},
+    {key:'fish-a-05',grade:'A',name:'뱀장어',image:'item/낚시/A등급/뱀장어.png'},
+    {key:'fish-a-06',grade:'A',name:'쏘가리',image:'item/낚시/A등급/쏘가리.png'},
+    {key:'fish-a-07',grade:'A',name:'은어',image:'item/낚시/A등급/은어.png'},
+    {key:'fish-a-08',grade:'A',name:'종어',image:'item/낚시/A등급/종어.png'},
+    {key:'fish-b-01',grade:'B',name:'꺽지',image:'item/낚시/B등급/꺽지.png'},
+    {key:'fish-b-02',grade:'B',name:'끄리',image:'item/낚시/B등급/끄리.png'},
+    {key:'fish-b-03',grade:'B',name:'누치',image:'item/낚시/B등급/누치.png'},
+    {key:'fish-b-04',grade:'B',name:'대농갱어',image:'item/낚시/B등급/대농갱어.png'},
+    {key:'fish-b-05',grade:'B',name:'동자개',image:'item/낚시/B등급/동자개.png'},
+    {key:'fish-b-06',grade:'B',name:'메기',image:'item/낚시/B등급/메기.png'},
+    {key:'fish-b-07',grade:'B',name:'미유기',image:'item/낚시/B등급/미유기.png'},
+    {key:'fish-b-08',grade:'B',name:'빙어',image:'item/낚시/B등급/빙어.png'},
+    {key:'fish-b-09',grade:'B',name:'잉어',image:'item/낚시/B등급/잉어.png'},
+    {key:'fish-b-10',grade:'B',name:'초어',image:'item/낚시/B등급/초어.png'},
+    {key:'fish-b-11',grade:'B',name:'큰입배스',image:'item/낚시/B등급/큰입배스.png'},
+    {key:'fish-b-12',grade:'B',name:'향어',image:'item/낚시/B등급/향어.png'},
+    {key:'fish-c-01',grade:'C',name:'갈겨니',image:'item/낚시/C등급/갈겨니.png'},
+    {key:'fish-c-02',grade:'C',name:'강준치',image:'item/낚시/C등급/강준치.png'},
+    {key:'fish-c-03',grade:'C',name:'돌고기',image:'item/낚시/C등급/돌고기.png'},
+    {key:'fish-c-04',grade:'C',name:'떡붕어',image:'item/낚시/C등급/떡붕어.png'},
+    {key:'fish-c-05',grade:'C',name:'모래무지',image:'item/낚시/C등급/모래무지.png'},
+    {key:'fish-c-06',grade:'C',name:'미꾸라지',image:'item/낚시/C등급/미꾸라지.png'},
+    {key:'fish-c-07',grade:'C',name:'밀어',image:'item/낚시/C등급/밀어.png'},
+    {key:'fish-c-08',grade:'C',name:'붕어',image:'item/낚시/C등급/붕어.png'},
+    {key:'fish-c-09',grade:'C',name:'블루길',image:'item/낚시/C등급/블루길.png'},
+    {key:'fish-c-10',grade:'C',name:'참갈겨니',image:'item/낚시/C등급/참갈겨니.png'},
+    {key:'fish-c-11',grade:'C',name:'피라미',image:'item/낚시/C등급/피라미.png'}
   ];
   function fishingState(){
     try{return JSON.parse(localStorage.getItem(FISH_COLLECTION_KEY)||'null')||{};}catch(_){return {};}
@@ -63,7 +110,7 @@
       const bestSize=Number(state.bestSize?.[fish.key])||0;
       const bestWeight=Number(state.bestWeight?.[fish.key])||0;
       const measure=count>0?` · 잡은 횟수 ${count} · 최대 ${bestSize.toFixed(1)}cm / ${bestWeight>=1000?(bestWeight/1000).toFixed(2)+'kg':bestWeight.toFixed(0)+'g'}`:'';
-      return {...fish,description:`${fish.grade}등급 물고기${measure}`};
+      return {...fish,description:fish.grade==='S'&&count>0?`S등급 환상어 · 소장 1마리${measure}`:`${fish.grade}등급 물고기${measure}`};
     });
   }
   function syncFishing(){
@@ -117,11 +164,15 @@
   }
   function renderDetail(item,known){
     const detail=$('collection-detail');detail.replaceChildren();
-    const visual=known?document.createElement('img'):document.createElement('div');
-    if(known){visual.src=item.image;visual.alt=item.name;}else{visual.className='collection-detail-unknown';visual.textContent='?';}
-    const name=document.createElement('strong');name.textContent=known?item.name:'???';
-    const text=document.createElement('p');text.textContent=known?(item.description||'도감에 등록된 항목입니다.'):'아직 발견하지 못한 항목입니다.';
-    detail.append(visual,name,text);
+    const isFish=activeTab==='fish';
+    const visual=document.createElement('img');
+    visual.src=item.image;
+    visual.alt=known?item.name:'미발견 항목';
+    if(!known)visual.className='collection-detail-silhouette';
+    detail.append(visual);
+    const name=document.createElement('strong');name.textContent=known?item.name:'미발견';
+    const text=document.createElement('p');text.textContent=known?(item.description||'도감에 등록된 항목입니다.'):(isFish?'아직 잡지 못했습니다.':'아직 발견하지 못한 항목입니다.');
+    detail.append(name,text);
   }
   function render(){
     updateSummary();
@@ -131,10 +182,11 @@
     const grid=$('collection-grid');grid.replaceChildren();
     const list=entries(activeTab); const known=new Set(discovered[activeTab]);
     for(const item of list){
-      const found=known.has(item.key);const button=document.createElement('button');button.type='button';button.className='collection-card'+(found?' is-found':' is-unknown');button.dataset.key=item.key;
+      const found=known.has(item.key);const isFish=activeTab==='fish';const button=document.createElement('button');button.type='button';button.className='collection-card'+(found?' is-found':' is-unknown')+(isFish&&item.grade?' fish-card grade-'+item.grade.toLowerCase():'');button.dataset.key=item.key;
+      if(isFish&&item.grade){const badge=document.createElement('span');badge.className='collection-fish-grade';badge.textContent=`${item.grade}등급`;button.append(badge);}
       const visual=document.createElement('span');visual.className='collection-card-visual';
-      if(found){const img=document.createElement('img');img.src=item.image;img.alt='';visual.append(img);}else visual.textContent='?';
-      const name=document.createElement('span');name.className='collection-card-name';name.textContent=found?item.name:'???';button.append(visual,name);
+      const img=document.createElement('img');img.src=item.image;img.alt='';if(!found)img.className='collection-item-silhouette';visual.append(img);
+      const name=document.createElement('span');name.className='collection-card-name';name.textContent=found?item.name:'미발견';button.append(visual,name);
       button.addEventListener('click',()=>{selectedKey=item.key;renderDetail(item,found);});grid.append(button);
     }
     const selected=list.find(item=>item.key===selectedKey);if(selected)renderDetail(selected,known.has(selected.key));else $('collection-detail').innerHTML='<span>항목을 선택해 주세요.</span>';

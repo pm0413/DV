@@ -3,7 +3,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>전원생활일지</title>
+    <title>도화마을</title>
     <!-- 완전 초기화: 게임 스크립트가 실행되기 전에 이전 날짜와 모든 저장 기록을 최종 제거 -->
     <script>
         (() => {
@@ -25,7 +25,7 @@
                 clearGame(sessionStorage);
                 localStorage.removeItem(marker);
             } catch (error) {
-                console.error('전원생활일지 새 게임 초기화 실패', error);
+                console.error('도화마을 새 게임 초기화 실패', error);
             }
         })();
     </script>
@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="shop-redesign.css?v=20260925-1425"> 
     <link rel="stylesheet" href="kitchen.css"> 
     <link rel="stylesheet" href="menu-dialog-unified.css">
-    <link rel="stylesheet" href="collection.css"> 
+    <link rel="stylesheet" href="collection.css?v=20260926-sgrade"> 
     <link rel="stylesheet" href="material-menu-icons.css"> 
     <link rel="stylesheet" href="workshop-fold.css"> 
     <link rel="stylesheet" href="village-features.css"> 
@@ -48,16 +48,16 @@
     <link rel="stylesheet" href="settings-panel.css"> 
     <link rel="stylesheet" href="farm-rail-layout.css"> 
     <link rel="stylesheet" href="workshop-adaptive.css"> 
-    <link rel="stylesheet" href="fishing.css"> 
+    <link rel="stylesheet" href="fishing.css?v=20260926-sgrade"> 
  
     <meta property="og:type" content="website"> 
-    <meta property="og:title" content="전원생활일지"> 
+    <meta property="og:title" content="도화마을"> 
     <meta property="og:description" content=""> 
     <meta property="og:image" content="https://pm0413.github.io/LJ/thumbnail.png"> 
     <meta property="og:url" content="https://pm0413.github.io/"> 
  
     <meta name="twitter:card" content="summary_large_image"> 
-    <meta name="twitter:title" content="전원생활일지"> 
+    <meta name="twitter:title" content="도화마을"> 
     <meta name="twitter:description" content=""> 
     <meta name="twitter:image" content="https://pm0413.github.io/LJ/thumbnail.png"> 
 </head>
@@ -72,7 +72,7 @@
 
         <header id="top-bar">
 
-            <div id="top-left"><span class="brand-mark material-symbols-outlined" aria-hidden="true">home_and_garden</span><span class="brand-name">전원생활일지</span><span class="brand-subtitle">NAKWON LIFE JOURNAL</span></div>
+            <div id="top-left"><span class="brand-mark material-symbols-outlined" aria-hidden="true">home_and_garden</span><span class="brand-name">도화마을</span><span class="brand-subtitle">Dohwa Village</span></div>
 
             <div id="top-right" class="top-utility-controls" aria-label="게임 설정">
                 <button id="settings-open" type="button" aria-haspopup="dialog" aria-controls="save-transfer-dialog" aria-expanded="false" title="설정"><span class="material-symbols-outlined" aria-hidden="true">settings</span><span class="utility-label">설정</span></button>
@@ -451,7 +451,7 @@
 <!-- 선물하기 / 마을 업적 공통 팝업 -->
 <div id="village-features-backdrop" hidden></div>
 <section id="village-features-dialog" role="dialog" aria-modal="true" aria-labelledby="village-features-title" hidden>
-  <header class="vf-heading"><div><span class="vf-eyebrow">NAKWON LIFE JOURNAL LIFE</span><h2 id="village-features-title">마을 생활</h2></div><button id="village-features-close" class="vf-close" type="button" aria-label="닫기">×</button></header>
+  <header class="vf-heading"><div><span class="vf-eyebrow">Dohwa Village LIFE</span><h2 id="village-features-title">마을 생활</h2></div><button id="village-features-close" class="vf-close" type="button" aria-label="닫기">×</button></header>
   <div id="village-features-content" class="vf-body"></div><p id="village-features-status" class="vf-status" role="status" aria-live="polite"></p>
 </section>
 
@@ -475,12 +475,12 @@
     <!-- 디버그 메뉴: 기존 제작 시간 감기와 게임 시간 이동 -->
     <div id="village-cats-backdrop" hidden></div>
     <section id="village-cats-dialog" role="dialog" aria-modal="true" aria-labelledby="cats-title" hidden>
-      <header class="cat-heading"><div><small>NAKWON LIFE JOURNAL CATS</small><h2 id="cats-title">고양이</h2></div><button id="cats-close" class="cat-close" type="button" aria-label="고양이 창 닫기">×</button></header>
+      <header class="cat-heading"><div><small>Dohwa Village CATS</small><h2 id="cats-title">고양이</h2></div><button id="cats-close" class="cat-close" type="button" aria-label="고양이 창 닫기">×</button></header>
       <div id="cats-content" class="cat-content"></div><p id="cats-status" class="cat-status" role="status" aria-live="polite"></p>
     </section>
     <div id="village-news-backdrop" hidden></div>
     <section id="village-news-dialog" role="dialog" aria-modal="true" aria-labelledby="village-news-title" hidden>
-      <header class="vn-heading"><div><small>NAKWON LIFE JOURNAL DAILY</small><h2 id="village-news-title">마을 기록</h2></div><button id="village-news-close" type="button" aria-label="마을 기록 닫기">×</button></header>
+      <header class="vn-heading"><div><small>Dohwa Village DAILY</small><h2 id="village-news-title">마을 기록</h2></div><button id="village-news-close" type="button" aria-label="마을 기록 닫기">×</button></header>
       <div id="village-news-content"></div>
     </section>
     <div id="fishing-backdrop" class="fishing-backdrop" hidden></div>
@@ -542,12 +542,12 @@
       </div>
       <div id="settings-panel-general" class="settings-panel" role="tabpanel" aria-labelledby="settings-tab-general">
         <div class="settings-card"><div class="settings-row"><div><strong>게임 시간</strong><p>게임 안의 날짜와 시각만 멈춥니다. 가공·작물의 제작 타이머는 그대로 진행됩니다.</p></div><button id="settings-pause-time" type="button" aria-pressed="false">시간 멈추기</button></div><p id="settings-pause-status" class="settings-status" role="status" aria-live="polite">시간 진행 중</p></div>
-        <div class="settings-card settings-danger"><strong>저장 데이터 초기화</strong><p>주민, 창고, 가공소, 날짜와 음악 설정 등 이 기기의 전원생활일지 저장 데이터를 모두 삭제합니다. 삭제 전 백업 탭에서 내보내세요.</p><button id="settings-reset-all" type="button" class="settings-reset-all">모든 데이터 삭제</button></div>
+        <div class="settings-card settings-danger"><strong>저장 데이터 초기화</strong><p>주민, 창고, 가공소, 날짜와 음악 설정 등 이 기기의 도화마을 저장 데이터를 모두 삭제합니다. 삭제 전 백업 탭에서 내보내세요.</p><button id="settings-reset-all" type="button" class="settings-reset-all">모든 데이터 삭제</button></div>
       </div>
       <div id="settings-panel-backup" class="settings-panel save-transfer-body" role="tabpanel" aria-labelledby="settings-tab-backup" hidden>
         <p>PC와 휴대폰은 저장 데이터가 자동으로 연동되지 않습니다. PC에서 백업 파일을 내려받아 휴대폰으로 옮긴 뒤, 휴대폰에서 불러오세요.</p>
         <div class="save-transfer-section"><strong>① 현재 기기 데이터 내보내기</strong><p>작물·창고·동전·주민·고양이·업적 등 이 기기의 게임 진행 상황을 JSON 파일로 저장합니다.</p><button type="button" id="save-transfer-export">⬇️ 저장 데이터 내보내기</button></div>
-        <div class="save-transfer-section"><strong>② 다른 기기에서 데이터 가져오기</strong><p class="save-transfer-warning">⚠️ 가져오기를 하면 이 기기의 기존 전원생활일지 저장 데이터가 백업 파일 내용으로 덮어써집니다. 필요한 경우 먼저 이 기기에서도 내보내기를 해 주세요.</p><label for="save-transfer-file" class="save-transfer-file-label">📂 백업 파일 선택 (.json)</label><input type="file" id="save-transfer-file" accept=".json,application/json"><span id="save-transfer-filename" class="save-transfer-filename">선택한 파일 없음</span><button type="button" id="save-transfer-import" disabled>⬆️ 선택한 데이터 가져오기</button></div>
+        <div class="save-transfer-section"><strong>② 다른 기기에서 데이터 가져오기</strong><p class="save-transfer-warning">⚠️ 가져오기를 하면 이 기기의 기존 도화마을 저장 데이터가 백업 파일 내용으로 덮어써집니다. 필요한 경우 먼저 이 기기에서도 내보내기를 해 주세요.</p><label for="save-transfer-file" class="save-transfer-file-label">📂 백업 파일 선택 (.json)</label><input type="file" id="save-transfer-file" accept=".json,application/json"><span id="save-transfer-filename" class="save-transfer-filename">선택한 파일 없음</span><button type="button" id="save-transfer-import" disabled>⬆️ 선택한 데이터 가져오기</button></div>
         <p class="save-transfer-note">파일을 다른 사람과 공유하지 마세요. 저장 파일에는 등록한 주민의 이름·이미지 등 개인화 정보가 포함될 수 있습니다. 게임 이미지·음원 파일 자체는 저장 데이터에 포함되지 않습니다.</p>
         <p id="save-transfer-status" role="status" aria-live="polite"></p>
       </div>
@@ -589,8 +589,8 @@
     <script src="village-cat-gifts.js?v=20260925-2305"></script>
     <script src="village-cats.js?v=20260925-2305"></script>
     <script src="village-news.js?v=20260925-2305"></script>
-    <script src="collection.js?v=20260926-collection1"></script>
-    <script src="fishing.js?v=20260925-2305"></script>
+    <script src="collection.js?v=20260926-sgrade"></script>
+    <script src="fishing.js?v=20260926-sgrade"></script>
     <script src="save-transfer.js?v=20260925-2305"></script>
     <script src="settings-panel.js?v=20260925-2305"></script>
     <script src="crop-palette-pan.js?v=20260925-2305"></script>

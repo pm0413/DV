@@ -1,4 +1,4 @@
-/* 전원생활일지 생활 확장: 선물, 요리 도감, 업적. 기존 저장 키와 분리. */
+/* 도화마을 생활 확장: 선물, 요리 도감, 업적. 기존 저장 키와 분리. */
 (() => {
  'use strict';
  const KEY='dangcheong-dowon-life-features-v1';
@@ -12,7 +12,7 @@
  const wallet=()=>window.dowonWallet;
  const grantComfort=amount=>{const c=window.dowonComfort;if(!c?.get||!c?.set)return false;c.set(c.get()+amount);return true;};
  const achievementComfort=(title)=>{
-  const fifty=new Set(['풍년이로구나','손이 열 개라도 모자라','공방이 가득한 마을','백 번의 식사','요리 도감 완성','주문 해결사','마을의 해결사','안녕. 전원생활일지','모두 모여 살아요','한 달의 마을 생활','열세 마리의 발자국','고양이들의 아지트','오래오래 함께','손길이 익숙해졌어','계절을 한 바퀴','계절을 담은 상자','고양이를 위한 공간','모두가 좋아해']);
+  const fifty=new Set(['풍년이로구나','손이 열 개라도 모자라','공방이 가득한 마을','백 번의 식사','요리 도감 완성','주문 해결사','마을의 해결사','안녕. 도화마을','모두 모여 살아요','한 달의 마을 생활','열세 마리의 발자국','고양이들의 아지트','오래오래 함께','손길이 익숙해졌어','계절을 한 바퀴','계절을 담은 상자','고양이를 위한 공간','모두가 좋아해']);
   const twenty=new Set(['풍요로운 밭','땅을 넓히다','마을의 요리사','자꾸 부르게 되네','가까워진 사이','마을의 배달부','오늘은 장사가 잘되네','부탁받기 바쁜 하루','우리 마을을 꾸며요','열 번의 아침','골고루 준비했어요','쓰담쓰담','작고 소중한 것들']);
   return fifty.has(title)?50:twenty.has(title)?20:10;
 };
@@ -103,16 +103,16 @@
   ['gift-10','작은 정성','주민','선물 누적 10회',s=>s.stats.gifts,10,250],
   ['friendship','가까워진 사이','주민','주민 1명 호감도 하트 3개 달성',()=>Array.from({length:5},(_,i)=>window.dowonAffinity?.get?.('mpc',i)?.hearts||0).reduce((a,b)=>Math.max(a,b),0),3,300],
   ['comfort-100','마을 꾸미기','마을','쾌적도 100 달성',()=>window.dowonComfort?.get?.()||0,100,200],
-  ['comfort-1000','북적이는 전원생활일지','마을','쾌적도 1,000 달성',()=>window.dowonComfort?.get?.()||0,1000,800],
+  ['comfort-1000','북적이는 도화마을','마을','쾌적도 1,000 달성',()=>window.dowonComfort?.get?.()||0,1000,800],
   ['cat-first','첫 손님','고양이','길냥이 1마리 방문',()=>window.dowonCats?.achievements()?.find(a=>a.id==='cat-first')?.progress||0,1,100],
   ['cat-ten','밥 먹으러 왔어요','고양이','길냥이 누적 방문 10회',()=>window.dowonCats?.achievements()?.find(a=>a.id==='cat-ten')?.progress||0,10,300],
   ['cat-five','낯익은 얼굴','고양이','같은 길냥이 5회 방문',()=>window.dowonCats?.achievements()?.find(a=>a.id==='cat-five')?.progress||0,5,200],
   ['cat-friend','고양이 친구','고양이','고양이 한 마리 호감도 20 달성',()=>window.dowonCats?.achievements()?.find(a=>a.id==='cat-friend')?.progress||0,20,300],
-  ['cat-family','전원생활일지의 가족','고양이','고양이 한 마리 입양',()=>window.dowonCats?.achievements()?.find(a=>a.id==='cat-family')?.progress||0,1,500],
+  ['cat-family','도화마을의 가족','고양이','고양이 한 마리 입양',()=>window.dowonCats?.achievements()?.find(a=>a.id==='cat-family')?.progress||0,1,500],
   ['cat-all','모두 만나봤어요','고양이','준비된 고양이 전부 발견',()=>window.dowonCats?.achievements()?.find(a=>a.id==='cat-all')?.progress||0,window.DOWON_CAT_CONFIG?.length||13,400],
   ['cat-days','오늘도 함께','고양이','입양한 고양이와 7일 함께 보내기',()=>window.dowonCats?.achievements()?.find(a=>a.id==='cat-days')?.progress||0,7,300]
  ];
- add("extra-hello","안녕. 전원생활일지","마을","처음 게임을 시작했습니다.",()=>(1),1);
+ add("extra-hello","안녕. 도화마을","마을","처음 게임을 시작했습니다.",()=>(1),1);
  add("extra-sow","씨앗 한 알","농사","작물 처음 심기",()=>(n("plant")),1);
  add("extra-harvest500","밭일이 익숙해졌어","농사","작물 누적 500개 수확",()=>(state.stats.harvest),500);
  add("extra-harvest1000","풍년이로구나","농사","작물 누적 1,000개 수확",()=>(state.stats.harvest),1000);

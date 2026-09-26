@@ -1543,6 +1543,21 @@ function showResidentDialogue(character,source,now){
  character.dialogueUntil=now+Math.min(5200,Math.max(2800,bubble.textContent.length*130));
  return true;
 }
+// 고양이-주민 상호작용: 주민 설정의 길냥이/입양냥 반응에서 | 기준으로 한 줄을 무작위 출력합니다.
+document.addEventListener('dowon:activity',event=>{
+ const detail=event.detail||{};
+ if(detail.type!=='cat-resident-meeting')return;
+ const character=characters.find(c=>c.residentIndex===Number(detail.resident));
+ if(!character)return;
+ const catState=window.dowonCats?.get?.();
+ const isAdopted=Array.isArray(catState?.adoptedCats)&&catState.adoptedCats.some(cat=>cat?.id===detail.catId);
+ const source=isAdopted?character.catAdoptedLines:character.catStrayLines;
+ if(!residentDialogueOptions(source).length)return;
+ const now=performance.now();
+ if(showResidentDialogue(character,source,now)){
+  character.nextDialogueAt=character.dialogueUntil+2500;
+ }
+});
 // From the village clock: 06:00–17:59 is day, 18:00 onwards is night.
 // Existing day-only saved dialogue remains available if a night field is empty.
 function residentTimedLines(dayLines,nightLines){

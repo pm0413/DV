@@ -28,7 +28,7 @@ body.fishing-open{overflow:hidden}
 }
 .fishing-dialog{
   position:fixed;z-index:1200;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:min(440px,calc(100vw - 32px));height:min(500px,calc(100vh - 32px));
+  width:min(600px,calc(100vw - 32px));height:min(650px,calc(100vh - 32px));
   overflow:hidden;box-sizing:border-box;background:linear-gradient(145deg,#282828,#121212);color:#fff;
   border:1px solid rgba(161,136,94,.42);box-shadow:0 18px 55px rgba(0,0,0,.58);padding:0;
 }
@@ -60,7 +60,7 @@ body.fishing-open{overflow:hidden}
   padding:8px 18px 20px;min-height:0;pointer-events:none;box-sizing:border-box
 }
 .fishing-dial{
-  position:relative;left:auto;top:auto;width:min(250px,66vw,40vh);height:min(250px,66vw,40vh);padding:0;border:0;border-radius:50%;
+  position:relative;left:auto;top:auto;width:min(370px,72vw,50vh);height:min(370px,72vw,50vh);padding:0;border:0;border-radius:50%;
   background:transparent;transform:none;cursor:pointer;overflow:visible;pointer-events:auto;touch-action:manipulation;flex:0 0 auto
 }
 .fishing-dial:focus-visible{outline:2px solid rgba(255,255,255,.82);outline-offset:10px}
@@ -71,7 +71,7 @@ body.fishing-open{overflow:hidden}
   
   }
 .fishing-target::after{
-  content:"";position:absolute;left:50%;top:50%;width:34%;height:34%;transform:translate(-50%,-50%);border-radius:50%;
+  content:"";position:absolute;left:50%;top:50%;width:28%;height:28%;transform:translate(-50%,-50%);border-radius:50%;
   box-shadow:0 0 0 2px rgba(255,255,255,.07),inset 0 0 18px rgba(0,0,0,.45)
 }
 
@@ -115,16 +115,16 @@ body.light-mode .fishing-result strong{color:#222}body.light-mode .fishing-resul
   #main-area .fishing-marker{width:40px;height:49px}
   #main-area .fishing-pin-shape{width:36px;height:36px}
   #main-area .fishing-pin-icon{font-size:21px}
-  .fishing-dialog{width:min(420px,calc(100vw - 20px));height:min(470px,calc(100vh - 20px))}
+  .fishing-dialog{width:min(520px,calc(100vw - 20px));height:min(580px,calc(100vh - 20px))}
   .fishing-heading{height:56px;padding:0 12px}.fishing-heading h2{font-size:18px}.fishing-heading button{width:32px;height:32px}
   .fishing-hud{padding:12px 13px 0}
   .fishing-stage{padding:6px 14px 15px}
-  .fishing-dial{width:min(225px,62vw,35vh);height:min(225px,62vw,35vh)}
+  .fishing-dial{width:min(300px,68vw,42vh);height:min(300px,68vw,42vh)}
   .fishing-judgement{top:-35px;font-size:22px}
 }
 @media(max-width:430px){
-  .fishing-dialog{height:min(440px,calc(100vh - 16px));width:calc(100vw - 16px)}
-  .fishing-dial{width:min(205px,60vw,32vh);height:min(205px,60vw,32vh)}
+  .fishing-dialog{height:min(520px,calc(100vh - 16px));width:calc(100vw - 16px)}
+  .fishing-dial{width:min(260px,66vw,38vh);height:min(260px,66vw,38vh)}
   .fishing-result{top:56%;padding:18px 14px}.fishing-result-actions button{min-width:96px}
 }
 
@@ -135,11 +135,17 @@ body.light-mode .fishing-result strong{color:#222}body.light-mode .fishing-resul
   --fishing-accent-glow:rgba(88,174,247,.72);
   --fishing-accent-soft:rgba(88,174,247,.20);
 }
-.fishing-dialog.fish-grade-a{
+.fishing-dialog.fish-grade-s{
   --fishing-accent:#e6bf4f;
   --fishing-accent-light:#fff0a4;
-  --fishing-accent-glow:rgba(230,191,79,.78);
-  --fishing-accent-soft:rgba(230,191,79,.20);
+  --fishing-accent-glow:rgba(230,191,79,.82);
+  --fishing-accent-soft:rgba(230,191,79,.22);
+}
+.fishing-dialog.fish-grade-a{
+  --fishing-accent:#c89cff;
+  --fishing-accent-light:#f0ddff;
+  --fishing-accent-glow:rgba(200,156,255,.78);
+  --fishing-accent-soft:rgba(200,156,255,.20);
 }
 .fishing-dialog.fish-grade-b{
   --fishing-accent:#58aef7;
@@ -171,12 +177,12 @@ body.light-mode .fishing-result strong{color:#222}body.light-mode .fishing-resul
 .fishing-target{
   background:
     radial-gradient(circle at 50% 50%,
-      #1f1f1f 0 29%,
-      #343434 30% 34%,
-      #171717 35% 42%,
-      var(--fishing-accent) 43% 59%,
-      #303030 60% 64%,
-      #191919 65% 80%,
+      #1f1f1f 0 23%,
+      #343434 24% 28%,
+      #171717 29% 37%,
+      var(--fishing-accent) 38% 48%,
+      #303030 49% 53%,
+      #191919 54% 80%,
       #383838 81% 84%,
       #1b1b1b 85% 100%);
   box-shadow:

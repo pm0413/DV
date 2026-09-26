@@ -1,4 +1,4 @@
-/* 전원생활일지 고양이: 고양이별 이미지와 이동/정지 프레임을 설정에서 가져옵니다. */
+/* 도화마을 고양이: 고양이별 이미지와 이동/정지 프레임을 설정에서 가져옵니다. */
 (() => {
  'use strict';
  const CONFIG=window.DOWON_CAT_CONFIG||[];
@@ -82,11 +82,31 @@
   if(gift?.image){const img=el('img',cls);img.src=gift.image;img.alt=gift.name||'고양이 선물';img.onerror=()=>{const span=el('span',cls,gift.emoji||'🎁');img.replaceWith(span);};return img;}
   return el('span',cls,gift?.emoji||'🎁');
  }
- function refreshActorGift(id){const a=active.get(id);if(!a)return;const badge=a.node.querySelector('.cat-gift-badge');if(badge)badge.hidden=!state.pendingGifts[id];}
+ function giftWaitingTarget(a){
+  const bowl=$(a.home?'home-cat-bowl':'stray-cat-bowl');
+  if(!bowl)return null;
+  const target=centerOf(bowl);
+  // 여러 마리가 동시에 선물을 들고 와도 완전히 겹치지 않도록 고양이별 고정 간격을 둡니다.
+  const order=Math.max(0,CONFIG.findIndex(c=>c.id===a.id));
+  const slot=(order%5)-2;
+  return {x:target.x+slot*26,y:target.y-38-Math.abs(slot)*3};
+ }
+ function parkGiftActor(a){
+  if(!a||!state.pendingGifts[a.id])return false;
+  const target=giftWaitingTarget(a);if(!target)return false;
+  a.phase='gift-wait';a.pause=0;a.tx=target.x;a.ty=target.y;
+  return true;
+ }
+ function refreshActorGift(id){
+  const a=active.get(id);if(!a)return;
+  const badge=a.node.querySelector('.cat-gift-badge');if(badge)badge.hidden=!state.pendingGifts[id];
+  if(state.pendingGifts[id])parkGiftActor(a);
+ }
  function claimGift(id){
   const pending=state.pendingGifts[id],gift=pending&&giftDefs.get(pending.giftId);if(!pending||!gift)return false;
   delete state.pendingGifts[id];state.giftCollection[gift.id]=Number(state.giftCollection[gift.id]||0)+1;
   state.giftHistory.unshift({giftId:gift.id,catId:id,day:day()});state.giftHistory=state.giftHistory.slice(0,40);save();refreshActorGift(id);
+  const actor=active.get(id);if(actor&&actor.phase==='gift-wait'){actor.phase='roam';actor.pause=Date.now()+900;chooseTarget(actor);}
   document.dispatchEvent(new CustomEvent('dowon:activity',{detail:{type:'cat-gift',catId:id,giftId:gift.id,giftName:gift.name}}));
   render();report(`${displayName(id)}이(가) ${gift.name}을(를) 가져왔습니다.`);return true;
  }
@@ -214,6 +234,7 @@
    }
   }
   else{a.pause=Date.now()+2500;chooseTarget(a);}
+  if(state.pendingGifts[id])parkGiftActor(a);
   position(a);return a;
  }
  function chooseTarget(a){
@@ -358,7 +379,9 @@
   }
   for(const a of [...active.values()]){
    releaseMeeting(a,now);
-   if(a.pause>now){setSpriteFrame(a,false,now);continue;}
+   const waitingForGift=!!state.pendingGifts[a.id];
+   if(waitingForGift&&a.phase!=='gift-wait')parkGiftActor(a);
+   if(!waitingForGift&&a.pause>now){setSpriteFrame(a,false,now);continue;}
    let dx=a.tx-a.x,dy=a.ty-a.y,dist=Math.hypot(dx,dy),step=a.speed*dt;
    const walking=dist>step&&dist>.2;
    if(walking){
@@ -373,12 +396,17 @@
     if(a.phase==='arrive'){eat(a);if(a.phase!=='leave'){a.phase='roam';a.pause=now+3500;chooseTarget(a);}}
     else if(a.phase==='leave'){removeActor(a.id);continue;}
     else if(a.phase==='home-eat'){eatHome(a);}
+    else if(a.phase==='gift-wait'){
+     // 선물을 받을 때까지 밥그릇 옆에서 기다립니다. 배회 목표를 새로 잡지 않습니다.
+     a.pause=0;
+    }
     else{if(a.home&&state.homeFood>0&&likes(a.id,state.homeFoodType)&&state.lastHomeDay!==day()&&Math.random()<.18){a.tx=centerOf($('home-cat-bowl')).x;a.ty=centerOf($('home-cat-bowl')).y;a.phase='home-eat';}
      else{a.pause=now+random(1500,5500);chooseTarget(a);}}
     if(a.phase==='home-eat'&&dist<step){eatHome(a);}
    }
    if(a.phase==='home-eat'&&Math.hypot(a.tx-a.x,a.ty-a.y)<2)eatHome(a);
-   residentMeeting(a,now);
+   // 선물 대기 상태가 최우선입니다. 기다리는 동안 주민 상호작용을 시작하지 않습니다.
+   if(!state.pendingGifts[a.id])residentMeeting(a,now);
    setSpriteFrame(a,walking&&a.pause<=now,now);
    position(a);
   }
@@ -425,7 +453,7 @@
   const name=raw.trim().slice(0,12)||c.name;
   state.adoptedCats.push({id,name});state.adopted=state.adoptedCats[0];state.homeFood=0;state.homeFoodType=null;state.visitors=state.visitors.filter(v=>v!==id);state.activeVisitors=state.activeVisitors.filter(v=>v!==id);
   const a=active.get(id);if(a){a.home=true;a.phase='roam';a.pause=Date.now()+1000;chooseTarget(a);a.node.querySelector('.village-cat-name').textContent=name;}
-  save();document.dispatchEvent(new CustomEvent('dowon:activity',{detail:{type:'cat-adopt',catId:id,name}}));refreshBowls();render();report(`${name}이(가) 전원생활일지의 가족이 되었습니다.`);
+  save();document.dispatchEvent(new CustomEvent('dowon:activity',{detail:{type:'cat-adopt',catId:id,name}}));refreshBowls();render();report(`${name}이(가) 도화마을의 가족이 되었습니다.`);
  }
  function rename(id){const home=adoptedCat(id);if(!home)return;const raw=window.prompt('고양이의 새 이름을 입력해 주세요. (최대 12자)',home.name);if(raw===null)return;
   const name=raw.trim().slice(0,12);if(!name){report('이름을 한 글자 이상 입력해 주세요.');return;}
@@ -436,7 +464,7 @@
   ['cat-ten','밥 먹으러 왔어요','길냥이 누적 방문 10회',s=>s.visits,10,300],
   ['cat-five','낯익은 얼굴','같은 길냥이 5회 방문',s=>Math.max(0,...Object.values(s.cats).map(c=>c.visits||0)),5,200],
   ['cat-friend','고양이 친구','고양이 한 마리 호감도 20 달성',s=>Math.max(0,...Object.values(s.cats).map(c=>c.points||0)),20,300],
-  ['cat-family','전원생활일지의 가족','고양이 한 마리 입양',s=>Number(Boolean(s.adopted)),1,500],
+  ['cat-family','도화마을의 가족','고양이 한 마리 입양',s=>Number(Boolean(s.adopted)),1,500],
   ['cat-all','모두 만나봤어요','준비된 고양이 전부 발견',()=>knownCount(),CONFIG.length,400],
   ['cat-days','오늘도 함께','입양한 고양이와 7일 함께 보내기',s=>s.adoptedDays,7,300]
  ];

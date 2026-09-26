@@ -1079,7 +1079,7 @@ body.light-mode #debug-fast-forward:hover {
 }
 
 /* ========================================================
-   전원생활일지 UI 리디자인 · 레퍼런스 기반 시각 스타일
+   도화마을 UI 리디자인 · 레퍼런스 기반 시각 스타일
    기존 게임 상태/시간/제작 로직은 변경하지 않음
    ======================================================== */
 :root {        --ui-sheen:rgba(249,249,249,.07);  }
@@ -2423,7 +2423,7 @@ body.light-mode #sugar-tooltip { background:#ffffff; color:#2a251e; border-color
   #workshop-list::-webkit-scrollbar { display: none !important; width: 0; height: 0; }
 }
 
-/* 전원생활일지 가랑비: 화면과 조작 영역을 덮지 않는 날씨 레이어 */
+/* 도화마을 가랑비: 화면과 조작 영역을 덮지 않는 날씨 레이어 */
 #main-area #dowon-rain-tint, #main-area #dowon-rain {
   position:absolute;inset:0;overflow:hidden;pointer-events:none;visibility:hidden;
 }
@@ -2655,7 +2655,7 @@ body.light-mode #main-area .resident-request-reminder-detail{color:#6f665a;}
 #main-area #village-sleep.village-sleep-bubble {
   z-index:60;
 }
-/* 상단 전원생활일지 로고: 기존 브랜드 위치와 톤을 유지하면서 Material Symbols 아이콘 적용 */
+/* 상단 도화마을 로고: 기존 브랜드 위치와 톤을 유지하면서 Material Symbols 아이콘 적용 */
 #top-left .brand-mark.material-symbols-outlined {
   display:inline-flex;align-items:center;justify-content:center;
   width:28px;height:28px;flex:0 0 28px;
@@ -2748,7 +2748,7 @@ body.light-mode #main-area .resident-request-reminder-detail{color:#6f665a;}
  font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24;
  color:#fff;
  opacity:.3;
- animation:sceneCoordinateMarkerPulse 1.5s ease-in-out infinite;
+ animation:sceneCoordinateMarkerPulse 3.2s ease-in-out infinite;
  text-align:center;
  user-select:none;
 }
