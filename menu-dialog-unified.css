@@ -1,0 +1,167 @@
+/* 다섯 메뉴 팝업 공통 규격: 주민 주문판 너비, 부엌 색상, 주민 주문판 제목 크기. */
+:root{
+  --dowon-dialog-width:810px;
+  --dowon-dialog-bg:linear-gradient(145deg,#282828,#121212);
+  --dowon-dialog-border:rgba(141,121,93,.48);
+  --dowon-dialog-gold:#bda37a;
+  --dowon-dialog-divider:rgba(255,255,255,.22);
+}
+/* 기존 개별 CSS가 !important 를 사용하므로 공통 규격도 우선순위를 명시한다. */
+#order-board,
+#resident-dialog.resident-dialog,
+#shop-dialog.shop-dialog,
+#kitchen-dialog,
+#warehouse{
+  box-sizing:border-box!important;
+  width:min(var(--dowon-dialog-width),calc(100vw - 24px))!important;
+  max-width:calc(100vw - 24px)!important;
+  border:1px solid var(--dowon-dialog-border)!important;
+  border-radius:4px!important;
+  background:var(--dowon-dialog-bg)!important;
+  color:#f4f4f4!important;
+  box-shadow:0 25px 75px rgba(0,0,0,.68)!important;
+  font-family:'Paperozi',sans-serif!important;
+  opacity:1!important;
+}
+/* 창고 역시 body 직속 팝업: 주문판과 같은 화면 기준의 가로·세로 크기. */
+#warehouse{
+  position:fixed!important;
+  inset:auto!important;
+  left:50%!important;
+  top:50%!important;
+  right:auto!important;
+  bottom:auto!important;
+  transform:translate(-50%,-50%)!important;
+  width:min(var(--dowon-dialog-width),calc(100vw - 24px))!important;
+  max-width:calc(100vw - 24px)!important;
+  height:min(690px,calc(100dvh - 22px))!important;
+  max-height:calc(100dvh - 22px)!important;
+  padding:18px 20px 16px!important;
+  z-index:3101!important;
+  overflow:hidden!important;
+}
+#warehouse-backdrop{
+  position:fixed!important;
+  inset:0!important;
+  z-index:3100!important;
+}
+#warehouse-grid{min-height:0!important;}
+#order-board{height:min(690px,calc(100dvh - 22px))!important;max-height:calc(100dvh - 22px)!important;}
+#resident-dialog.resident-dialog{max-height:calc(100dvh - 28px)!important;}
+#shop-dialog.shop-dialog,#kitchen-dialog{max-height:calc(100dvh - 28px)!important;}
+
+/* 모든 머리말의 영문 소제목/한글 제목을 주민 주문판과 똑같은 크기로. */
+#warehouse-title,
+#resident-dialog .resident-heading,
+#shop-dialog .shop-heading,
+#kitchen-dialog .kitchen-heading,
+#order-board .order-header{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:space-between!important;
+  gap:12px!important;
+  min-height:64px!important;
+  margin:0!important;
+  padding:0 0 13px!important;
+  border-bottom:1px solid var(--dowon-dialog-divider)!important;
+  color:inherit!important;
+}
+#warehouse-title>div,
+#resident-dialog .resident-heading>div:first-child,
+#shop-dialog .shop-heading>div:first-child,
+#kitchen-dialog .kitchen-heading>div:first-child,
+#order-board .order-header>div:first-child{min-width:0!important;}
+#warehouse-title .panel-eyebrow,
+#resident-dialog .resident-heading .panel-eyebrow,
+#shop-dialog .shop-heading .panel-eyebrow,
+#kitchen-dialog .kitchen-eyebrow,
+#order-board .order-header .panel-eyebrow{
+  display:block!important;
+  margin:0 0 5px!important;
+  color:var(--dowon-dialog-gold)!important;
+  font:400 10px/1.3 'Paperozi',sans-serif!important;
+  letter-spacing:.18em!important;
+}
+#warehouse-title h2,
+#resident-dialog .resident-heading h2,
+#shop-dialog .shop-heading h2,
+#kitchen-dialog .kitchen-heading h2,
+#order-board .order-header h2{
+  margin:0!important;
+  padding:0!important;
+  color:inherit!important;
+  font:700 26px/1.25 'Paperozi',sans-serif!important;
+  letter-spacing:0!important;
+  white-space:normal!important;
+}
+/* 창고는 기존의 작은 아이콘형 헤더를 공통 2줄 헤더로 교체 */
+#warehouse-title{flex:0 0 auto!important;height:auto!important;margin-bottom:9px!important;}
+#warehouse-title .warehouse-heading-copy{display:flex;flex-direction:column;align-items:flex-start;}
+
+/* 다섯 창의 닫기 버튼은 부엌 모양으로 통일. */
+#warehouse #warehouse-close,
+#resident-dialog #resident-close,
+#shop-dialog #shop-close,
+#kitchen-dialog #kitchen-close,
+#order-board #order-close{
+  appearance:none!important;
+  box-sizing:border-box!important;
+  display:grid!important;
+  place-items:center!important;
+  flex:0 0 36px!important;
+  width:36px!important;
+  height:36px!important;
+  min-width:36px!important;
+  min-height:36px!important;
+  margin:0!important;
+  padding:0!important;
+  border:1px solid rgba(255,255,255,.60)!important;
+  border-radius:3px!important;
+  background:rgba(255,255,255,.05)!important;
+  color:#f4f4f4!important;
+  font:400 27px/1 sans-serif!important;
+  cursor:pointer!important;
+}
+#warehouse #warehouse-close:hover,#resident-dialog #resident-close:hover,
+#shop-dialog #shop-close:hover,#kitchen-dialog #kitchen-close:hover,
+#order-board #order-close:hover{background:rgba(189,163,122,.19)!important;border-color:var(--dowon-dialog-gold)!important;}
+
+/* 흰 테두리였던 내용 영역도 부엌에서 사용한 차분한 금색 계열 포인트로 정돈. */
+#warehouse .warehouse-tabs,
+#order-board .order-detail,
+#order-board .order-footer,
+#resident-dialog .resident-hint,
+#shop-dialog .shop-heading,
+#kitchen-dialog .kitchen-heading{border-color:var(--dowon-dialog-divider)!important;}
+#warehouse .warehouse-tabs button.is-active{border-color:var(--dowon-dialog-gold)!important;}
+
+/* 기존 다크/라이트 전환 유지. */
+body.light-mode{
+  --dowon-dialog-bg:#f7f4ef;
+  --dowon-dialog-border:#ab916c;
+  --dowon-dialog-gold:#866943;
+  --dowon-dialog-divider:rgba(85,65,38,.27);
+}
+body.light-mode #order-board,
+body.light-mode #resident-dialog.resident-dialog,
+body.light-mode #shop-dialog.shop-dialog,
+body.light-mode #kitchen-dialog,
+body.light-mode #warehouse{color:#26221d!important;background:var(--dowon-dialog-bg)!important;border-color:var(--dowon-dialog-border)!important;}
+body.light-mode #warehouse-title h2,
+body.light-mode #resident-dialog .resident-heading h2,
+body.light-mode #shop-dialog .shop-heading h2,
+body.light-mode #kitchen-dialog .kitchen-heading h2,
+body.light-mode #order-board .order-header h2{color:#26221d!important;}
+body.light-mode #warehouse #warehouse-close,
+body.light-mode #resident-dialog #resident-close,
+body.light-mode #shop-dialog #shop-close,
+body.light-mode #kitchen-dialog #kitchen-close,
+body.light-mode #order-board #order-close{color:#26221d!important;background:rgba(0,0,0,.03)!important;border-color:rgba(85,65,38,.45)!important;}
+@media(max-width:700px){
+ #order-board,#resident-dialog.resident-dialog,#shop-dialog.shop-dialog,#kitchen-dialog,#warehouse{width:calc(100vw - 12px)!important;max-width:calc(100vw - 12px)!important;}
+ #warehouse{max-width:calc(100vw - 12px)!important;padding:12px 9px!important;}
+ #warehouse-title h2,#resident-dialog .resident-heading h2,#shop-dialog .shop-heading h2,
+ #kitchen-dialog .kitchen-heading h2,#order-board .order-header h2{font-size:22px!important;}
+ #warehouse-title,#resident-dialog .resident-heading,#shop-dialog .shop-heading,
+ #kitchen-dialog .kitchen-heading,#order-board .order-header{min-height:58px!important;}
+}

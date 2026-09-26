@@ -1,0 +1,71 @@
+/* 생활 기능: 기존 부엌 팝업의 검푸른 바탕과 골드 포인트를 유지 */
+#village-features-backdrop{position:fixed;inset:0;background:#060a0dba;z-index:4100}
+#village-features-dialog{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:4101;box-sizing:border-box;width:min(810px,calc(100vw - 24px));height:min(690px,calc(100dvh - 26px));display:flex;flex-direction:column;overflow:hidden;padding:20px;background:linear-gradient(145deg,#282828,#121212);color:#f4f1ea;border:1px solid #bda37a88;border-radius:4px;box-shadow:0 25px 75px #000b;font-family:'Paperozi',sans-serif}
+#village-features-dialog[hidden],#village-features-backdrop[hidden],#kitchen-collection[hidden],#kitchen-content[hidden],#kitchen-progress[hidden]{display:none!important}
+.vf-heading{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #ffffff38;padding-bottom:14px;gap:12px}.vf-heading h2{font-size:25px;margin:0}.vf-eyebrow{display:block;color:#bda37a;font-size:10px;letter-spacing:.18em;margin-bottom:6px}.vf-close{background:#ffffff16;color:inherit;border:1px solid #ffffff4d;width:34px;height:34px;cursor:pointer;font-size:22px}.vf-body{min-height:0;overflow:auto;flex:1;padding:14px 1px}.vf-status{min-height:22px;color:#cfaa6d;font-size:12px}.vf-note{color:#cbbda7;font-size:12px;line-height:1.7;margin:7px 0 10px}.vf-card{border:1px solid #bda37a50;padding:14px;margin:0 0 11px;background:#ffffff08}.vf-card p{font-size:13px;margin:10px 0}.vf-card-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.vf-card-head strong{font-size:15px}.vf-chip{font-size:11px;color:#d8b57a}.vf-progress{height:5px;background:#ffffff22;margin:10px 0}.vf-progress span{display:block;height:100%;background:#A1885E}.vf-primary,#kitchen-collection-toggle,.vf-gift-open{font:inherit;font-size:12px;color:#f6e2bc;background:#9a784a33;border:1px solid #bda37a88;padding:8px 12px;cursor:pointer}.vf-primary:disabled,.vf-item-card:disabled{opacity:.45;cursor:not-allowed}.vf-item-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(105px,1fr));gap:9px}.vf-item-card{display:flex;flex-direction:column;gap:4px;align-items:center;justify-content:center;padding:10px 4px;min-height:106px;color:inherit;background:#ffffff09;border:1px solid #bda37a5a;cursor:pointer;font:inherit}.vf-item-card strong{font-size:12px}.vf-item-card small{font-size:11px;color:#c9bba4}.vf-item-image{width:50px;height:50px;object-fit:contain}.vf-known{display:inline-block;margin:5px 6px 0 0;padding:4px 7px;border:1px solid #bda37a44}.vf-collection-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;padding-top:8px}.vf-collection-card{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;border:1px solid #bda37a55;background:#ffffff06;padding:13px 5px;min-height:126px}.vf-collection-card strong{font-size:12px}.vf-collection-card small{font-size:11px;color:#cbbda7}.vf-unknown{filter:grayscale(1);opacity:.25}.vf-gift-section{margin-top:14px;padding-top:10px;border-top:1px solid #bda37a66}.vf-gift-open{margin-top:7px}
+#kitchen-collection{min-height:0;max-height:430px;overflow:auto;margin-top:12px;padding:0 7px 8px}#kitchen-collection-toggle{margin-left:auto;margin-right:12px}#kitchen-dialog .kitchen-heading{gap:8px}#kitchen-dialog .kitchen-heading>div{min-width:0}
+body.light-mode #village-features-dialog{background:#f8f4ec;color:#2a251e;border-color:#bda37a}body.light-mode .vf-card,body.light-mode .vf-item-card,body.light-mode .vf-collection-card{background:#fff;border-color:#c9b494}body.light-mode .vf-note,body.light-mode .vf-item-card small,body.light-mode .vf-collection-card small{color:#665744}body.light-mode .vf-close{color:#2a251e;border-color:#9d8970}body.light-mode .vf-primary,body.light-mode .vf-gift-open,body.light-mode #kitchen-collection-toggle{color:#52391c;background:#ddcba8;border-color:#a9895a}
+@media(max-width:700px){#village-features-dialog{width:calc(100vw - 12px);height:calc(100dvh - 12px);max-height:calc(100dvh - 12px);padding:14px}.vf-heading h2{font-size:20px}.vf-item-grid{grid-template-columns:repeat(auto-fill,minmax(90px,1fr))}.vf-collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#kitchen-collection-toggle{margin-right:4px;padding:6px;font-size:11px}}
+
+/* 업적: 왼쪽 카테고리 아이콘을 누르면 선택 분류만 표시 */
+#village-features-dialog .vf-achievement-layout{display:grid;grid-template-columns:54px minmax(0,1fr);gap:15px;min-height:0;align-items:start}
+#village-features-dialog .vf-achievement-sidebar{display:flex;flex-direction:column;gap:7px;position:sticky;top:0;align-self:start;border-right:1px solid #bda37a40;padding-right:8px}
+#village-features-dialog .vf-achievement-tab{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex:0 0 44px;border:1px solid #bda37a59;background:#ffffff07;border-radius:3px;color:#caa15e;cursor:pointer;padding:0}
+#village-features-dialog .vf-achievement-tab:hover,#village-features-dialog .vf-achievement-tab:focus-visible{background:#caa15e22;border-color:#caa15e;outline:none}
+#village-features-dialog .vf-achievement-tab.is-active{background:#caa15e31;border-color:#dcb878;box-shadow:inset 3px 0 #dcb878;color:#f0c884}
+#village-features-dialog .vf-achievement-tab .material-symbols-outlined{font-family:'Material Symbols Outlined'!important;font-size:24px!important;line-height:1!important;font-weight:normal!important;font-style:normal!important;letter-spacing:normal!important;font-feature-settings:'liga'!important;font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24!important}
+#village-features-dialog .vf-achievement-results{min-width:0}
+#village-features-dialog .vf-achievement-heading{font-size:16px;color:#cdaa73;margin:5px 0 11px}
+#village-features-dialog .vf-achievement-results .vf-card{margin-bottom:11px}
+body.light-mode #village-features-dialog .vf-achievement-tab{color:#6f542f;background:#fffaf2;border-color:#c9b494}
+body.light-mode #village-features-dialog .vf-achievement-tab.is-active{color:#5f421d;background:#ead8b6;border-color:#b58d54;box-shadow:inset 3px 0 #b58d54}
+@media(max-width:700px){#village-features-dialog .vf-achievement-layout{grid-template-columns:47px minmax(0,1fr);gap:9px}#village-features-dialog .vf-achievement-sidebar{padding-right:5px}#village-features-dialog .vf-achievement-tab{width:40px;height:40px;flex-basis:40px}#village-features-dialog .vf-achievement-tab .material-symbols-outlined{font-size:22px!important}}
+
+/* 주민별 플레이어 선물 취향 편집 UI */
+.vf-gift-choice-host{margin:12px 0 0;padding:12px;border:1px solid #bda37a66;background:#ffffff05;min-width:0}
+.vf-gift-choice-title{margin:0 0 5px;font-size:13px;font-weight:700;color:#d7b77c}
+.vf-gift-choice-button,.vf-gift-choice-save{font:inherit;font-size:12px;padding:8px 11px;background:#9a784a33;color:#f6e2bc;border:1px solid #bda37a88;cursor:pointer}
+.vf-gift-choice-button:hover,.vf-gift-choice-save:hover{background:#9a784a55}
+.vf-gift-choice-editor{padding-top:10px}.vf-gift-choice-editor[hidden]{display:none!important}
+.vf-gift-choice-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:7px;max-height:240px;overflow:auto;margin:10px 0;padding-right:4px}
+.vf-gift-choice-item{min-width:0;min-height:72px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:1px solid #bda37a55;background:#ffffff09;color:inherit;cursor:pointer;font:inherit;font-size:11px;padding:6px 3px}
+.vf-gift-choice-item img{width:32px;height:32px;object-fit:contain}.vf-gift-choice-item.is-selected{border-color:#d7b77c;background:#caa15e35;box-shadow:inset 0 0 0 1px #d7b77c}.vf-gift-choice-item:disabled{opacity:.4;cursor:default}.vf-gift-choice-save{display:block;margin-top:10px}
+body.light-mode .vf-gift-choice-host{background:#fcf7ef;border-color:#bda37a}body.light-mode .vf-gift-choice-item{background:#fff9f0;color:#302819;border-color:#c8b593}body.light-mode .vf-gift-choice-item.is-selected{background:#edddc0;border-color:#926c35}body.light-mode .vf-gift-choice-button,body.light-mode .vf-gift-choice-save{background:#ead8b6;color:#50391c;border-color:#a9895a}
+
+
+/* 업적 창: 분류 아이콘을 기존 메뉴와 같은 흰색으로 표시 */
+#village-features-dialog .vf-achievement-tab,
+#village-features-dialog .vf-achievement-tab:hover,
+#village-features-dialog .vf-achievement-tab:focus-visible,
+#village-features-dialog .vf-achievement-tab.is-active {
+  color: #ffffff;
+}
+/* 밝은 테마: 창고와 같은 아이보리/금색 팔레트 */
+body.light-mode #village-features-dialog .vf-achievement-tab {
+  color: #2a251e;
+  background: #f8f4ec;
+  border-color: #c9b494;
+}
+body.light-mode #village-features-dialog .vf-achievement-tab.is-active {
+  color: #2a251e;
+  background: #ead8b6;
+  border-color: #b58d54;
+}
+/* 업적 보상 버튼: 투명도 없는 테마 금색 */
+#village-features-dialog .vf-achievement-results .vf-primary {
+  background: #caa15e;
+  border: 1px solid #caa15e;
+  color: #22272b;
+  opacity: 1;
+}
+#village-features-dialog .vf-achievement-results .vf-primary:hover:not(:disabled),
+#village-features-dialog .vf-achievement-results .vf-primary:focus-visible {
+  background: #e0b878;
+  border-color: #e0b878;
+  color: #22272b;
+}
+body.light-mode #village-features-dialog .vf-achievement-results .vf-primary {
+  background: #caa15e;
+  border-color: #ad8547;
+  color: #22272b;
+}

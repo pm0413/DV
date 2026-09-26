@@ -1,0 +1,339 @@
+/* 고양이와 밥그릇: 밭의 위치에 맞춰 고정하되 마을 이동은 중앙 전체를 사용합니다. */
+#main-area .cat-bowls{position:absolute;right:18px;left:auto;bottom:calc(12px + clamp(95px,8vw,130px) + 28px);transform:none;display:flex;gap:10px;z-index:32;white-space:nowrap}
+#main-area .cat-bowl{display:flex;flex-direction:column;align-items:center;gap:2px;width:64px;min-height:59px;padding:3px;border:0;background:transparent;border-radius:0;box-shadow:none;color:#f9e4b9;cursor:pointer;font:inherit;font-size:9px;text-shadow:0 1px 3px #000}
+#main-area .cat-bowl img{display:block;width:44px;height:39px;object-fit:contain}
+#main-area .cat-bowl[hidden]{display:none!important}
+#main-area .village-cat{position:absolute;z-index:22;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;border:0;background:transparent;width:66px;height:66px;padding:0;color:#fff;cursor:pointer;filter:drop-shadow(0 3px 3px #0009);transform:translate(-50%,-100%);font:inherit}
+#main-area .village-cat-sprite{display:grid;place-items:center;font-size:37px;line-height:1;transform-origin:center bottom;animation:cat-idle 1.1s ease-in-out infinite alternate}
+#main-area .village-cat-sprite img{width:56px;height:52px;object-fit:contain}
+#main-area .village-cat.is-facing-left .village-cat-sprite{scale:-1 1}
+#main-area .village-cat-name{font-size:9px;padding:2px 4px;background:#182027bb;white-space:nowrap;border-radius:2px;max-width:85px;overflow:hidden;text-overflow:ellipsis}
+@keyframes cat-idle{from{translate:0 0}to{translate:0 -2px}}
+#village-cats-backdrop{position:fixed;inset:0;background:#020508bc;z-index:4300}
+#village-cats-dialog{position:fixed;inset:50% auto auto 50%;transform:translate(-50%,-50%);box-sizing:border-box;width:min(810px,calc(100vw - 24px));height:min(690px,calc(100dvh - 22px));z-index:4301;display:flex;flex-direction:column;padding:17px;background:linear-gradient(145deg,#282828,#121212);border:1px solid #bda37a8c;color:#f2ede4;font-family:'Paperozi',sans-serif;box-shadow:0 26px 70px #000b}
+#village-cats-dialog[hidden],#village-cats-backdrop[hidden]{display:none!important}
+.cat-heading{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #bda37a80;padding-bottom:10px}.cat-heading h2{margin:0;font-size:23px}.cat-heading small{color:#cba66f;letter-spacing:.12em;font-size:10px}.cat-close{font:inherit;font-size:23px;width:33px;height:33px;border:1px solid #ffffff6c;background:transparent;color:inherit;cursor:pointer}.cat-action{border:1px solid #cba66fa1;background:#caa15e;color:#22272b;font:inherit;font-size:12px;padding:9px 11px;cursor:pointer}.cat-action{margin:5px 5px 5px 0}.cat-action:disabled{opacity:.45;cursor:default}.cat-content{overflow:auto;min-height:0;flex:1}.cat-muted{font-size:12px;color:#cbbda7;line-height:1.6}.cat-name{font-size:20px;color:#d8b57a}.cat-status{min-height:22px;margin-top:7px;font-size:12px;color:#d8b57a}
+body.light-mode #village-cats-dialog{background:#faf7f2;color:#30281c}body.light-mode .cat-muted{color:#675744}body.light-mode .cat-close{color:#30281c;border-color:#95866f}
+@media(max-width:700px){#main-area .cat-bowls{right:10px;bottom:calc(10px + clamp(70px,25vw,105px) + 28px);gap:6px}#main-area .cat-bowl{width:52px}#main-area .cat-bowl img{width:36px;height:30px}#village-cats-dialog{width:calc(100vw - 12px);height:calc(100dvh - 12px);max-height:calc(100dvh - 12px);padding:12px}}
+@media(prefers-reduced-motion:reduce){#main-area .village-cat-sprite{animation:none}}
+
+/* PNG 이동 프레임을 쓰는 고양이는 CSS 상하 흔들림 없이 프레임만 전환합니다. */
+#main-area .village-cat-sprite:has(img){animation:none;}
+.cat-book-shell{display:grid;grid-template-columns:180px minmax(0,1fr);gap:18px;align-items:start;margin-top:8px}
+.cat-book-gallery{display:grid;grid-template-columns:1fr;gap:12px;max-height:100%;overflow:auto;padding-right:4px}
+.cat-book-card{display:flex;flex-direction:column;gap:8px;padding:10px;border:1px solid #bda37a60;background:#ffffff08;color:inherit;cursor:pointer;align-items:flex-start;text-align:left}
+.cat-book-card.is-selected{border-color:#d8b57a;box-shadow:0 0 0 1px #d8b57a inset;background:#ffffff10}
+.cat-book-card:disabled{opacity:.55;cursor:default}
+.cat-book-thumb{display:grid;place-items:center;width:100%;aspect-ratio:1/1;border:1px solid #bda37a55;background:#12191f;color:#d8b57a;font-size:46px;overflow:hidden}
+.cat-book-thumb img{width:100%;height:100%;object-fit:contain}
+.cat-book-card strong{font-size:16px}
+.cat-book-card small{font-size:11px;color:#cbbda7}
+.cat-book-detail{min-width:0}
+.cat-detail-layout{display:grid;grid-template-columns:minmax(220px,300px) minmax(0,1fr);gap:24px;align-items:center;min-height:420px}
+.cat-detail-media{display:grid;place-items:center;min-height:340px}
+.cat-detail-media img{max-width:100%;max-height:360px;object-fit:contain;filter:drop-shadow(0 18px 26px #0007)}
+.cat-detail-emoji{font-size:180px;line-height:1}
+.cat-detail-info{display:flex;flex-direction:column;gap:12px}
+.cat-detail-progress{font-size:18px;font-weight:700;color:#efe1bd;margin:0}
+.cat-detail-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.cat-detail-actions .cat-action{margin:0;min-width:124px;min-height:46px;font-size:24px;padding:10px 18px}
+body.light-mode .cat-book-card{background:#f3ece0;color:#30281c}
+body.light-mode .cat-book-card small{color:#6a5c47}
+body.light-mode .cat-book-thumb{background:#fffdf8;color:#cba15e;border-color:#d6c4a6}
+@media(max-width:860px){.cat-book-shell{grid-template-columns:1fr}.cat-book-gallery{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}.cat-detail-layout{grid-template-columns:1fr;min-height:auto}.cat-detail-media{min-height:220px}.cat-detail-media img{max-height:250px}}
+
+
+/* 고양이 도감: 별도 탭/중복 안내 없이 왼쪽에는 작은 투명 카드, 오른쪽에는 상단 정렬된 상세 화면 */
+#village-cats-dialog .cat-book-shell{
+  
+  
+  margin-top:10px;
+  
+}
+#village-cats-dialog .cat-book-card,
+body.light-mode #village-cats-dialog .cat-book-card{
+  
+  
+  border:1px solid #bda37a60;
+  
+  box-shadow:none;
+}
+#village-cats-dialog .cat-book-card.is-selected{
+  border-color:#d8b57a;
+  box-shadow:inset 0 0 0 1px #d8b57a;
+}
+#village-cats-dialog .cat-book-card strong{font-size:13px;line-height:1.4}
+#village-cats-dialog .cat-book-card small{font-size:10px;line-height:1.35}
+#village-cats-dialog .cat-book-detail{align-self:start}
+#village-cats-dialog .cat-detail-media{
+  
+  
+  
+  background:transparent;
+}
+#village-cats-dialog .cat-detail-media img{
+  
+  
+  
+  
+  filter:none;
+}
+#village-cats-dialog .cat-detail-info{
+  gap:9px;
+  
+  justify-content:flex-start;
+  padding-top:2px;
+}
+#village-cats-dialog .cat-detail-info .cat-name{margin:0;font-size:22px}
+#village-cats-dialog .cat-detail-info .cat-muted{margin:0}
+#village-cats-dialog .cat-detail-actions{
+  
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:8px;
+  align-items:stretch;
+  margin-top:6px;
+}
+#village-cats-dialog .cat-detail-actions .cat-action{
+  min-width:0;
+  width:100%;
+  margin:0;
+  padding:9px 5px;
+  font-size:13px;
+  min-height:38px;
+  white-space:nowrap;
+}
+#village-cats-dialog .cat-detail-actions .cat-detail-action-primary{
+  grid-column:1 / -1;
+  min-height:46px;
+  font-size:18px;
+  padding:10px 16px;
+}
+
+/* 고양이 도감: 여섯 마리 카드가 항상 왼쪽에 한 줄씩 표시되도록 고정 */
+#village-cats-dialog .cat-book-shell{grid-template-columns:150px minmax(0,1fr);gap:14px;}
+#village-cats-dialog .cat-book-gallery{
+  display:grid;grid-template-columns:minmax(0,1fr);gap:6px;
+  align-content:start;padding-right:2px;
+}
+#village-cats-dialog .cat-book-card,
+body.light-mode #village-cats-dialog .cat-book-card{
+  box-sizing:border-box;display:flex;flex-direction:row;align-items:center;
+  text-align:left;gap:8px;width:100%;min-width:0;min-height:70px;
+  padding:6px;background:transparent;
+}
+#village-cats-dialog .cat-book-card.is-undiscovered{opacity:.68;}
+#village-cats-dialog .cat-book-thumb,
+body.light-mode #village-cats-dialog .cat-book-thumb{
+  box-sizing:border-box;flex:0 0 50px;width:50px;height:50px;aspect-ratio:auto;
+  display:grid;place-items:center;border:0;background:transparent;
+  color:#bca77f;font-size:24px;
+}
+#village-cats-dialog .cat-book-thumb img{width:50px;height:50px;object-fit:contain;}
+#village-cats-dialog .cat-book-card-copy{display:flex;flex-direction:column;gap:3px;min-width:0;}
+#village-cats-dialog .cat-book-card-copy strong,
+#village-cats-dialog .cat-book-card-copy small{overflow-wrap:anywhere;}
+@media(max-width:700px){
+  #village-cats-dialog .cat-book-shell{grid-template-columns:114px minmax(0,1fr);gap:8px;}
+  #village-cats-dialog .cat-book-gallery{grid-template-columns:minmax(0,1fr);gap:5px;}
+  #village-cats-dialog .cat-book-card{gap:5px;min-height:63px;padding:4px;}
+  #village-cats-dialog .cat-book-thumb,body.light-mode #village-cats-dialog .cat-book-thumb{flex-basis:38px;width:38px;height:42px;}
+  #village-cats-dialog .cat-book-thumb img{width:38px;height:42px;}
+  #village-cats-dialog .cat-book-card-copy strong{font-size:11px;}
+  #village-cats-dialog .cat-book-card-copy small{font-size:9px;}
+}
+
+/* 고양이 도감: 호감도별 쓰다듬기 + 보유 장난감 미니 인벤토리 */
+#village-cats-dialog .cat-interactions{display:flex;flex-direction:column;gap:8px;min-width:0;margin-top:4px;}
+#village-cats-dialog .cat-interaction-header{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-top:7px;font-size:12px;color:#d8b57a;}
+#village-cats-dialog .cat-interaction-header span{font-size:11px;color:#c9c1b4;white-space:nowrap;}
+#village-cats-dialog .cat-pet-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;}
+#village-cats-dialog .cat-pet-grid .cat-pet-option{font-size:11px;min-width:0;min-height:32px;padding:6px 4px;margin:0;white-space:normal;line-height:1.4;}
+#village-cats-dialog .cat-pet-option.is-locked{background:transparent;color:#8a8376;border-color:#6c665c;opacity:.55;}
+#village-cats-dialog .cat-toy-inventory{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;min-width:0;}
+#village-cats-dialog .cat-toy-inventory .cat-muted{grid-column:1/-1;margin:2px 0;}
+#village-cats-dialog .cat-toy-item{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-width:0;padding:7px 3px;border:1px solid #bda37a88;background:#ffffff08;color:inherit;font:inherit;cursor:pointer;}
+#village-cats-dialog .cat-toy-item img{width:min(60px,100%);height:54px;object-fit:contain;}
+#village-cats-dialog .cat-toy-item strong{font-size:11px;}
+#village-cats-dialog .cat-toy-item small{font-size:10px;color:#d8b57a;}
+#village-cats-dialog .cat-toy-item:disabled{opacity:.45;cursor:not-allowed;}
+#village-cats-dialog .cat-toy-item:not(:disabled):hover{border-color:#e6c382;background:#ffffff18;}
+#village-cats-dialog .cat-detail-actions{display:block;}
+#village-cats-dialog .cat-detail-actions .cat-detail-action-primary{width:100%;}
+body.light-mode #village-cats-dialog .cat-interaction-header span{color:#63594c;}
+body.light-mode #village-cats-dialog .cat-toy-item{background:#fff9ef;color:#30281c;border-color:#b99b6c;}
+body.light-mode #village-cats-dialog .cat-toy-item small{color:#866236;}
+@media(max-width:700px){#village-cats-dialog .cat-toy-inventory{grid-template-columns:repeat(3,minmax(0,1fr));}#village-cats-dialog .cat-pet-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+
+/* 큰 고양이 그림은 상세 영역 높이를 기준으로 세로 중앙에 배치합니다. */
+#village-cats-dialog .cat-book-shell{align-items:stretch;}
+#village-cats-dialog .cat-book-detail{display:flex;align-items:stretch;}
+#village-cats-dialog .cat-detail-layout{
+  flex:1 1 auto;
+  
+  
+  
+}
+#village-cats-dialog .cat-toy-item small.cat-toy-affection,
+#village-cats-dialog .cat-toy-item small.cat-toy-owned{
+  display:block;
+  width:100%;
+  line-height:1.45;
+  text-align:center;
+  overflow-wrap:normal;
+  word-break:keep-all;
+}
+@media(max-width:700px){
+  #village-cats-dialog .cat-detail-layout{min-height:0;}
+  #village-cats-dialog .cat-detail-media{align-self:center;}
+}
+
+/* 고양이 선물/주민 친밀도 */
+.village-cat{position:relative}.cat-gift-badge{position:absolute;right:-5px;top:-8px;display:grid;place-items:center;width:24px;height:24px;border-radius:50%;background:#f5e7c7;color:#3b2d1d;font-size:14px;box-shadow:0 2px 8px #0007;pointer-events:none}.cat-gift-badge[hidden]{display:none!important}
+.cat-found-gift,.cat-resident-friends,.cat-gift-collection{margin:12px 0;padding:11px;border:1px solid #bda37a55;background:#ffffff07}.cat-found-gift{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:10px;align-items:center}.cat-found-gift-copy{display:flex;flex-direction:column;gap:3px}.cat-found-gift-copy small,.cat-friend-row,.cat-gift-cell small{font-size:11px;color:#cbbda7}.cat-gift-visual{width:36px;height:36px;display:grid;place-items:center;object-fit:contain;font-size:26px}.cat-gift-claim{white-space:nowrap}.cat-subheading{display:block;margin-bottom:8px;font-size:12px;color:#d5b476}.cat-friend-row{display:flex;justify-content:space-between;gap:12px;padding:5px 0;border-top:1px solid #ffffff12}.cat-friend-row:first-of-type{border-top:0}.cat-gift-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.cat-gift-cell{min-width:0;padding:6px 2px;text-align:center;border:1px solid #ffffff18;background:#ffffff06}.cat-gift-cell .cat-gift-visual{margin:0 auto}.cat-gift-cell small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cat-gift-cell.is-unknown{opacity:.38;filter:grayscale(1)}
+body.light-mode .cat-found-gift,body.light-mode .cat-resident-friends,body.light-mode .cat-gift-collection{background:#fffaf2;border-color:#cdb995}body.light-mode .cat-found-gift-copy small,body.light-mode .cat-friend-row,body.light-mode .cat-gift-cell small{color:#665744}
+@media(max-width:700px){.cat-found-gift{grid-template-columns:36px minmax(0,1fr)}.cat-found-gift .cat-gift-claim{grid-column:1/-1}.cat-gift-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* 도감의 스크롤 영역을 3열로 분리: 큰 고양이 그림은 가운데 고정, 양쪽만 독립 스크롤. */
+#village-cats-dialog{overflow:hidden;}
+#village-cats-dialog #cats-content.cat-content{flex:1 1 auto;min-height:0;overflow:hidden;display:flex;flex-direction:column;}
+#village-cats-dialog #cats-content .cat-book-shell{
+  display:grid;grid-template-columns:150px minmax(0,1fr);gap:14px;
+  flex:1 1 auto;min-height:0;height:100%;width:100%;margin-top:8px;align-items:stretch;overflow:hidden;
+}
+#village-cats-dialog .cat-book-gallery{min-height:0;max-height:none;height:100%;overflow-y:auto;overscroll-behavior:contain;}
+#village-cats-dialog .cat-book-detail{min-width:0;min-height:0;height:100%;overflow:hidden;}
+#village-cats-dialog .cat-detail-layout{
+  gap:18px;
+  width:100%;overflow:hidden;
+}
+#village-cats-dialog .cat-detail-media{
+  display:grid;justify-self:stretch;
+  padding:0;
+}
+#village-cats-dialog .cat-detail-media img{display:block;}
+#village-cats-dialog .cat-detail-info{
+  box-sizing:border-box;min-width:0;
+  align-self:stretch;padding:2px 3px 12px 0;
+}
+#village-cats-dialog .cat-book-gallery,#village-cats-dialog .cat-detail-info{scrollbar-width:none;-ms-overflow-style:none;}
+#village-cats-dialog .cat-book-gallery::-webkit-scrollbar,#village-cats-dialog .cat-detail-info::-webkit-scrollbar{display:none;width:0;height:0;}
+@media(max-width:700px){
+  #village-cats-dialog #cats-content .cat-book-shell{grid-template-columns:114px minmax(0,1fr);gap:8px;}
+  #village-cats-dialog .cat-detail-layout{gap:8px;}
+  #village-cats-dialog .cat-detail-media{height:100%;min-height:0;}
+  #village-cats-dialog .cat-detail-media img{max-width:100%;}
+  #village-cats-dialog .cat-detail-emoji{font-size:clamp(64px,14vw,120px);}
+}
+
+/* 밥그릇을 누르면 열리는 사료 종류 선택 메뉴 */
+.cat-feed-chooser{position:fixed;z-index:4400;display:flex;flex-direction:column;gap:5px;width:168px;max-width:calc(100vw - 16px);padding:9px;background:linear-gradient(145deg,#282828,#121212);border:1px solid #bda37a8c;color:#f2ede4;box-shadow:0 10px 28px #0009;font-family:inherit;font-size:12px}
+.cat-feed-chooser[hidden]{display:none!important}
+.cat-feed-chooser strong{font-size:12px;margin-bottom:3px}
+.cat-feed-choice{padding:7px;border:1px solid #bda37a66;background:#ffffff10;color:inherit;text-align:left;cursor:pointer;font:inherit}
+.cat-feed-choice:disabled{opacity:.45;cursor:default}
+body.light-mode .cat-feed-chooser{background:#faf7f2;color:#30281c}
+body.light-mode .cat-feed-choice{background:#f0e7d9;color:#30281c}
+
+/* 고양이 도감 상세: 상단 정보 2열, 그 아래 고정된 고양이와 독립 스크롤 콘텐츠 */
+#village-cats-dialog .cat-detail-layout{
+  display:grid;
+  grid-template-columns:minmax(150px,210px) minmax(0,1fr);
+  grid-template-rows:auto minmax(0,1fr);
+  column-gap:18px;
+  row-gap:14px;
+  height:100%;
+  min-height:0;
+  align-items:stretch;
+}
+#village-cats-dialog .cat-detail-overview{
+  grid-column:1 / -1;
+  display:grid;
+  grid-template-columns:minmax(150px,210px) minmax(0,1fr);
+  column-gap:18px;
+  align-items:start;
+  min-width:0;
+}
+#village-cats-dialog .cat-detail-identity,
+#village-cats-dialog .cat-detail-overview-side{min-width:0;display:flex;flex-direction:column;gap:5px;}
+#village-cats-dialog .cat-detail-overview .cat-name{margin:0;font-size:22px;}
+#village-cats-dialog .cat-detail-overview .cat-detail-progress{margin:0;}
+#village-cats-dialog .cat-detail-overview .cat-muted{margin:0;}
+#village-cats-dialog .cat-detail-overview-side .cat-resident-friends{margin-top:9px;}
+#village-cats-dialog .cat-detail-media{
+  grid-column:1;
+  grid-row:2;
+  position:relative;
+  height:100%;
+  min-height:0;
+  place-items:center;
+  align-self:stretch;
+  overflow:hidden;
+}
+#village-cats-dialog .cat-detail-media img{max-width:100%;max-height:min(255px,90%);object-fit:contain;}
+#village-cats-dialog .cat-detail-info{
+  grid-column:2;
+  grid-row:2;
+  min-height:0;
+  height:100%;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+}
+@media(max-width:700px){
+ #village-cats-dialog .cat-detail-layout{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(110px,30%) minmax(0,1fr);row-gap:8px;}
+ #village-cats-dialog .cat-detail-overview{grid-column:1;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:8px;}
+ #village-cats-dialog .cat-detail-overview .cat-name{font-size:17px;}
+ #village-cats-dialog .cat-detail-overview .cat-detail-progress{font-size:13px;}
+ #village-cats-dialog .cat-detail-media{grid-column:1;grid-row:2;}
+ #village-cats-dialog .cat-detail-info{grid-column:1;grid-row:3;}
+ #village-cats-dialog .cat-detail-media img{max-height:100%;}
+}
+
+/* 발견한 선물: 기존 이미지 크기는 유지하고 이름은 마우스 오버 시 흰색 오버레이로 표시 */
+#village-cats-dialog .cat-gift-cell{
+  position:relative;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  isolation:isolate;
+  min-height:55px;
+}
+#village-cats-dialog .cat-gift-cell .cat-gift-visual{position:relative;z-index:0;}
+#village-cats-dialog .cat-gift-cell::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:rgba(0,0,0,.76);
+  opacity:0;
+  transition:opacity .16s ease;
+  pointer-events:none;
+}
+#village-cats-dialog .cat-gift-cell .cat-gift-hover-name{
+  position:absolute;
+  inset:0;
+  z-index:2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:3px;
+  box-sizing:border-box;
+  color:#fff!important;
+  font-size:10px;
+  font-weight:700;
+  line-height:1.35;
+  text-align:center;
+  overflow-wrap:anywhere;
+  opacity:0;
+  transition:opacity .16s ease;
+  pointer-events:none;
+}
+#village-cats-dialog .cat-gift-cell:hover::after,
+#village-cats-dialog .cat-gift-cell:focus-visible::after,
+#village-cats-dialog .cat-gift-cell:focus::after,
+#village-cats-dialog .cat-gift-cell:hover .cat-gift-hover-name,
+#village-cats-dialog .cat-gift-cell:focus-visible .cat-gift-hover-name,
+#village-cats-dialog .cat-gift-cell:focus .cat-gift-hover-name{opacity:1;}
+
+/* 고양이의 짧은 만남: 주민 UI 및 기존 대사 말풍선과 독립적인 연출 */
+#main-area .cat-meeting-bubble{position:absolute;z-index:35;transform:translate(-50%,-100%);pointer-events:none;display:grid;place-items:center;min-width:33px;height:34px;padding:3px 7px;border-radius:13px;background:#fff;color:#171717;box-shadow:0 2px 8px #0006;font-family:inherit;font-size:21px;line-height:1;white-space:nowrap}
+#main-area .cat-meeting-bubble::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:6px solid transparent;border-top-color:#fff}

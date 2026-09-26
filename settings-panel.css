@@ -1,0 +1,228 @@
+/* 상단 버튼 + 설정 팝업만 수정. 다른 게임 메뉴의 폰트, 레이아웃, 색상은 변경하지 않음. */
+#top-bar #top-right.top-utility-controls{
+  display:flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:6px!important;
+  flex:0 1 auto!important;
+  min-width:0!important;
+}
+#top-bar #top-right.top-utility-controls > button{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  flex:0 0 auto!important;
+  min-width:0!important;
+  height:34px!important;
+  padding:0 10px!important;
+  font-family:inherit!important;
+  font-size:12px!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+  box-sizing:border-box!important;
+  border-radius:4px!important;
+}
+#top-bar #top-right.top-utility-controls > button > .material-symbols-outlined{
+  position:static!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:19px!important;
+  min-width:19px!important;
+  height:19px!important;
+  min-height:19px!important;
+  flex:0 0 19px!important;
+  font-family:'Material Symbols Outlined'!important;
+  font-size:19px!important;
+  font-weight:400!important;
+  line-height:1!important;
+  letter-spacing:normal!important;
+  font-style:normal!important;
+  font-feature-settings:'liga'!important;
+  font-variation-settings:'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24!important;
+  overflow:visible!important;
+  white-space:nowrap!important;
+  filter:none!important;
+  -webkit-mask:none!important;
+  mask:none!important;
+}
+#top-bar #top-right.top-utility-controls > button > .material-symbols-outlined::before{
+  content:none!important;
+  display:none!important;
+}
+#top-bar #top-right.top-utility-controls > button .utility-label{
+  display:inline!important;
+  font-family:inherit!important;
+  font-size:12px!important;
+  line-height:1.2!important;
+  letter-spacing:0!important;
+  white-space:nowrap!important;
+}
+#top-bar #top-right.top-utility-controls > button[aria-pressed="true"]{
+  border-color:#bda37a!important;
+}
+#top-bar #top-right.top-utility-controls > button:focus-visible{
+  outline:2px solid #bda37a!important;
+  outline-offset:2px!important;
+}
+@media(max-width:900px){
+  #top-bar #top-right.top-utility-controls{gap:4px!important;}
+  #top-bar #top-right.top-utility-controls > button{
+    width:34px!important;
+    min-width:34px!important;
+    height:34px!important;
+    padding:0!important;
+    gap:0!important;
+  }
+  #top-bar #top-right.top-utility-controls > button .utility-label{display:none!important;}
+}
+@media(max-width:390px){
+  #top-bar #top-right.top-utility-controls > button{width:30px!important;min-width:30px!important;height:30px!important;}
+  #top-bar #top-right.top-utility-controls > button > .material-symbols-outlined{font-size:18px!important;}
+  #top-left .brand-subtitle{display:none!important;}
+  #top-bar #top-right.top-utility-controls{gap:3px!important;}
+}
+
+/* 기존 데이터 이동 팝업을 재사용하여 일반/백업 탭을 한곳에 표시 */
+#save-transfer-dialog{
+  width:min(94vw,540px);
+  max-width:calc(100vw - 16px);
+  max-height:min(85dvh,750px);
+}
+#save-transfer-dialog .save-transfer-heading{
+  position:sticky;
+  top:0;
+  margin:0;
+  z-index:2;
+}
+#save-transfer-dialog .settings-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+  padding:12px 16px 0;
+  background:linear-gradient(145deg,#282828,#121212);
+}
+#save-transfer-dialog .settings-tabs button{
+  min-width:0;
+  padding:9px 10px;
+  font:inherit;
+  font-size:13px;
+  color:#c6c9c9;
+  background:#2a2a2a;
+  border:1px solid #bda37a55;
+  border-radius:3px 3px 0 0;
+  cursor:pointer;
+}
+#save-transfer-dialog .settings-tabs button.is-active{
+  color:#f4f1ea;
+  background:#333333;
+  border-color:#bda37a;
+  box-shadow:inset 0 -2px #bda37a;
+}
+#save-transfer-dialog .settings-tabs button:focus-visible,
+#save-transfer-dialog .settings-panel button:focus-visible{
+  outline:2px solid #bda37a;
+  outline-offset:2px;
+}
+#save-transfer-dialog .settings-panel{
+  padding:16px;
+  display:grid;
+  gap:14px;
+  font-size:13px;
+  line-height:1.65;
+}
+#save-transfer-dialog .settings-panel[hidden]{display:none!important;}
+#save-transfer-dialog .settings-card{
+  display:grid;
+  gap:9px;
+  padding:14px;
+  border:1px solid #bda37a60;
+  background:#1f1f1f;
+}
+#save-transfer-dialog .settings-card strong{color:#efe1bd;font-size:14px;}
+#save-transfer-dialog .settings-card p{margin:0;color:#c5c7c9;}
+#save-transfer-dialog .settings-row{display:flex;align-items:center;justify-content:space-between;gap:14px;}
+#save-transfer-dialog .settings-row > div{min-width:0;}
+#save-transfer-dialog .settings-row button{
+  flex:0 0 auto;
+  padding:9px 11px;
+  min-width:110px;
+  border:1px solid #bda37a88;
+  border-radius:3px;
+  color:#f4f1ea;
+  background:#2a2a2a;
+  font:inherit;
+  font-weight:700;
+  cursor:pointer;
+}
+#save-transfer-dialog .settings-row button[aria-pressed="true"]{background:#493f32;border-color:#cba66f;}
+#save-transfer-dialog .settings-status{font-size:12px;color:#d4bd96!important;}
+#save-transfer-dialog .settings-danger{margin-top:5px;}
+#save-transfer-dialog .settings-danger #settings-reset-all{
+  width:100%;
+  min-height:38px;
+  font:inherit;
+  font-size:13px;
+  font-weight:700;
+  border:1px solid #bda37a88;
+  color:#ffe1c7;
+  background:#4a3030;
+  border-radius:3px;
+  cursor:pointer;
+}
+#save-transfer-dialog .settings-danger #settings-reset-all:hover{background:#634040;}
+#save-transfer-dialog .settings-row button:hover{background:#333333;}
+body.light-mode #save-transfer-dialog .settings-tabs{background:#faf7f2;}
+body.light-mode #save-transfer-dialog .settings-tabs button{background:#f0e9dd;color:#594f41;border-color:#cab898;}
+body.light-mode #save-transfer-dialog .settings-tabs button.is-active{background:#e6d8c1;color:#30281c;border-color:#a88c60;}
+body.light-mode #save-transfer-dialog .settings-card{background:#f3ece0;border-color:#d6c4a6;}
+body.light-mode #save-transfer-dialog .settings-card strong{color:#6f5937;}
+body.light-mode #save-transfer-dialog .settings-card p{color:#64594d;}
+body.light-mode #save-transfer-dialog .settings-row button{background:#e6d9c5;color:#30281c;border-color:#b99b6c;}
+body.light-mode #save-transfer-dialog .settings-row button[aria-pressed="true"]{background:#c6b18f;}
+body.light-mode #save-transfer-dialog .settings-status{color:#785b2b!important;}
+body.light-mode #save-transfer-dialog .settings-danger #settings-reset-all{background:#eedbd6;color:#69372d;border-color:#b98378;}
+body.light-mode #save-transfer-dialog .settings-danger #settings-reset-all:hover{background:#e4c8c0;}
+@media(max-width:540px){
+  #save-transfer-dialog .settings-row{align-items:stretch;flex-direction:column;}
+  #save-transfer-dialog .settings-row button{width:100%;}
+  #save-transfer-dialog .settings-panel{padding:12px;}
+}
+
+/* 테마 버튼은 텍스트가 없는 아이콘 버튼으로 고정합니다. */
+#top-bar #top-right.top-utility-controls > #theme-toggle {
+  flex:0 0 34px!important;
+  width:34px!important;
+  min-width:34px!important;
+  max-width:34px!important;
+  padding:0!important;
+  gap:0!important;
+}
+#top-bar #top-right.top-utility-controls > #theme-toggle .utility-label {display:none!important;}
+/* 기존 가공소 08 자리에서 보유 동전을 보여줍니다. */
+#right-area .workshop-panel-heading .workshop-coin-wallet {
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:flex-end!important;
+  gap:4px;
+  flex:0 1 auto;
+  min-width:0;
+  max-width:65%;
+  white-space:nowrap;
+  font-variant-numeric:tabular-nums;
+  font-size:12px;
+  font-weight:700;
+  color:inherit;
+}
+#right-area .workshop-panel-heading .workshop-coin-wallet .coin-amount {
+  min-width:0;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+@media(max-width:700px){
+  #right-area .workshop-panel-heading .workshop-coin-wallet {display:inline-flex!important;font-size:11px;max-width:66%;}
+  #top-bar #top-right.top-utility-controls > #theme-toggle {
+    width:30px!important;min-width:30px!important;max-width:30px!important;flex-basis:30px!important;
+  }
+}

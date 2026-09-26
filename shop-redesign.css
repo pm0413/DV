@@ -1,0 +1,455 @@
+/* 상점 리디자인 */
+#shop-dialog.shop-dialog{
+  width:min(810px, calc(100vw - 24px)) !important;
+  height:min(690px, calc(100dvh - 22px)) !important;
+  max-height:calc(100dvh - 22px) !important;
+  padding:24px 28px 28px !important;
+  overflow:auto !important;
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) auto !important;
+  grid-template-areas:
+    'heading heading'
+    'tabs wallet'
+    'products products'
+    'status status' !important;
+  gap:16px 18px !important;
+  align-items:start !important;
+  align-content:start !important;
+}
+#shop-dialog .shop-heading{
+  grid-area:heading !important;
+  padding-bottom:14px !important;
+  margin-bottom:0 !important;
+}
+#shop-dialog .shop-category-tabs{
+  grid-area:tabs !important;
+  display:flex !important;
+  align-items:center !important;
+  gap:8px !important;
+  margin:0 !important;
+}
+#shop-dialog .shop-category-tab{
+  
+  min-height:42px !important;
+  padding:0 18px !important;
+  border:1px solid rgba(154,127,80,.82) !important;
+  background:transparent !important;
+  color:#f2ede3 !important;
+  font:700 14px 'Paperozi', sans-serif !important;
+  cursor:pointer !important;
+}
+#shop-dialog .shop-category-tab.is-active,
+#shop-dialog .shop-category-tab[aria-selected="true"]{
+  background:#caa15e !important;
+  color:#1f2328 !important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.18) !important;
+}
+#shop-dialog .shop-wallet{
+  grid-area:wallet !important;
+  margin:0 !important;
+  justify-content:flex-end !important;
+  align-self:center !important;
+  color:#bca277 !important;
+  font-size:18px !important;
+}
+#shop-dialog .shop-wallet strong{
+  color:#d1b07b !important;
+  font-size:24px !important;
+}
+#shop-dialog #shop-products{
+  --shop-theme-direction:row;
+  --shop-theme-title-basis:120px;
+  --shop-theme-title-width:auto;
+  grid-area:products !important;
+  display:flex !important;
+  flex-direction:column !important;
+  gap:22px !important;
+  padding-top:18px !important;
+  border-top:1px solid rgba(154,127,80,.48) !important;
+}
+#shop-dialog .shop-theme-block{
+  display:flex !important;
+  flex-direction:var(--shop-theme-direction) !important;
+  align-items:flex-start !important;
+  gap:18px !important;
+}
+#shop-dialog .shop-theme-title{
+  flex:0 0 var(--shop-theme-title-basis) !important;
+  width:var(--shop-theme-title-width) !important;
+  margin:0 !important;
+  padding-top:6px !important;
+  color:#f0f0f0 !important;
+  font:700 24px/1 'TwaySky','Paperozi',sans-serif !important;
+  letter-spacing:-.03em !important;
+  white-space:nowrap !important;
+  word-break:keep-all !important;
+}
+#shop-dialog .shop-theme-title--compact{
+  font-size:22px !important;
+}
+#shop-dialog .shop-theme-grid{
+  flex:1 1 auto !important;
+  display:grid !important;
+  grid-template-columns:repeat(auto-fill, minmax(84px, 84px)) !important;
+  gap:12px 16px !important;
+  justify-content:flex-start !important;
+  align-content:flex-start !important;
+  min-height:84px !important;
+  padding-top:4px !important;
+}
+#shop-dialog .shop-theme-empty{
+  margin:6px 0 0 !important;
+  color:#8f8f8f !important;
+  font-size:14px !important;
+}
+#shop-dialog .shop-tile{
+  appearance:none !important;
+  display:grid !important;
+  place-items:center !important;
+  width:84px !important;
+  height:84px !important;
+  padding:0 !important;
+  background:transparent !important;
+  border:0 !important;
+  cursor:pointer !important;
+}
+#shop-dialog .shop-tile-frame{
+  position:relative !important;
+  display:grid !important;
+  place-items:center !important;
+  width:84px !important;
+  height:84px !important;
+  border:2px solid rgba(154,127,80,.82) !important;
+  background:transparent !important;
+  transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease !important;
+}
+#shop-dialog .shop-tile:hover .shop-tile-frame,
+#shop-dialog .shop-tile:focus-visible .shop-tile-frame{
+  transform:translateY(-2px) !important;
+  border-color:#b79862 !important;
+  box-shadow:0 10px 20px rgba(0,0,0,.24) !important;
+}
+#shop-dialog .shop-tile img{
+  display:block !important;
+  width:74px !important;
+  height:74px !important;
+  object-fit:contain !important;
+  image-rendering:auto !important;
+}
+#shop-dialog .shop-feed-quantity{
+  position:absolute !important;
+  right:6px !important;
+  bottom:4px !important;
+  min-width:24px !important;
+  padding:0 4px !important;
+  border-radius:10px !important;
+  background:rgba(0,0,0,.58) !important;
+  color:#f3efe6 !important;
+  font:700 11px/18px 'Paperozi',sans-serif !important;
+  text-align:center !important;
+}
+#shop-dialog #shop-status{
+  grid-area:status !important;
+  margin-top:0 !important;
+  min-height:18px !important;
+  color:#bdbdbd !important;
+}
+
+/* 상품 팝업 */
+.shop-item-backdrop[hidden], .shop-item-dialog[hidden]{display:none !important;}
+.shop-item-backdrop{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:3201 !important;
+  background:rgba(5,8,13,.48) !important;
+}
+.shop-item-dialog{
+  position:fixed !important;
+  left:50% !important;
+  top:50% !important;
+  transform:translate(-50%, -50%) !important;
+  z-index:3202 !important;
+  width:min(560px, calc(100vw - 32px)) !important;
+  padding:26px !important;
+  border:1px solid rgba(235,235,235,.2) !important;
+  background:rgba(15,20,27,.96) !important;
+  box-shadow:0 24px 56px rgba(0,0,0,.38) !important;
+  color:#f4f4f4 !important;
+  display:grid !important;
+  grid-template-columns:240px minmax(0,1fr) !important;
+  gap:22px !important;
+}
+.shop-item-close{
+  position:absolute !important;
+  right:14px !important;
+  top:14px !important;
+  width:36px !important;
+  height:36px !important;
+  border:1px solid rgba(245,245,245,.35) !important;
+  background:rgba(255,255,255,.06) !important;
+  color:#fff !important;
+  font:400 24px/1 sans-serif !important;
+  cursor:pointer !important;
+}
+.shop-item-preview{
+  display:grid !important;
+  place-items:center !important;
+  min-height:240px !important;
+  border:1px solid rgba(154,127,80,.68) !important;
+  background:rgba(255,255,255,.03) !important;
+}
+.shop-item-preview img{
+  max-width:220px !important;
+  max-height:220px !important;
+  width:auto !important;
+  height:auto !important;
+  object-fit:contain !important;
+}
+.shop-item-copy{
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  min-width:0 !important;
+}
+.shop-item-theme{
+  margin:0 0 6px !important;
+  color:#9f9f9f !important;
+  font-size:12px !important;
+  letter-spacing:.16em !important;
+  text-transform:uppercase !important;
+}
+.shop-item-copy h3{
+  margin:0 !important;
+  font-size:34px !important;
+  line-height:1.15 !important;
+  color:#fff !important;
+}
+.shop-item-comfort{
+  margin:10px 0 18px !important;
+  color:#c8c8c8 !important;
+  font-size:14px !important;
+}
+.shop-item-quantity{
+  display:flex !important;
+  flex-direction:column !important;
+  gap:7px !important;
+  margin:0 0 16px !important;
+}
+.shop-item-quantity-label{
+  color:#bca277 !important;
+  font-size:12px !important;
+}
+.shop-item-stepper{
+  display:inline-flex !important;
+  align-items:center !important;
+  gap:8px !important;
+}
+.shop-stepper-button{
+  width:36px !important;
+  height:36px !important;
+  border:1px solid rgba(154,127,80,.78) !important;
+  background:transparent !important;
+  color:#f0e2c3 !important;
+  font:700 20px/1 sans-serif !important;
+  cursor:pointer !important;
+}
+.shop-qty-input{
+  width:74px !important;
+  height:36px !important;
+  padding:0 10px !important;
+  border:1px solid rgba(154,127,80,.78) !important;
+  background:rgba(255,255,255,.04) !important;
+  color:#fff !important;
+  font:700 16px 'Paperozi',sans-serif !important;
+  text-align:center !important;
+}
+.shop-item-actions{
+  display:flex !important;
+  flex-wrap:wrap !important;
+  gap:10px !important;
+}
+.shop-price-button,
+.shop-buy-button{
+  min-width:122px !important;
+  min-height:42px !important;
+  padding:10px 14px !important;
+  border-radius:0 !important;
+  font:700 14px 'Paperozi', sans-serif !important;
+}
+.shop-price-button{
+  border:1px solid rgba(154,127,80,.75) !important;
+  background:rgba(154,127,80,.12) !important;
+  color:#d0b07a !important;
+}
+.shop-buy-button{
+  border:1px solid #f0f0f0 !important;
+  background:#f0f0f0 !important;
+  color:#1e1e1e !important;
+  cursor:pointer !important;
+}
+.shop-buy-button:disabled{
+  opacity:.5 !important;
+  cursor:not-allowed !important;
+}
+
+body.light-mode #shop-dialog .shop-wallet{color:#866741 !important;}
+body.light-mode #shop-dialog .shop-wallet strong{color:#7f613a !important;}
+body.light-mode #shop-dialog .shop-category-tab{color:#312a20 !important;border-color:rgba(154,127,80,.7) !important;}
+body.light-mode #shop-dialog .shop-category-tab.is-active,
+body.light-mode #shop-dialog .shop-category-tab[aria-selected="true"]{color:#211b13 !important;}
+body.light-mode #shop-dialog .shop-theme-title{color:#262626 !important;}
+body.light-mode #shop-dialog .shop-tile-frame{border-color:rgba(154,127,80,.7) !important;}
+body.light-mode #shop-dialog #shop-status{color:#666 !important;}
+body.light-mode .shop-item-dialog{background:rgba(249,249,249,.98) !important;color:#2a251e !important;border-color:rgba(30,30,30,.16) !important;}
+body.light-mode .shop-item-close{background:rgba(0,0,0,.03) !important;color:#333 !important;border-color:rgba(0,0,0,.18) !important;}
+body.light-mode .shop-item-copy h3{color:#1e1e1e !important;}
+body.light-mode .shop-item-theme,
+body.light-mode .shop-item-comfort{color:#666 !important;}
+body.light-mode .shop-item-preview{background:#fff !important;}
+body.light-mode .shop-stepper-button{color:#7d6240 !important;background:#fff !important;}
+body.light-mode .shop-qty-input{background:#fff !important;color:#2a2a2a !important;border-color:rgba(154,127,80,.7) !important;}
+body.light-mode .shop-price-button{background:rgba(154,127,80,.13) !important;color:#7d6240 !important;}
+body.light-mode .shop-buy-button{background:#252525 !important;border-color:#252525 !important;color:#fff !important;}
+
+@media (max-width: 680px){
+  #shop-dialog.shop-dialog{
+    padding:18px 20px 22px !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    grid-template-areas:'heading' 'wallet' 'tabs' 'products' 'status' !important;
+  }
+  #shop-dialog .shop-wallet{justify-content:flex-start !important;}
+  #shop-dialog .shop-theme-block{flex-direction:column !important;gap:12px !important;}
+  #shop-dialog .shop-theme-title{flex:0 0 auto !important;font-size:22px !important;padding-top:0 !important;}
+}
+@media (max-width: 680px){
+  #shop-dialog.shop-dialog{width:calc(100vw - 12px) !important;height:calc(100dvh - 12px) !important;max-height:calc(100dvh - 12px) !important;}
+  .shop-item-dialog{grid-template-columns:minmax(0,1fr) !important;width:min(94vw, 540px) !important;}
+  .shop-item-preview{min-height:180px !important;}
+  .shop-item-preview img{max-height:170px !important;}
+}
+
+/* 창 닫기: 동일한 !important display:grid보다 [hidden]이 우선하도록 지정합니다.
+   이 규칙이 없으면 버튼/배경을 클릭해 hidden이 설정되어도 상점이 남아 보입니다. */
+#shop-dialog.shop-dialog[hidden] {
+  display: none !important;
+}
+
+/* 가구 상품에는 사료 수량 조절기가 나타나지 않아야 합니다. */
+.shop-item-quantity[hidden] {
+  display: none !important;
+}
+
+/* 일반 가구 중 미구매 상품에만 검정 80% 오버레이를 적용합니다.
+   구매 완료 가구와 반려동물 상품은 원본 이미지 밝기를 유지합니다. */
+#shop-dialog #shop-products.shop-products--furniture .shop-tile-unowned .shop-tile-frame::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:rgba(0,0,0,.8);
+  pointer-events:none;
+  z-index:1;
+}
+#shop-dialog #shop-products.shop-products--furniture .shop-tile-owned .shop-tile-frame::after{
+  content:none!important;
+}
+#shop-dialog #shop-products.shop-products--furniture .shop-tile-owned{
+  opacity:1!important;
+}
+#shop-dialog #shop-products.shop-products--pets .shop-tile-frame::after{
+  content:none!important;
+}
+#shop-dialog #shop-products.shop-products--pets .shop-tile{
+  opacity:1!important;
+  cursor:pointer!important;
+}
+#shop-dialog #shop-products.shop-products--pets,
+#shop-dialog #shop-products.shop-products--materials{
+  --shop-theme-direction:column;
+  --shop-theme-title-basis:auto;
+  --shop-theme-title-width:100%;
+}
+#shop-dialog #shop-products.shop-products--pets .shop-theme-block,
+#shop-dialog #shop-products.shop-products--materials .shop-theme-block{
+  width:100% !important;
+  align-items:stretch !important;
+}
+#shop-dialog #shop-products.shop-products--pets .shop-theme-grid,
+#shop-dialog #shop-products.shop-products--materials .shop-theme-grid{
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  grid-template-columns:repeat(auto-fill, 84px) !important;
+  justify-content:flex-start !important;
+}
+
+/* 재료 탭 추가: 세 탭이 작은 화면에서도 한 줄에 들어가도록 최소폭을 유연하게 조정합니다. */
+#shop-dialog .shop-category-tabs{flex-wrap:wrap!important;}
+#shop-dialog .shop-category-tab{flex:1 1 96px!important;min-width:0!important;}
+#shop-dialog .shop-products--materials .shop-theme-grid{align-items:start!important;}
+
+
+/* 작은 화면 상점 정렬 보정: 섹션이 shrink-to-fit되어 상품이 1열로 무너지는 문제 수정 */
+@media (max-width: 680px){
+  #shop-dialog .shop-theme-block{
+    width:100% !important;
+    align-items:stretch !important;
+  }
+  #shop-dialog .shop-theme-title{
+    width:100% !important;
+    max-width:none !important;
+    line-height:1.18 !important;
+  }
+  #shop-dialog .shop-theme-grid{
+    width:100% !important;
+    max-width:100% !important;
+    min-width:0 !important;
+    grid-template-columns:repeat(auto-fill, 84px) !important;
+    justify-content:flex-start !important;
+  }
+}
+
+@media (max-width: 680px){
+  #shop-dialog.shop-dialog{
+    padding:14px 12px 18px !important;
+    gap:12px !important;
+  }
+  #shop-dialog .shop-category-tabs{
+    width:100% !important;
+    gap:6px !important;
+    flex-wrap:nowrap !important;
+  }
+  #shop-dialog .shop-category-tab{
+    flex:1 1 0 !important;
+    min-width:0 !important;
+    min-height:40px !important;
+    padding:0 8px !important;
+    font-size:13px !important;
+  }
+  #shop-dialog #shop-products{
+    gap:20px !important;
+    padding-top:14px !important;
+  }
+  #shop-dialog .shop-theme-block{
+    gap:9px !important;
+  }
+  #shop-dialog .shop-theme-title,
+  #shop-dialog .shop-theme-title--compact{
+    font-size:18px !important;
+    line-height:1.2 !important;
+    white-space:normal !important;
+  }
+  #shop-dialog .shop-theme-grid{
+    grid-template-columns:repeat(auto-fill, 76px) !important;
+    gap:10px !important;
+    min-height:76px !important;
+  }
+  #shop-dialog .shop-tile,
+  #shop-dialog .shop-tile-frame{
+    width:76px !important;
+    height:76px !important;
+  }
+  #shop-dialog .shop-tile img{
+    width:68px !important;
+    height:68px !important;
+  }
+}

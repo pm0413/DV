@@ -1,0 +1,85 @@
+/* 부엌: 가구 상점과 동일한 중앙 팝업 계열, 반원형 요리 타이밍 게임 */
+#kitchen-backdrop[hidden],#kitchen-dialog[hidden]{display:none!important}
+#kitchen-backdrop{position:fixed;inset:0;z-index:2850;background:rgba(8,13,19,.79)}
+#kitchen-dialog{position:fixed;z-index:2851;left:50%;top:50%;transform:translate(-50%,-50%);width:min(810px,calc(100vw - 24px));height:min(690px,calc(100dvh - 22px));max-height:calc(100dvh - 22px);overflow:auto;box-sizing:border-box;padding:24px 28px;background:linear-gradient(145deg,#282828,#121212);color:#f4f4f4;border:1px solid #8d795d78;border-radius:4px;box-shadow:0 25px 75px #000b;font-family:'Paperozi',sans-serif}
+#kitchen-dialog *,#kitchen-dialog *::before,#kitchen-dialog *::after{box-sizing:border-box}
+#kitchen-dialog button{font-family:inherit;cursor:pointer}
+#kitchen-dialog button:disabled{cursor:not-allowed;opacity:.45}
+.kitchen-heading{display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid #ffffff36;gap:12px}
+.kitchen-eyebrow{font-size:10px;letter-spacing:.2em;color:#bda37a}.kitchen-heading h2{font-size:24px;margin:5px 0 0}
+#kitchen-close{display:grid;place-items:center;width:36px;height:36px;background:#ffffff0c;color:inherit;border:1px solid #ffffff9a;border-radius:3px;font-size:28px;line-height:1}
+.kitchen-progress{display:flex;align-items:center;gap:20px;padding:18px 0}.kitchen-level{white-space:nowrap;font-size:19px;color:#d3b27e}.kitchen-level strong{font-size:29px}.kitchen-progress-body{flex:1;min-width:0}.kitchen-progress-note{display:flex;justify-content:space-between;font-size:12px;color:#b8babc;margin-bottom:8px}.kitchen-exp-track{height:9px;background:#0007;border:1px solid #a08255;border-radius:20px;overflow:hidden}.kitchen-exp-fill{height:100%;width:0;background:linear-gradient(90deg,#a67a49,#ffd093);transition:width .25s}
+.kitchen-content{display:grid;grid-template-columns: minmax(260px,340px) minmax(0,1fr);gap:22px}.kitchen-list{display:flex;flex-direction:column;gap:12px;min-width:0;max-height:450px;overflow:auto;padding-right:2px}.kitchen-level-group{border:1px solid #8a785e5a;background:#ffffff06}.kitchen-level-toggle{width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;padding:11px 12px;background:#a8875416;color:inherit;border:0;border-bottom:1px solid #8a785e40}.kitchen-level-toggle-copy{display:flex;flex-direction:column;gap:4px;min-width:0}.kitchen-level-toggle-copy strong{font-size:14px}.kitchen-level-toggle-copy small{font-size:11px;color:#bfaa89}.kitchen-level-toggle-arrow{font-size:16px;line-height:1;transition:transform .18s ease}.kitchen-level-group.is-collapsed .kitchen-level-toggle-arrow{transform:rotate(-90deg)}.kitchen-level-recipes{display:flex;flex-direction:column;gap:8px;padding:8px}.kitchen-level-recipes[hidden]{display:none!important}.kitchen-recipe{display:flex;align-items:center;gap:12px;text-align:left;background:#fff0;color:inherit;border:1px solid #8a785e64;padding:12px;min-height:72px}.kitchen-recipe.is-selected{border-color:#edc58c;background:#a8875420}.kitchen-recipe.is-locked{opacity:.55}.kitchen-recipe-emoji{display:grid;place-items:center;flex:0 0 46px;height:46px;background:#ffffff08;font-size:28px}.kitchen-recipe-emoji img{width:42px;height:42px;object-fit:contain}.kitchen-recipe-meta{min-width:0;display:flex;flex-direction:column;gap:6px}.kitchen-recipe-meta strong{font-size:15px}.kitchen-recipe-meta small{color:#bfaa89;font-size:11px}
+.kitchen-detail{min-width:0;background:#0002;border:1px solid #ffffff24;padding:16px;display:flex;flex-direction:column;gap:13px}.kitchen-dish-title{display:flex;align-items:center;gap:12px}.kitchen-dish-title .kitchen-dish-icon{display:grid;place-items:center;flex:0 0 52px;height:52px;background:#a0835333;font-size:30px}.kitchen-dish-icon img{width:48px;height:48px;object-fit:contain}.kitchen-dish-title h3{font-size:19px;margin:0 0 6px}.kitchen-dish-title p{font-size:12px;color:#c8b38f;margin:0}.kitchen-ingredients{display:flex;flex-wrap:wrap;gap:7px}.kitchen-ingredient{border:1px solid #ffffff35;padding:7px 9px;font-size:12px;color:#dedede}.kitchen-ingredient.is-short{color:#ffb6a5;border-color:#c97a6d}.kitchen-mastery-label{font-size:12px;color:#cbb388}.kitchen-mastery-track{display:flex;gap:7px}.kitchen-mastery-dot{height:12px;flex:1;border:1px solid #ae8a56;background:#0005}.kitchen-mastery-dot.is-earned{background:#efb66f}.kitchen-actions{display:flex;gap:9px;flex-wrap:wrap}.kitchen-actions button,#kitchen-stop,#kitchen-next{flex:1;border:1px solid #c2a276;color:#f9eddd;background:#9872432b;min-height:40px;padding:9px 12px;font-size:13px}.kitchen-actions button:not(:disabled):hover,#kitchen-stop:hover,#kitchen-next:hover{background:#ad864b77}.kitchen-help{margin:0;color:#9da6a9;font-size:11px;line-height:1.6}.kitchen-result{min-height:25px;font-size:13px;color:#f0c285}
+#kitchen-minigame[hidden],#kitchen-result-panel[hidden]{display:none!important}#kitchen-minigame{display:flex;flex-direction:column;align-items:center;gap:5px}.kitchen-arc{width:min(100%,480px);height:auto;max-height:260px;display:block}.kitchen-arc-outer{fill:#ffffff12;stroke:#e7e2d8;stroke-width:2}.kitchen-arc-inner{fill:#1f1f1f;stroke:#e7e2d8;stroke-width:2}.kitchen-target{fill:#fb8a59;opacity:.94}.kitchen-needle{stroke:#fff;stroke-width:4;stroke-linecap:round;filter:drop-shadow(0 1px 2px #000)}.kitchen-needle-dot{fill:#fff}.kitchen-arc-label{fill:#fff;font-size:16px;font-weight:700;letter-spacing:2px}.kitchen-game-label{font-size:13px;color:#dcc098}.kitchen-result-panel{text-align:center;padding:16px 10px}.kitchen-result-panel strong{display:block;font-size:27px;color:#efbd7d;margin-bottom:8px}.kitchen-result-panel p{font-size:14px;line-height:1.8}
+body.light-mode #kitchen-dialog{background:#f7f4ef;color:#26221d;border-color:#ab916c}body.light-mode #kitchen-dialog .kitchen-detail{background:#fff9;border-color:#aaa8a0}body.light-mode #kitchen-dialog .kitchen-level-group{background:#fff7;border-color:#c0b29a}body.light-mode #kitchen-dialog .kitchen-level-toggle{background:#efe4d4;border-bottom-color:#cbb9a0}body.light-mode #kitchen-dialog .kitchen-recipe{color:#26221d;background:#fff5}body.light-mode #kitchen-dialog .kitchen-recipe.is-selected{background:#f6e8d0}body.light-mode #kitchen-dialog .kitchen-ingredient{color:#292724;border-color:#aaa}body.light-mode #kitchen-dialog .kitchen-arc-inner{fill:#f7f4ef}body.light-mode #kitchen-dialog .kitchen-arc-outer{fill:#9b8a7750}body.light-mode #kitchen-dialog .kitchen-result{color:#8e581c}body.light-mode #kitchen-dialog .kitchen-actions button,body.light-mode #kitchen-dialog #kitchen-stop,body.light-mode #kitchen-dialog #kitchen-next{background:#c79a5c;color:#4f3416;border-color:#a77634;font-weight:700}body.light-mode #kitchen-dialog .kitchen-actions button:not(:disabled):hover,body.light-mode #kitchen-dialog #kitchen-stop:hover,body.light-mode #kitchen-dialog #kitchen-next:hover{background:#b78543;color:#fff4e6}body.light-mode #kitchen-dialog .kitchen-actions button:disabled,body.light-mode #kitchen-dialog #kitchen-stop:disabled,body.light-mode #kitchen-dialog #kitchen-next:disabled{opacity:1;background:#d7c3a2;color:#8c7755;border-color:#bea57e}body.light-mode #kitchen-dialog .kitchen-game-label,body.light-mode #kitchen-dialog .kitchen-help{color:#86653b}body.light-mode #kitchen-dialog .kitchen-arc-label{fill:#fffaf1}
+@media(max-width:740px){#kitchen-dialog{width:calc(100vw - 12px);height:calc(100dvh - 12px);max-height:calc(100dvh - 12px);padding:16px}.kitchen-content{grid-template-columns:1fr}.kitchen-list{max-height:185px}.kitchen-progress{gap:9px}.kitchen-level strong{font-size:23px}}
+
+/* 요리 완성: 상세 카드 안에서만 1.6초 연출, 화면 전체를 가리지 않음 */
+#kitchen-dialog .kitchen-detail{position:relative;isolation:isolate;overflow:hidden;}
+#kitchen-dialog .kitchen-complete[hidden]{display:none!important;}
+#kitchen-dialog .kitchen-complete{
+  position:absolute;inset:0;z-index:12;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:7px;min-height:0;padding:18px;
+  text-align:center;overflow:hidden;pointer-events:none;
+  background:rgba(22,27,32,.92);color:#f7ecd9;
+  animation:kitchen-complete-enter 1.65s ease both;
+}
+#kitchen-dialog .kitchen-complete-glow{
+  position:absolute;width:190px;height:190px;top:50%;left:50%;
+  transform:translate(-50%,-53%);border-radius:50%;
+  background:radial-gradient(circle,rgba(214,170,99,.27),rgba(214,170,99,0) 69%);
+  animation:kitchen-complete-glow 1.65s ease-out both;
+}
+#kitchen-dialog .kitchen-complete-badge{
+  position:relative;z-index:1;border:1px solid #bd965b;border-radius:3px;
+  background:#ead3ae;color:#604524;padding:5px 18px;
+  font-size:16px;font-weight:700;line-height:1.3;letter-spacing:.06em;
+  animation:kitchen-complete-pop .43s cubic-bezier(.2,1.35,.35,1) both;
+}
+#kitchen-dialog .kitchen-complete-dish{
+  position:relative;z-index:1;display:grid;place-items:center;
+  width:104px;height:104px;flex:0 0 auto;
+  filter:drop-shadow(0 8px 10px rgba(0,0,0,.3));
+  animation:kitchen-complete-rise .66s cubic-bezier(.2,.85,.25,1) both;
+}
+#kitchen-dialog .kitchen-complete-dish img{width:100%;height:100%;object-fit:contain;}
+#kitchen-dialog .kitchen-complete-dish:not(:has(img)){font-size:64px;line-height:1;}
+#kitchen-dialog .kitchen-complete-name{position:relative;z-index:1;font-size:15px;line-height:1.4;}
+#kitchen-dialog .kitchen-complete-reward{position:relative;z-index:1;color:#e5c28c;font-size:12px;line-height:1.5;}
+#kitchen-dialog .kitchen-complete-spark{
+  position:absolute;z-index:1;color:#e8c180;font-size:18px;
+  animation:kitchen-complete-sparkle 1.1s ease-in-out both;
+}
+#kitchen-dialog .kitchen-complete-spark-a{top:23%;left:24%;}
+#kitchen-dialog .kitchen-complete-spark-b{top:35%;right:22%;animation-delay:.14s;}
+#kitchen-dialog .kitchen-complete-spark-c{bottom:22%;left:28%;animation-delay:.25s;}
+body.light-mode #kitchen-dialog .kitchen-complete{background:rgba(249,245,237,.96);color:#47331d;}
+body.light-mode #kitchen-dialog .kitchen-complete-reward{color:#8b622b;}
+body.light-mode #kitchen-dialog .kitchen-complete-badge{background:#bd8f4e;color:#fffaf2;border-color:#a97c3e;}
+@keyframes kitchen-complete-enter{
+  0%{opacity:0;} 12%{opacity:1;} 82%{opacity:1;} 100%{opacity:0;}
+}
+@keyframes kitchen-complete-pop{0%{opacity:0;transform:scale(.88);} 55%{opacity:1;transform:scale(1.04);} 100%{opacity:1;transform:scale(1);}}
+@keyframes kitchen-complete-rise{0%{opacity:0;transform:translateY(22px) scale(.78);} 100%{opacity:1;transform:translateY(0) scale(1);}}
+@keyframes kitchen-complete-glow{0%{opacity:0;transform:translate(-50%,-53%) scale(.68);} 40%{opacity:1;} 100%{opacity:.6;transform:translate(-50%,-53%) scale(1.12);}}
+@keyframes kitchen-complete-sparkle{0%{opacity:0;transform:scale(.65);} 40%{opacity:.9;transform:scale(1.1);} 100%{opacity:0;transform:scale(.75);}}
+@media(prefers-reduced-motion:reduce){
+  #kitchen-dialog .kitchen-complete,#kitchen-dialog .kitchen-complete *{animation:none!important;}
+}
+@media(max-width:740px){
+  #kitchen-dialog .kitchen-complete{padding:12px;gap:4px;}
+  #kitchen-dialog .kitchen-complete-dish{width:76px;height:76px;}
+  #kitchen-dialog .kitchen-complete-badge{font-size:14px;padding:4px 13px;}
+}
+
+/* 레시피 재료 충족 시 이름 옆 작은 금색 체크: 다크·화이트 동일한 테마 포인트 */
+#kitchen-dialog .kitchen-recipe-title-row{display:flex;align-items:center;gap:5px;min-width:0;max-width:100%;}
+#kitchen-dialog .kitchen-recipe-title-row strong{min-width:0;overflow-wrap:anywhere;}
+#kitchen-dialog .kitchen-recipe-ready{display:inline-block;flex:0 0 auto;font-family:'Material Symbols Outlined'!important;font-size:16px!important;line-height:1!important;font-weight:normal!important;color:#caa15e!important;font-variation-settings:'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24;white-space:nowrap;}
+body.light-mode #kitchen-dialog .kitchen-recipe-ready{color:#a77634!important;}
+
+/* 자동 요리를 해금한 레시피에서도 미니게임을 선택할 수 있습니다. */
+#kitchen-dialog .kitchen-actions.has-auto{flex-direction:column;}
+#kitchen-dialog .kitchen-actions.has-auto #kitchen-auto{order:0;flex:none;width:100%;}
+#kitchen-dialog .kitchen-actions.has-auto #kitchen-manual{order:1;flex:none;width:100%;}

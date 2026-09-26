@@ -1,0 +1,35 @@
+/* 품목별 제작 버튼은 고정, 나머지 영역의 슬롯은 중앙 정렬합니다. */
+#workshop-list .workshop-content > .workshop-production { display:flex!important; align-items:center!important; min-width:0!important; }
+#workshop-list .workshop-content > .workshop-production > .nakwon-adaptive-navigator {
+  display:flex!important; flex:1 1 0!important; width:0!important; max-width:none!important;
+  min-width:0!important; margin:0!important; padding:0!important; overflow:visible!important;
+}
+#workshop-list .workshop-production .nakwon-adaptive-viewport {
+  box-sizing:border-box!important; display:flex!important; flex:1 1 0!important;
+  min-width:0!important; width:100%!important; max-width:100%!important;
+  padding:0!important; margin:0!important; align-items:center!important;
+  justify-content:center!important; overflow:visible!important; scroll-behavior:auto!important;
+}
+#workshop-list .workshop-production .nakwon-adaptive-viewport > [id$="-slots"] {
+  box-sizing:content-box!important; display:grid!important;
+  grid-template-columns:repeat(var(--nakwon-visible-columns, 1), 32px)!important;
+  grid-auto-rows:32px!important; column-gap:4px!important; row-gap:4px!important;
+  width:max-content!important; min-width:0!important; max-width:100%!important;
+  margin:0 auto!important; justify-content:center!important; justify-self:center!important;
+  overflow:visible!important;
+}
+#workshop-list .workshop-production .nakwon-adaptive-viewport > [id$="-slots"] > .chopper-slot[hidden] {
+  display:none!important;
+}
+/* 슬롯은 절대 다음 줄로 내려가지 않습니다. 폭이 부족한 칸은 JS가 오른쪽부터 숨깁니다. */
+
+/* Newly added recipes follow the existing unfinished-item appearance. */
+#workshop-list .chopper-slot.is-processing > img,
+#workshop-list .chopper-slot.is-processing > span > img {
+  filter: brightness(.28) grayscale(.35) !important;
+  opacity: .78 !important;
+}
+#workshop-list .chopper-slot:not(.is-processing) .finished-item-button img {
+  filter: none !important;
+  opacity: 1 !important;
+}

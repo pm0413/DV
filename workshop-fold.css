@@ -1,0 +1,236 @@
+/* 절임통과 기존 가공소 공통 UI: 제목 우측 접기 / 본문 첫칸 제작 버튼 */
+#workshop-list .workshop-card { min-width:0; }
+#workshop-list .workshop-heading {display:flex;align-items:center;justify-content:space-between;gap:6px;flex-wrap:nowrap;}
+#workshop-list .workshop-heading .workshop-fold {
+ margin-left:auto;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;
+ min-width:27px;min-height:24px;padding:1px 6px;border:1px solid #9a7f5080;border-radius:2px;
+ background:#ffffff08;color:#d7c29b;cursor:pointer;font:700 16px/1 sans-serif;
+}
+#workshop-list .workshop-fold:hover {background:#b49b7933;}
+#workshop-list .workshop-fold[aria-expanded="false"] .workshop-fold-arrow {display:inline-block;transform:rotate(-90deg);}
+#workshop-list .workshop-card.is-folded .workshop-heading {padding-bottom:0;margin-bottom:0;border-bottom:0;}
+#workshop-list .workshop-content[hidden] {display:none!important;}
+#workshop-list .workshop-production {display:flex;align-items:center;justify-content:flex-start;gap:5px;min-width:0;width:100%;}
+#workshop-list .workshop-production > .chopper-action {flex:0 0 auto;margin:0!important;position:relative;z-index:7;}
+#workshop-list .workshop-production > .chopper-action > button[id$="-start"] {
+ display:inline-flex;justify-content:center;align-items:center;min-width:33px;min-height:32px;
+ padding:4px 5px!important;white-space:nowrap;font-size:10px;
+}
+#workshop-list .workshop-production > .workshop-slot-navigator {flex:1 1 auto;margin:0;min-width:0;max-width:100%;}
+#workshop-list .workshop-production > .workshop-slot-navigator .workshop-slot-viewport {flex:1 1 auto;min-width:0;}
+#workshop-list .workshop-production > [id$="-slots"] {min-width:0;}
+#workshop-list #salter-workshop {position:relative;overflow:visible;}
+#salter-slots {display:grid;grid-template-columns:repeat(6,32px);gap:4px;width:max-content;min-width:max-content;max-width:none;overflow:visible;margin:0;}
+#salter-slots .chopper-slot {width:32px;height:32px;min-width:32px;min-height:32px;max-width:32px;max-height:32px;padding:0;}
+#salter-slots .chopper-slot.is-processing img {filter:brightness(.28) grayscale(.35);opacity:.78;}
+#salter-slots .chopper-slot.is-processing {cursor:default;}
+#salter-start {border:1px solid #e2e2e2a8;border-radius:2px;background:#e3e3e3;color:#161616;font-weight:800;line-height:1.2;box-shadow:inset 0 1px #ffffff88;cursor:pointer;}
+#salter-start:hover:not(:disabled) {background:#fff;}
+#salter-start:disabled {background:#4d4d4d;color:#a4a4a4;border-color:#7b7b7b;opacity:.72;cursor:not-allowed;}
+#salter-message {margin:5px 0 0;min-height:0;font-size:10px;color:#bebebe;line-height:1.4;}
+#salter-message:empty {display:none;}
+#salter-tooltip {position:absolute;display:block;box-sizing:border-box;width:max-content;max-width:180px;padding:7px 9px;border:1px solid #dfdfdfa8;border-radius:3px;background:#161616f9;color:#fff;box-shadow:0 10px 25px #000000aa;font-size:11px;line-height:1.65;opacity:0;visibility:hidden;pointer-events:none;z-index:900;}
+#salter-workshop .chopper-action:hover #salter-tooltip,#salter-workshop .chopper-action:focus-within #salter-tooltip {opacity:1;visibility:visible;}
+body.light-mode #workshop-list .workshop-fold {background:#f8f4ec;color:#755c33;border-color:#c9b494;}
+body.light-mode #salter-start {background:#222;color:#fff;border-color:#222;}
+body.light-mode #salter-start:disabled {background:#bababa;color:#555;border-color:#aaa;}
+body.light-mode #salter-tooltip {background:#fff;color:#222;border-color:#aaa;}
+body.light-mode #salter-message {color:#666;}
+@media(max-width:1100px){#salter-slots{column-gap:2px;}#workshop-list .workshop-production{gap:3px;}}
+
+/* 복수 레시피 버튼과 추가된 두 가공소: 기존 접기/제작 슬롯 디자인 공유 */
+#workshop-list #pancake-start,
+#workshop-list #tofu-processing-start {display:inline-flex;align-items:center;justify-content:center;min-height:32px;min-width:33px;max-width:56px;padding:3px 4px!important;border:1px solid #e2e2e2a8;border-radius:2px;background:#e3e3e3;color:#161616;font-size:10px;font-weight:800;line-height:1.1;cursor:pointer;white-space:normal;word-break:keep-all;}
+#workshop-list #pancake-start:disabled,
+#workshop-list #tofu-processing-start:disabled {background:#4d4d4d;color:#a4a4a4;border-color:#7b7b7b;opacity:.72;cursor:not-allowed;}
+#pancake-slots,#tofu-processing-slots {display:grid;grid-template-columns:repeat(6,32px);gap:4px;width:max-content;min-width:max-content;max-width:none;overflow:visible;margin:0;}
+#pancake-slots .chopper-slot,#tofu-processing-slots .chopper-slot {width:32px;height:32px;min-width:32px;min-height:32px;max-width:32px;max-height:32px;padding:0;}
+#pancake-slots .chopper-slot.is-processing img,#tofu-processing-slots .chopper-slot.is-processing img {filter:brightness(.28) grayscale(.35);opacity:.78;}
+#workshop-list #pancake-workshop,#workshop-list #tofu-processing-workshop {position:relative;overflow:visible;}
+#pancake-message,#tofu-processing-message {margin:5px 0 0;min-height:0;font-size:10px;color:#bebebe;line-height:1.4;}
+#pancake-message:empty,#tofu-processing-message:empty {display:none;}
+body.light-mode #workshop-list #pancake-start:not(:disabled),
+body.light-mode #workshop-list #tofu-processing-start:not(:disabled) {background:#222;color:#fff;border-color:#222;}
+
+/* 품목당 별도 제작 줄 및 독립된 6칸: 창 크기에 관계없이 버튼과 슬롯은 서로 겹치지 않음 */
+#workshop-list #mill-content,
+#workshop-list #salter-content {display:flex;flex-direction:column;gap:8px;min-width:0;}
+#workshop-list .workshop-content > .workshop-production {width:100%;overflow:visible;}
+#workshop-list .workshop-content > .workshop-production > .chopper-action {
+  position:relative!important;
+  margin:0!important;z-index:15;
+}
+#workshop-list .workshop-content > .workshop-production > .chopper-action > button {
+  width:34px!important;min-width:34px!important;max-width:34px!important;
+  height:32px!important;min-height:32px!important;padding:0!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  white-space:nowrap!important;font-size:10px!important;line-height:1!important;
+  overflow:hidden!important;word-break:normal!important;
+}
+#workshop-list .workshop-content > .workshop-production > .workshop-slot-navigator {
+  
+  overflow:hidden;
+}
+#workshop-list .workshop-production .workshop-slot-viewport {flex:1 1 auto!important;width:100%!important;min-width:0!important;}
+#workshop-list .workshop-production [id$="-slots"] {display:grid;grid-template-columns:repeat(6,32px);gap:4px;width:max-content;min-width:max-content;max-width:none;}
+#workshop-list .workshop-production [id$="-slots"] .chopper-slot {width:32px;height:32px;min-width:32px;min-height:32px;max-width:32px;max-height:32px;padding:0;}
+
+/* 제작 시작 버튼: 품목명 표시. 독립 6칸 슬롯은 기존대로 유지합니다. */
+#workshop-list .workshop-content > .workshop-production > .chopper-action {
+  flex:0 0 68px!important;width:68px!important;min-width:68px!important;max-width:68px!important;
+}
+#workshop-list .workshop-content > .workshop-production > .chopper-action > button[id$="-start"] {
+  width:68px!important;min-width:68px!important;max-width:68px!important;
+  padding:0 3px!important;white-space:nowrap!important;word-break:keep-all!important;
+  font-size:11px!important;line-height:1.2!important;letter-spacing:-.035em!important;font-weight:700!important;opacity:1!important;
+}
+
+
+/* 가공품 설명은 body에 떠 있는 고정 레이어에서 표시합니다. 기존 툴팁은 중복 표시하지 않습니다. */
+#workshop-list .workshop-production .chopper-action [role="tooltip"] {
+  display:none!important;
+}
+.dowon-workshop-floating-tooltip {
+  position:fixed!important;
+  z-index:99999!important;
+  box-sizing:border-box!important;
+  width:max-content!important;
+  max-width:min(220px, calc(100vw - 16px))!important;
+  padding:8px 10px!important;
+  border:1px solid #4a4a4a!important;
+  border-radius:3px!important;
+  background:#181818!important;
+  color:#f6f0e6!important;
+  font:normal 11px/1.6 'Paperozi', sans-serif!important;
+  white-space:normal!important;
+  overflow-wrap:break-word!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.35)!important;
+  pointer-events:none!important;
+}
+.dowon-workshop-floating-tooltip[hidden] {display:none!important;}
+.dowon-workshop-floating-tooltip .dw-shortage{color:#ef8f8f!important;font-weight:700!important;}
+.dowon-workshop-floating-tooltip .dw-ok{color:#d6d6d6!important;}
+body.light-mode .dowon-workshop-floating-tooltip {
+  background:#fffdf7!important;
+  color:#29251e!important;
+  border-color:#9a7f50!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.20)!important;
+}
+/* 기존 호버 선택자가 밝은 배경 + 밝은 글자를 만들어 가공품명이 사라지는 문제 해결. */
+body.light-mode #workshop-list .workshop-production .chopper-action > button[id$="-start"]:not(:disabled),
+body.light-mode #workshop-list .workshop-production .chopper-action > button[id$="-start"]:hover:not(:disabled),
+body.light-mode #workshop-list .workshop-production .chopper-action > button[id$="-start"]:focus-visible:not(:disabled) {
+  background:#292929!important;
+  color:#fff!important;
+  border-color:#292929!important;
+  opacity:1!important;
+}
+body:not(.light-mode) #workshop-list .workshop-production .chopper-action > button[id$="-start"]:hover:not(:disabled),
+body:not(.light-mode) #workshop-list .workshop-production .chopper-action > button[id$="-start"]:focus-visible:not(:disabled) {
+  background:#fff!important;
+  color:#1b1b1b!important;
+  border-color:#d3bc90!important;
+}
+
+
+/* 모바일 제작 줄: 가공품명 바로 옆부터 독립 6칸을 배치. 옛 margin:auto 규칙 무효화. */
+#workshop-list .workshop-content > .workshop-production {
+  
+  
+  justify-content:flex-start!important;
+  gap:5px!important;
+}
+#workshop-list .workshop-content > .workshop-production > .workshop-slot-navigator {
+  flex:1 1 0!important;
+  width:auto!important;
+  min-width:0!important;
+  max-width:none!important;
+  margin:0!important;
+  justify-content:flex-start!important;
+}
+#workshop-list .workshop-content > .workshop-production .workshop-slot-viewport {
+  flex:1 1 0!important;
+  min-width:0!important;
+  width:auto!important;
+  margin:0!important;
+  padding-left:0!important;
+  padding-right:0!important;
+}
+#workshop-list .workshop-content > .workshop-production .workshop-slot-viewport > [id$="-slots"] {
+  margin-left:0!important;
+  margin-right:0!important;
+  justify-self:start!important;
+  min-width:max-content!important;
+}
+@media (max-width:700px) {
+  #workshop-list .workshop-content > .workshop-production > .chopper-action {
+    flex:0 0 68px!important;
+    width:68px!important;
+    min-width:68px!important;
+  }
+}
+
+
+/* 모바일: 상품명은 왼쪽에 고정하고, 품목마다 독립된 6칸 슬롯 묶음은 남은 줄의 중앙에 배치. */
+@media (max-width:700px) {
+  #workshop-list .workshop-content > .workshop-production {
+    display:flex!important;
+    align-items:center!important;
+    gap:4px!important;
+    width:100%!important;
+    min-width:0!important;
+  }
+  #workshop-list .workshop-content > .workshop-production > .workshop-slot-navigator {
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+    flex:1 1 0!important;
+    width:0!important;
+    min-width:0!important;
+    max-width:none!important;
+    margin:0!important;
+    overflow:hidden!important;
+  }
+  #workshop-list .workshop-content > .workshop-production .workshop-slot-viewport {
+    flex:0 1 auto!important;
+    box-sizing:border-box!important;
+    width:214px!important;
+    max-width:calc(100% - 4px)!important;
+    min-width:0!important;
+    margin:0 auto!important;
+    padding-left:1px!important;
+    padding-right:1px!important;
+    overflow-x:auto!important;
+  }
+  #workshop-list .workshop-content > .workshop-production .workshop-slot-viewport > [id$="-slots"] {
+    margin-left:auto!important;
+    margin-right:auto!important;
+    justify-self:center!important;
+  }
+}
+
+
+/* 잠금/건설 중에는 기존 제작 UI가 안내판 위로 겹쳐 보이지 않도록 숨깁니다.
+   제작 데이터와 독립 6칸은 DOM에 남으므로, 완공하면 기존 위치로 복원됩니다. */
+#workshop-list .workshop-card.progression-building > .workshop-content {
+  display:none!important;
+}
+#workshop-list .workshop-card.progression-building > .workshop-heading .workshop-fold {
+  display:none!important;
+}
+#workshop-list .workshop-card.progression-building > .progression-workshop-gate {
+  position:relative!important;
+  inset:auto!important;
+  box-sizing:border-box!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:100%!important;
+  min-height:100px!important;
+  z-index:20!important;
+  margin:0!important;
+  overflow:hidden!important;
+}
+#workshop-list .workshop-card.progression-building.comfort-locked {
+  opacity:1!important;
+  filter:none!important;
+}

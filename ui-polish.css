@@ -1,0 +1,2771 @@
+/* 전원생활일지 · 좌측 메뉴 기준 무채색 반투명 테마. 시각 요소만 변경합니다. */
+:root {
+    --ui-bg: #161616;
+    --ui-panel: #1f1f1f;
+    --ui-panel-soft: #232323;
+    --ui-line: rgba(240, 240, 240, .16);
+    --ui-line-strong: rgba(245, 245, 245, .28);
+    --ui-text: #f1f1f1;
+    --ui-muted: #bbb;
+    --ui-accent: #eee;
+    --dw-glass: #1f1f1f;
+    --dw-glass-deep: #181818;
+    --dw-stroke: rgba(240, 240, 240, .16);
+    --dw-stroke-focus: rgba(250, 250, 250, .42);
+    --dw-ink: #f3ece0;
+    --dw-dim: #bcbcbc;
+    --dw-gold: #ccc;
+    --dw-highlight: #eee;
+    --dw-scroll-track: transparent;
+    --dw-scroll-thumb: #A1885E;
+    --dw-scroll-thumb-hover: #d8b873;
+}
+
+body {
+    font-synthesis: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+button {
+    transition: background-color .15s, border-color .15s, color .15s;
+}
+
+button:focus-visible,
+[role="button"]:focus-visible {
+    outline: 2px solid #e5e5e5;
+    outline-offset: 2px;
+}
+
+/* Unlike frosted glass, the reference is clear translucent charcoal, not blurred. */
+#top-bar,
+#left-area,
+#right-area,
+.workshop-panel-heading,
+.workshop-card,
+#village-status,
+#warehouse,
+#crop-palette,
+#order-board,
+.resident-dialog,
+.debug-dialog,
+#shop-dialog,
+#dw-item-pop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+#top-bar {
+    background: linear-gradient(145deg,#282828,#121212) !important;
+    border-color: rgba(235, 235, 235, .16) !important;
+}
+
+#left-area {
+    background: linear-gradient(145deg,#282828,#121212) !important;
+    border-color: rgba(235, 235, 235, .19) !important;
+}
+
+#right-area {
+    background: linear-gradient(145deg,#282828,#121212) !important;
+    border-color: rgba(235, 235, 235, .19) !important;
+}
+
+.workshop-panel-heading {
+    background: #292929 !important;
+    border-color: rgba(235, 235, 235, .16) !important;
+}
+
+.workshop-card {
+    background: #282828 !important;
+    border-color: rgba(235, 235, 235, .18) !important;
+    box-shadow: inset 0 1px rgba(255, 255, 255, .04), 0 6px 18px rgba(0, 0, 0, .12) !important;
+}
+
+#village-status,
+#warehouse,
+#crop-palette,
+#order-board,
+.resident-dialog,
+.debug-dialog,
+#shop-dialog:not([hidden]) {
+    background: linear-gradient(145deg,#282828,#121212) !important;
+    border-color: rgba(235, 235, 235, .19) !important;
+    color: #f1f1f1 !important;
+}
+
+#left-content .sidebar-entry {
+    background: transparent !important;
+    border-bottom: 1px solid rgba(240, 240, 240, .10) !important;
+    color: #ddd !important;
+}
+
+#left-content .sidebar-entry:hover:not(.selected) {
+    background: #2f2f2f !important;
+}
+
+#left-content .sidebar-entry.selected {
+    background: #333333 !important;
+    border-left-color: #e5e5e5 !important;
+    box-shadow: inset 2px 0 #e5e5e5 !important;
+    color: #fff !important;
+}
+
+#left-content .sidebar-title,
+.brand-subtitle,
+.panel-eyebrow,
+.resident-hint,
+.order-hint,
+.order-status {
+    color: #bcbcbc !important;
+}
+
+#left-toggle,
+#theme-toggle,
+#debug-open,
+#debug-fast-forward,
+#music-toggle,
+#warehouse-close,
+.debug-dialog button,
+#order-board button,
+.resident-dialog button,
+#shop-close {
+    background: #3a3a3a !important;
+    border-color: rgba(237, 237, 237, .25) !important;
+    color: #f4f4f4 !important;
+}
+
+#left-toggle:hover,
+#theme-toggle:hover,
+#debug-open:hover,
+#music-toggle:hover,
+.debug-dialog button:hover,
+#order-board button:hover {
+    background: #505050 !important;
+}
+
+.warehouse-cell,
+.chopper-slot,
+.crop-option,
+.order-item,
+#order-board .order-resident,
+.resident-dialog .resident-tile,
+.resident-dialog .resident-detail-card {
+    background: #292929 !important;
+    border-color: rgba(235, 235, 235, .17) !important;
+}
+
+.order-resident.active,
+.resident-dialog .resident-detail-tab.active {
+    background: #353535 !important;
+    border-color: rgba(245, 245, 245, .39) !important;
+}
+
+.resident-dialog .resident-tile-visual {
+    background: #292929 !important;
+}
+
+.resident-dialog .resident-tile-footer {
+    background: #191919 !important;
+    border-top-color: rgba(235, 235, 235, .16) !important;
+}
+
+.order-reward,
+.order-header-actions span,
+#shop-dialog .shop-wallet strong {
+    color: #dfdfdf !important;
+}
+
+.resident-dialog .resident-card input,
+.resident-dialog .resident-card textarea,
+.resident-dialog .resident-card select,
+.order-edit input,
+.debug-dialog input,
+.debug-dialog select,
+.debug-dialog textarea {
+    background: #141414 !important;
+    color: #f1f1f1 !important;
+    border-color: rgba(237, 237, 237, .20) !important;
+}
+
+.resident-dialog .resident-weather-tab,
+.resident-dialog .resident-weather-tab.active {
+    background: #3a3a3a !important;
+    color: #f4f4f4 !important;
+    border-color: rgba(237, 237, 237, .25) !important;
+}
+
+#order-board .order-footer {
+    background: linear-gradient(145deg,#282828,#121212) !important;
+    border-top: 1px solid rgba(235, 235, 235, .16) !important;
+}
+
+#order-board .order-footer .order-reward,
+#order-board .order-footer .order-reward b {
+    color: #eee4d5 !important;
+}
+
+#order-board .order-footer-actions button:last-child {
+    background: #eee !important;
+    border-color: #eee !important;
+    color: #2a251e !important;
+}
+
+#shop-dialog .shop-heading {
+    border-color: rgba(235, 235, 235, .17) !important;
+}
+
+#shop-dialog .shop-heading .panel-eyebrow,
+#shop-dialog .shop-wallet,
+#shop-dialog #shop-status {
+    color: #bdbdbd !important;
+}
+
+#shop-dialog #shop-close {
+    background: #3a3a3a !important;
+    border-color: rgba(235, 235, 235, .25) !important;
+    color: #f4f4f4 !important;
+}
+
+.debug-dialog .debug-heading {
+    border-color: rgba(235, 235, 235, .18) !important;
+}
+
+.debug-dialog .debug-actions button {
+    background: #3a3a3a !important;
+    border-color: rgba(235, 235, 235, .25) !important;
+}
+
+/* 창고 설명창: 클릭 동작 유지, 하단 공백 축소 */
+#dw-item-pop,
+body:not(.light-mode) #dw-item-pop {
+    width: min(252px, calc(100vw - 16px)) !important;
+    box-sizing: border-box;
+    padding: 12px 12px 10px !important;
+    border-radius: 12px !important;
+    background: #191919 !important;
+    border: 1px solid rgba(240, 240, 240, .28) !important;
+    color: #f4f4f4 !important;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, .30) !important;
+    text-align: center;
+}
+
+#dw-item-pop[hidden] {
+    display: none !important;
+}
+
+.dw-item-pop-name {
+    display: block;
+    font-size: 16px !important;
+    margin: 0 0 8px !important;
+    padding: 0 0 8px !important;
+    border-bottom: 1px solid rgba(235, 235, 235, .19) !important;
+    color: #f4f4f4 !important;
+}
+
+.dw-item-pop-desc {
+    min-height: 28px !important;
+    margin: 4px 0 10px !important;
+    font-size: 12px !important;
+    line-height: 1.5 !important;
+    color: #ccc !important;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.dw-item-pop-price {
+    margin: 0 0 8px !important;
+    font-size: 11px !important;
+    color: #d5d5d5 !important;
+}
+
+.dw-item-pop-controls {
+    display: flex;
+    gap: 6px !important;
+    justify-content: center;
+    align-items: center;
+}
+
+.dw-item-pop-qty {
+    min-width: 52px !important;
+    font-size: 14px !important;
+    font-weight: 800;
+    color: #f4f4f4 !important;
+}
+
+.dw-item-pop-controls button {
+    min-width: 28px !important;
+    min-height: 28px !important;
+    border-radius: 999px !important;
+    background: #393939 !important;
+    border: 1px solid rgba(235, 235, 235, .25) !important;
+    color: #f4f4f4 !important;
+    cursor: pointer;
+}
+
+.dw-item-pop-controls button:disabled {
+    opacity: .42;
+    cursor: not-allowed;
+}
+
+.dw-item-pop-controls .dw-item-pop-sell {
+    min-width: 50px !important;
+    min-height: 30px !important;
+    padding: 0 12px !important;
+    border-radius: 8px !important;
+    background: #eee !important;
+    border-color: #eee !important;
+    color: #2a251e !important;
+    font-size: 13px !important;
+}
+
+.dw-item-pop-status {
+    min-height: 0 !important;
+    margin: 5px 0 0 !important;
+    font-size: 10px !important;
+    color: #dedede !important;
+}
+
+/* 주민 갤러리는 밝은 테마에서 이미지 뒤가 검지 않게. */
+body.light-mode {
+    --ui-text: #2a251e;
+    --ui-muted: #646464;
+    --dw-ink: #2a251e;
+    --dw-dim: #666;
+    --dw-stroke: rgba(25, 25, 25, .17);
+    --dw-stroke-focus: rgba(25, 25, 25, .42);
+    --dw-gold: #666;
+    --dw-highlight: #444;
+    
+    
+}
+
+body.light-mode .workshop-card {
+    
+    border-color: rgba(30, 30, 30, .18) !important;
+    color: #252525 !important;
+}
+
+body.light-mode #village-status,
+body.light-mode #warehouse,
+body.light-mode #crop-palette,
+body.light-mode #order-board,
+body.light-mode .resident-dialog,
+body.light-mode .debug-dialog,
+body.light-mode #shop-dialog:not([hidden]) {
+    background: rgba(248, 248, 248, .88) !important;
+    border-color: rgba(30, 30, 30, .18) !important;
+    color: #262626 !important;
+}
+
+body.light-mode #left-content .sidebar-entry {
+    background: transparent !important;
+    border-bottom-color: rgba(30, 30, 30, .12) !important;
+    
+}
+
+body.light-mode #left-content .sidebar-entry.selected .sidebar-label {
+    color: #191919 !important;
+}
+
+body.light-mode #left-content .sidebar-entry .sidebar-glyph::before,
+body.light-mode #left-toggle .menu-toggle-symbol::before {
+    background: #303030 !important;
+}
+
+body.light-mode #left-content .sidebar-title,
+body.light-mode .brand-subtitle,
+body.light-mode .panel-eyebrow,
+body.light-mode .resident-hint,
+body.light-mode .order-hint,
+body.light-mode .order-status {
+    color: #666 !important;
+}
+
+body.light-mode #left-toggle,
+body.light-mode #theme-toggle,
+body.light-mode #debug-open,
+body.light-mode #debug-fast-forward,
+body.light-mode #music-toggle,
+body.light-mode #warehouse-close,
+body.light-mode .debug-dialog button,
+body.light-mode #order-board button,
+body.light-mode .resident-dialog button,
+body.light-mode #shop-close {
+    background: rgba(255, 255, 255, .62) !important;
+    border-color: rgba(30, 30, 30, .23) !important;
+    color: #252525 !important;
+}
+
+body.light-mode .warehouse-cell,
+body.light-mode .chopper-slot,
+body.light-mode .crop-option,
+body.light-mode .order-item,
+body.light-mode #order-board .order-resident,
+body.light-mode .resident-dialog .resident-tile,
+body.light-mode .resident-dialog .resident-detail-card {
+    background: rgba(255, 255, 255, .56) !important;
+    border-color: rgba(30, 30, 30, .18) !important;
+    color: #262626 !important;
+}
+
+body.light-mode .resident-dialog .resident-tile-visual {
+    background: transparent !important;
+}
+
+body.light-mode .resident-dialog .resident-tile-visual::before {
+    background: transparent !important;
+}
+
+body.light-mode .resident-dialog .resident-tile-footer {
+    background: rgba(255, 255, 255, .33) !important;
+    border-color: rgba(30, 30, 30, .16) !important;
+}
+
+body.light-mode .order-reward,
+body.light-mode .order-header-actions span,
+body.light-mode #shop-dialog .shop-wallet strong {
+    color: #555 !important;
+}
+
+body.light-mode .resident-dialog .resident-weather-tab,
+body.light-mode .resident-dialog .resident-weather-tab.active {
+    background: rgba(255, 255, 255, .6) !important;
+    color: #252525 !important;
+    border-color: rgba(30, 30, 30, .22) !important;
+}
+
+body.light-mode #order-board .order-footer .order-reward,
+body.light-mode #order-board .order-footer .order-reward b {
+    color: #424242 !important;
+}
+
+body.light-mode #order-board .order-footer-actions button:last-child {
+    background: #292929 !important;
+    border-color: #292929 !important;
+    color: #f5f5f5 !important;
+}
+
+body.light-mode #shop-dialog .shop-heading {
+    border-color: rgba(30, 30, 30, .17) !important;
+}
+
+body.light-mode #shop-dialog .shop-heading .panel-eyebrow,
+body.light-mode #shop-dialog .shop-wallet,
+body.light-mode #shop-dialog #shop-status {
+    color: #666 !important;
+}
+
+body.light-mode #shop-dialog #shop-close {
+    background: rgba(255, 255, 255, .64) !important;
+    border-color: rgba(30, 30, 30, .23) !important;
+    color: #252525 !important;
+}
+
+body.light-mode .debug-dialog .debug-heading {
+    border-color: rgba(30, 30, 30, .18) !important;
+}
+
+body.light-mode .debug-dialog .debug-actions button {
+    background: rgba(255, 255, 255, .65) !important;
+    border-color: rgba(30, 30, 30, .23) !important;
+    color: #252525 !important;
+}
+
+/* Light mode warehouse popup remains dark to contrast with the light warehouse. */
+
+body.light-mode .dw-item-pop-price {
+    color: #d5d5d5 !important;
+}
+
+body.light-mode .dw-item-pop-controls .dw-item-pop-sell {
+    background: #eee !important;
+    border-color: #eee !important;
+    color: #2a251e !important;
+}
+
+/* Keep order portraits generously sized, while preserving scrollable details on small screens. */
+#order-board #order-residents {
+    grid-auto-rows: minmax(230px, auto);
+    align-items: stretch;
+}
+
+#order-board .order-resident {
+    min-height: 230px;
+    justify-content: flex-start;
+}
+
+#order-board .order-portrait {
+    height: clamp(175px, 24vh, 220px) !important;
+    width: min(100%, 132px) !important;
+    max-height: none !important;
+    object-fit: contain;
+}
+
+@media(max-width:700px) {
+    #order-board #order-residents {
+        grid-auto-rows: minmax(145px, auto)
+    }
+
+    #order-board .order-resident {
+        min-height: 145px
+    }
+
+    #order-board .order-portrait {
+        height: clamp(94px, 17vh, 145px) !important;
+        width: 100% !important;
+    }
+}
+
+@media(max-height:720px) {
+    #order-board #order-residents {
+        grid-auto-rows: minmax(270px, auto)
+    }
+
+    #order-board .order-resident {
+        min-height: 270px
+    }
+
+    #order-board .order-portrait {
+        height: clamp(156px, 30vh, 270px) !important;
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+
+    button,
+    .sidebar-entry {
+        transition: none !important
+    }
+}
+
+
+/* 2026-09-23 final pass: unify whole UI to the left-panel cool blue-charcoal reference */
+:root {
+    --ref-bg: #121212;
+    --ref-panel: #1f1f1f;
+    --ref-panel-strong: #181818;
+    --ref-panel-soft: #292929;
+    --ref-surface: #282828;
+    --ref-line: rgba(217, 217, 217, .18);
+    --ref-line-strong: rgba(217, 217, 217, .26);
+    --ref-text: #f3ece0;
+    --ref-muted: #b7b7b7;
+    --ref-button: #2a2a2a;
+    --ref-button-hover: #333333;
+    --ref-accent: #f3ece0;
+    --ref-light-bg: #f8f4ec;
+    --ref-light-panel: #f8f4ec;
+    --ref-light-surface: #f3ecdf;
+    --ref-light-line: #c9b494;
+    --ref-light-line-strong: #bda37a;
+    --ref-light-text: #2a251e;
+    --ref-light-muted: #665744;
+}
+
+/* dark/default mode */
+body:not(.light-mode) {
+    background: var(--ref-bg) !important;
+    color: var(--ref-text) !important;
+}
+
+body:not(.light-mode) #top-bar,
+body:not(.light-mode) #left-area,
+body:not(.light-mode) #right-area,
+body:not(.light-mode) .workshop-panel-heading,
+body:not(.light-mode) .workshop-card,
+body:not(.light-mode) #village-status,
+body:not(.light-mode) #warehouse,
+body:not(.light-mode) #crop-palette,
+body:not(.light-mode) #order-board,
+body:not(.light-mode) .resident-dialog,
+body:not(.light-mode) .debug-dialog,
+body:not(.light-mode) #shop-dialog:not([hidden]),
+body:not(.light-mode) #dw-item-pop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+body:not(.light-mode) #top-bar {
+    background: linear-gradient(145deg,#282828,#121212) !important;
+    border-color: var(--ref-line) !important;
+}
+
+body:not(.light-mode) #left-area {
+    background: linear-gradient(145deg,#282828,#121212) !important;
+    border-right: 1px solid var(--ref-line-strong) !important;
+}
+
+body:not(.light-mode) #right-area {
+    background: linear-gradient(145deg,#282828,#121212) !important;
+    border-left: 1px solid var(--ref-line) !important;
+}
+
+body:not(.light-mode) .workshop-panel-heading {
+    background: #1b1b1b !important;
+    border-color: var(--ref-line) !important;
+}
+
+body:not(.light-mode) .workshop-card,
+body:not(.light-mode) #village-status,
+body:not(.light-mode) #warehouse,
+body:not(.light-mode) #crop-palette,
+body:not(.light-mode) #order-board,
+body:not(.light-mode) .resident-dialog,
+body:not(.light-mode) .debug-dialog,
+body:not(.light-mode) #shop-dialog:not([hidden]),
+body:not(.light-mode) #dw-item-pop {
+    background: linear-gradient(145deg,#282828,#121212) !important;
+    border-color: var(--ref-line) !important;
+    color: var(--ref-text) !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, .18) !important;
+}
+
+body:not(.light-mode) .workshop-card {
+    background: #1f1f1f !important;
+}
+
+body:not(.light-mode) .brand-subtitle,
+body:not(.light-mode) .sidebar-title,
+body:not(.light-mode) .panel-eyebrow,
+body:not(.light-mode) .workshop-panel-count,
+body:not(.light-mode) .resident-hint,
+body:not(.light-mode) .order-hint,
+body:not(.light-mode) .order-status,
+body:not(.light-mode) #shop-dialog .shop-wallet,
+body:not(.light-mode) #shop-dialog #shop-status,
+body:not(.light-mode) .dw-item-pop-desc,
+body:not(.light-mode) .dw-item-pop-price {
+    color: var(--ref-muted) !important;
+}
+
+body:not(.light-mode) #left-content .sidebar-entry {
+    background: transparent !important;
+    color: #d8e2ea !important;
+    border-bottom: 1px solid rgba(216, 228, 239, .10) !important;
+}
+
+body:not(.light-mode) #left-content .sidebar-entry:hover:not(.selected) {
+    background: rgba(216, 228, 239, .06) !important;
+}
+
+body:not(.light-mode) #left-content .sidebar-entry.selected {
+    background: linear-gradient(90deg, rgba(223, 233, 243, .13), rgba(223, 233, 243, .03)) !important;
+    
+    
+    color: var(--ref-accent) !important;
+}
+
+body:not(.light-mode) #left-toggle,
+body:not(.light-mode) #theme-toggle,
+body:not(.light-mode) #debug-open,
+body:not(.light-mode) #debug-fast-forward,
+body:not(.light-mode) #music-toggle,
+body:not(.light-mode) #warehouse-close,
+body:not(.light-mode) .debug-dialog button,
+body:not(.light-mode) #order-board button,
+body:not(.light-mode) .resident-dialog button,
+body:not(.light-mode) #shop-close,
+body:not(.light-mode) .resident-dialog .resident-weather-tab,
+body:not(.light-mode) .resident-dialog .resident-detail-tab {
+    background: var(--ref-button) !important;
+    border-color: rgba(228, 238, 247, .25) !important;
+    color: var(--ref-text) !important;
+}
+
+body:not(.light-mode) #left-toggle:hover,
+body:not(.light-mode) #theme-toggle:hover,
+body:not(.light-mode) #debug-open:hover,
+body:not(.light-mode) #debug-fast-forward:hover,
+body:not(.light-mode) #music-toggle:hover,
+body:not(.light-mode) #warehouse-close:hover,
+body:not(.light-mode) .debug-dialog button:hover,
+body:not(.light-mode) #order-board button:hover,
+body:not(.light-mode) .resident-dialog button:hover,
+body:not(.light-mode) #shop-close:hover,
+body:not(.light-mode) .resident-dialog .resident-weather-tab:hover,
+body:not(.light-mode) .resident-dialog .resident-detail-tab:hover {
+    background: var(--ref-button-hover) !important;
+}
+
+body:not(.light-mode) .warehouse-cell,
+body:not(.light-mode) .chopper-slot,
+body:not(.light-mode) .crop-option,
+body:not(.light-mode) .order-item,
+body:not(.light-mode) #order-board .order-resident,
+body:not(.light-mode) .resident-dialog .resident-tile,
+body:not(.light-mode) .resident-dialog .resident-detail-card {
+    background: #292929 !important;
+    border-color: rgba(216, 228, 239, .17) !important;
+}
+
+body:not(.light-mode) .resident-dialog .resident-tile-visual,
+body:not(.light-mode) #workshop-list .chopper-slot {
+    background: #1b1b1b !important;
+    border-color: #444444 !important;
+}
+
+body:not(.light-mode) .resident-dialog .resident-tile-footer {
+    background: #181818 !important;
+    border-color: var(--ref-line) !important;
+}
+
+body:not(.light-mode) .order-resident.active,
+body:not(.light-mode) .resident-dialog .resident-detail-tab.active,
+body:not(.light-mode) .resident-dialog .resident-weather-tab.active {
+    background: #2a2a2a !important;
+    border-color: rgba(236, 244, 250, .38) !important;
+    color: var(--ref-accent) !important;
+}
+
+body:not(.light-mode) .resident-dialog .resident-card input,
+body:not(.light-mode) .resident-dialog .resident-card textarea,
+body:not(.light-mode) .resident-dialog .resident-card select,
+body:not(.light-mode) .order-edit input,
+body:not(.light-mode) .debug-dialog input,
+body:not(.light-mode) .debug-dialog select,
+body:not(.light-mode) .debug-dialog textarea {
+    background: #181818 !important;
+    color: var(--ref-text) !important;
+    border-color: rgba(216, 228, 239, .22) !important;
+}
+
+body:not(.light-mode) #order-board .order-footer {
+    background: #181818 !important;
+    border-top: 1px solid rgba(216, 228, 239, .16) !important;
+}
+
+body:not(.light-mode) #order-board .order-footer .order-reward,
+body:not(.light-mode) #order-board .order-footer .order-reward b,
+body:not(.light-mode) .order-header-actions span,
+body:not(.light-mode) #shop-dialog .shop-wallet strong,
+body:not(.light-mode) .dw-item-pop-name,
+body:not(.light-mode) .dw-item-pop-qty {
+    color: #eef5f9 !important;
+}
+
+/* light mode */
+body.light-mode {
+    background: var(--ref-light-bg) !important;
+    color: var(--ref-light-text) !important;
+}
+
+body.light-mode #top-bar,
+body.light-mode #left-area,
+body.light-mode #right-area,
+body.light-mode .workshop-panel-heading,
+body.light-mode .workshop-card,
+body.light-mode #village-status,
+body.light-mode #warehouse,
+body.light-mode #crop-palette,
+body.light-mode #order-board,
+body.light-mode .resident-dialog,
+body.light-mode .debug-dialog,
+body.light-mode #shop-dialog:not([hidden]),
+body.light-mode #dw-item-pop {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+}
+
+body.light-mode #top-bar {
+    background: #f8f4ec !important;
+    border-color: var(--ref-light-line) !important;
+}
+
+body.light-mode #left-area,
+body.light-mode #right-area {
+    background: var(--ref-light-panel) !important;
+    border-color: var(--ref-light-line) !important;
+}
+
+body.light-mode .workshop-panel-heading {
+    background: #f3ecdf !important;
+    border-color: var(--ref-light-line) !important;
+}
+
+body.light-mode .workshop-card,
+body.light-mode #village-status,
+body.light-mode #warehouse,
+body.light-mode #crop-palette,
+body.light-mode #order-board,
+body.light-mode .resident-dialog,
+body.light-mode .debug-dialog,
+body.light-mode #shop-dialog:not([hidden]) {
+    background: #f8f4ec !important;
+    border-color: var(--ref-light-line) !important;
+    color: var(--ref-light-text) !important;
+    box-shadow: 0 10px 28px rgba(44, 62, 80, .08) !important;
+}
+
+body.light-mode .workshop-card {
+    background: #f3ecdf !important;
+}
+
+body.light-mode #left-content .sidebar-entry {
+    border-bottom: 1px solid #d8c7aa !important;
+    color: #4b4134 !important;
+}
+
+body.light-mode #left-content .sidebar-entry:hover:not(.selected) {
+    background: #efe5d5 !important;
+}
+
+body.light-mode #left-content .sidebar-entry.selected {
+    background: #ead8b6 !important;
+    
+    
+    color: #2a251e !important;
+}
+
+body.light-mode .brand-subtitle,
+body.light-mode .sidebar-title,
+body.light-mode .panel-eyebrow,
+body.light-mode .workshop-panel-count,
+body.light-mode .resident-hint,
+body.light-mode .order-hint,
+body.light-mode .order-status,
+body.light-mode #shop-dialog .shop-wallet,
+body.light-mode #shop-dialog #shop-status,
+body.light-mode .dw-item-pop-desc,
+body.light-mode .dw-item-pop-price {
+    color: var(--ref-light-muted) !important;
+}
+
+body.light-mode #left-toggle,
+body.light-mode #theme-toggle,
+body.light-mode #debug-open,
+body.light-mode #debug-fast-forward,
+body.light-mode #music-toggle,
+body.light-mode #warehouse-close,
+body.light-mode .debug-dialog button,
+body.light-mode #order-board button,
+body.light-mode .resident-dialog button,
+body.light-mode #shop-close,
+body.light-mode .resident-dialog .resident-weather-tab,
+body.light-mode .resident-dialog .resident-detail-tab {
+    background: rgba(255, 255, 255, .66) !important;
+    border-color: var(--ref-light-line-strong) !important;
+    color: var(--ref-light-text) !important;
+}
+
+body.light-mode #left-toggle:hover,
+body.light-mode #theme-toggle:hover,
+body.light-mode #debug-open:hover,
+body.light-mode #debug-fast-forward:hover,
+body.light-mode #music-toggle:hover,
+body.light-mode #warehouse-close:hover,
+body.light-mode .debug-dialog button:hover,
+body.light-mode #order-board button:hover,
+body.light-mode .resident-dialog button:hover,
+body.light-mode #shop-close:hover,
+body.light-mode .resident-dialog .resident-weather-tab:hover,
+body.light-mode .resident-dialog .resident-detail-tab:hover {
+    background: rgba(225, 234, 241, .88) !important;
+}
+
+body.light-mode .warehouse-cell,
+body.light-mode .chopper-slot,
+body.light-mode .crop-option,
+body.light-mode .order-item,
+body.light-mode #order-board .order-resident,
+body.light-mode .resident-dialog .resident-tile,
+body.light-mode .resident-dialog .resident-detail-card {
+    background: rgba(255, 255, 255, .50) !important;
+    border-color: rgba(74, 94, 115, .18) !important;
+}
+
+body.light-mode .resident-dialog .resident-tile-visual,
+body.light-mode .resident-dialog .resident-tile-footer {
+    background: rgba(236, 242, 247, .60) !important;
+    border-color: var(--ref-light-line) !important;
+}
+
+body.light-mode .order-resident.active,
+body.light-mode .resident-dialog .resident-detail-tab.active,
+body.light-mode .resident-dialog .resident-weather-tab.active {
+    background: rgba(220, 229, 237, .72) !important;
+    border-color: var(--ref-light-line-strong) !important;
+    color: #16212c !important;
+}
+
+body.light-mode .resident-dialog .resident-card input,
+body.light-mode .resident-dialog .resident-card textarea,
+body.light-mode .resident-dialog .resident-card select,
+body.light-mode .order-edit input,
+body.light-mode .debug-dialog input,
+body.light-mode .debug-dialog select,
+body.light-mode .debug-dialog textarea {
+    background: rgba(255, 255, 255, .70) !important;
+    color: var(--ref-light-text) !important;
+    border-color: rgba(74, 94, 115, .20) !important;
+}
+
+body.light-mode #order-board .order-footer {
+    background: rgba(241, 246, 250, .90) !important;
+    border-top: 1px solid rgba(74, 94, 115, .16) !important;
+}
+
+body.light-mode #order-board .order-footer .order-reward,
+body.light-mode #order-board .order-footer .order-reward b,
+body.light-mode .order-header-actions span,
+body.light-mode #shop-dialog .shop-wallet strong,
+body.light-mode .dw-item-pop-name,
+body.light-mode .dw-item-pop-qty {
+    color: #233140 !important;
+}
+
+body.light-mode .dw-item-pop-desc,
+body.light-mode .dw-item-pop-price {
+    color: #b7c4cf !important;
+}
+
+/* reference-colored scrollbar */
+:root {
+    scrollbar-color: #A1885E transparent;
+}
+
+body.light-mode {
+    scrollbar-color: #A1885E transparent;
+}
+
+
+/* 2026-09-23 subtle gold accent restoration based on left-panel reference */
+:root {
+    --ref-gold: #c5b98d;
+    --ref-gold-soft: #a99b6e;
+    --ref-gold-glow: rgba(222, 209, 158, .34);
+    --ref-gold-line: rgba(216, 202, 150, .74);
+    --ref-gold-text: #ddd1a6;
+    --ref-light-gold: #b7a56e;
+    --ref-light-gold-soft: #c6b88a;
+    --ref-light-gold-line: rgba(176, 156, 99, .72);
+}
+
+/* dark mode gold accents */
+body:not(.light-mode) #left-content .sidebar-entry.selected {
+    border-left: 2px solid var(--ref-gold-line) !important;
+    
+}
+
+body:not(.light-mode) #left-content .sidebar-entry.selected .sidebar-label,
+body:not(.light-mode) #left-content .sidebar-entry.selected .sidebar-glyph,
+body:not(.light-mode) #order-board .order-footer .order-reward,
+body:not(.light-mode) #order-board .order-footer .order-reward b,
+body:not(.light-mode) .order-header-actions span,
+body:not(.light-mode) #shop-dialog .shop-wallet strong,
+body:not(.light-mode) .dw-item-pop-price,
+body:not(.light-mode) .workshop-panel-count {
+    color: var(--ref-gold-text) !important;
+}
+
+body:not(.light-mode) #left-content .sidebar-title span,
+body:not(.light-mode) .panel-eyebrow,
+body:not(.light-mode) .brand-subtitle,
+body:not(.light-mode) #shop-dialog .shop-wallet,
+body:not(.light-mode) #shop-dialog #shop-status {
+    color: rgba(217, 205, 165, .84) !important;
+}
+
+body:not(.light-mode) .workshop-panel-count {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .03), 0 0 0 1px rgba(216, 202, 150, .04) !important;
+}
+
+body:not(.light-mode) #left-toggle:hover,
+body:not(.light-mode) #theme-toggle:hover,
+body:not(.light-mode) #debug-open:hover,
+body:not(.light-mode) #debug-fast-forward:hover,
+body:not(.light-mode) #music-toggle:hover,
+body:not(.light-mode) #warehouse-close:hover,
+body:not(.light-mode) .debug-dialog button:hover,
+body:not(.light-mode) #order-board button:hover,
+body:not(.light-mode) .resident-dialog button:hover,
+body:not(.light-mode) #shop-close:hover {
+    border-color: rgba(216, 202, 150, .30) !important;
+}
+
+/* light mode gold accents */
+body.light-mode #left-content .sidebar-entry.selected {
+    border-left: 2px solid var(--ref-light-gold-line) !important;
+    
+}
+
+body.light-mode #left-content .sidebar-entry.selected .sidebar-label,
+body.light-mode #left-content .sidebar-entry.selected .sidebar-glyph,
+body.light-mode #order-board .order-footer .order-reward,
+body.light-mode #order-board .order-footer .order-reward b,
+body.light-mode .order-header-actions span,
+body.light-mode #shop-dialog .shop-wallet strong,
+body.light-mode .dw-item-pop-price,
+body.light-mode .workshop-panel-count {
+    color: var(--ref-light-gold) !important;
+}
+
+body.light-mode #left-content .sidebar-title span,
+body.light-mode .panel-eyebrow,
+body.light-mode .brand-subtitle,
+body.light-mode #shop-dialog .shop-wallet,
+body.light-mode #shop-dialog #shop-status {
+    color: rgba(137, 120, 74, .92) !important;
+}
+
+
+/* 2026-09-23 refinement based on user screenshots */
+:root {
+    --user-gold-accent: #9A7F50;
+    --user-gold-button: #877453;
+    --user-gold-button-hover: #97805b;
+    --user-gold-light: #9A7F50;
+    --user-gold-light-button: #877453;
+    --user-gold-light-button-hover: #9a845e;
+}
+
+/* 1) Left top toggle block: remove filled background, keep only subtle border */
+body:not(.light-mode) #left-toggle {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+body.light-mode #left-toggle {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* 2) Sidebar footer buttons should all share the same tone */
+
+/* 3 & 5) Gold accent tuning: stronger brown-gold */
+body:not(.light-mode) #left-content .sidebar-entry.selected {
+    border-left-color: var(--user-gold-accent) !important;
+    box-shadow: inset 2px 0 var(--user-gold-accent), 0 0 0 1px rgba(154, 127, 80, .05) !important;
+}
+
+body:not(.light-mode) #left-content .sidebar-title span,
+body:not(.light-mode) .panel-eyebrow,
+body:not(.light-mode) .brand-subtitle,
+body:not(.light-mode) .workshop-panel-count,
+body:not(.light-mode) .order-header-actions span,
+body:not(.light-mode) #shop-dialog .shop-wallet,
+body:not(.light-mode) #shop-dialog .shop-wallet strong,
+body:not(.light-mode) #shop-dialog #shop-status,
+body:not(.light-mode) .dw-item-pop-price,
+body:not(.light-mode) #order-board .order-footer .order-reward,
+body:not(.light-mode) #order-board .order-footer .order-reward b {
+    color: var(--user-gold-accent) !important;
+}
+
+body:not(.light-mode) .workshop-panel-count {
+    border-color: rgba(154, 127, 80, .32) !important;
+}
+
+/* Primary gold action buttons in dark mode */
+body:not(.light-mode) #order-board .order-footer-actions button:last-child,
+body:not(.light-mode) .dw-item-pop-controls .dw-item-pop-sell {
+    background: var(--user-gold-button) !important;
+    border-color: var(--user-gold-button) !important;
+    color: #fbfaf7 !important;
+}
+
+body:not(.light-mode) #order-board .order-footer-actions button:last-child:hover,
+body:not(.light-mode) .dw-item-pop-controls .dw-item-pop-sell:hover {
+    background: var(--user-gold-button-hover) !important;
+    border-color: var(--user-gold-button-hover) !important;
+}
+
+body:not(.light-mode) .dw-item-pop-controls button:disabled,
+body:not(.light-mode) .dw-item-pop-controls .dw-item-pop-sell:disabled {
+    background: rgba(85, 78, 67, .62) !important;
+    border-color: rgba(133, 116, 83, .48) !important;
+    color: rgba(242, 236, 228, .55) !important;
+}
+
+/* 4) White mode variants adjusted to suit white backgrounds */
+body.light-mode #left-content .sidebar-entry.selected {
+    border-left-color: var(--user-gold-light) !important;
+    box-shadow: inset 2px 0 var(--user-gold-light) !important;
+}
+
+body.light-mode #left-content .sidebar-title span,
+body.light-mode .panel-eyebrow,
+body.light-mode .brand-subtitle,
+body.light-mode .workshop-panel-count,
+body.light-mode .order-header-actions span,
+body.light-mode #shop-dialog .shop-wallet,
+body.light-mode #shop-dialog .shop-wallet strong,
+body.light-mode #shop-dialog #shop-status,
+body.light-mode .dw-item-pop-price,
+body.light-mode #order-board .order-footer .order-reward,
+body.light-mode #order-board .order-footer .order-reward b {
+    color: var(--user-gold-light) !important;
+}
+
+body.light-mode .workshop-panel-count {
+    border-color: rgba(154, 127, 80, .28) !important;
+}
+
+body.light-mode #order-board .order-footer-actions button:last-child,
+body.light-mode .dw-item-pop-controls .dw-item-pop-sell {
+    background: var(--user-gold-light-button) !important;
+    border-color: var(--user-gold-light-button) !important;
+    color: #fbfaf7 !important;
+}
+
+body.light-mode #order-board .order-footer-actions button:last-child:hover,
+body.light-mode .dw-item-pop-controls .dw-item-pop-sell:hover {
+    background: var(--user-gold-light-button-hover) !important;
+    border-color: var(--user-gold-light-button-hover) !important;
+}
+
+/* In white mode the popup should harmonize with the white UI, not stay dark */
+body.light-mode #dw-item-pop {
+    background: rgba(249, 249, 249, .97) !important;
+    border-color: rgba(74, 94, 115, .18) !important;
+    color: #233140 !important;
+}
+
+body.light-mode .dw-item-pop-name,
+body.light-mode .dw-item-pop-qty {
+    color: #233140 !important;
+}
+
+body.light-mode .dw-item-pop-desc {
+    color: #6b7c8c !important;
+}
+
+body.light-mode .dw-item-pop-controls button {
+    background: rgba(236, 242, 247, .96) !important;
+    border-color: rgba(74, 94, 115, .22) !important;
+    color: #233140 !important;
+}
+
+body.light-mode .dw-item-pop-controls button:disabled,
+body.light-mode .dw-item-pop-controls .dw-item-pop-sell:disabled {
+    background: rgba(214, 206, 191, .68) !important;
+    border-color: rgba(154, 127, 80, .28) !important;
+    color: rgba(88, 73, 46, .56) !important;
+}
+
+
+/* 2026-09-23 footer button fix: override legacy high-specificity sidebar button styles */
+/* dark mode */
+
+/* light mode */
+
+
+/* 2026-09-23 remove sidebar section count */
+#left-content .sidebar-title span {
+    display: none !important;
+}
+
+#left-content .sidebar-title {
+    justify-content: flex-start !important;
+}
+
+/* Click dialogue editor */
+.resident-dialog .resident-tab-panel[data-tab="click"] .resident-dialogue-grid {
+    grid-template-columns: minmax(0, 1fr);
+}
+
+.resident-dialog .resident-tab-panel[data-tab="click"] textarea {
+    min-height: 76px;
+    resize: vertical;
+    line-height: 1.55;
+}
+
+.resident-dialog .resident-tab-panel[data-tab="click"] label {
+    margin-bottom: 12px;
+}
+
+@media(max-width:850px) {
+    .resident-dialog .resident-detail-tabs {
+        flex-wrap: wrap;
+    }
+
+    .resident-dialog .resident-detail-tab {
+        min-width: 70px;
+    }
+}
+
+/* 주민 상세 창: 클릭 반응 탭을 기준으로 높이를 고정합니다.
+   내용이 늘어나도 대화창은 그대로 두고 선택된 탭의 내용만 스크롤합니다. */
+.resident-dialog:has(.resident-cards.resident-detail-view) {
+    box-sizing: border-box;
+    height: min(620px, calc(100dvh - 28px));
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.resident-dialog:has(.resident-cards.resident-detail-view) > .resident-heading,
+.resident-dialog:has(.resident-cards.resident-detail-view) > .resident-hint {
+    flex: 0 0 auto;
+}
+
+.resident-dialog .resident-cards.resident-detail-view {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.resident-dialog .resident-detail-view > .resident-detail-top {
+    flex: 0 0 auto;
+}
+
+.resident-dialog .resident-detail-view > .resident-detail-layout {
+    flex: 1 1 auto;
+    min-height: 0;
+    height: 100%;
+    overflow: hidden;
+    align-items: stretch;
+}
+
+.resident-dialog .resident-detail-view .resident-detail-card {
+    box-sizing: border-box;
+    height: 100%;
+    max-height: 100%;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.resident-dialog .resident-detail-view .resident-tab-panel.active {
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.resident-dialog .resident-detail-view .resident-tab-panel.active::-webkit-scrollbar,
+.resident-dialog .resident-detail-view .resident-matrix-scroll::-webkit-scrollbar,
+.resident-dialog .resident-detail-view .resident-dialogue-places-grid::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+/* 상호작용 표의 가로 스크롤은 유지하고 스크롤바만 숨깁니다. */
+
+.resident-dialog .resident-detail-view .resident-matrix-scroll,
+.resident-dialog .resident-detail-view .resident-dialogue-places-grid {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.resident-dialog .resident-detail-view .resident-form-actions,
+.resident-dialog .resident-detail-view .resident-notice {
+    flex: 0 0 auto;
+}
+
+.resident-dialog .resident-detail-view .resident-form-actions {
+    margin-top: 8px;
+}
+
+.resident-dialog .resident-detail-view .resident-notice:empty {
+    display: none;
+}
+
+/* 탭이 위쪽으로 이동하는 좁은 화면에서도 내용이 아닌 팝업 크기를 고정합니다. */
+@media (max-width:860px) {
+    .resident-dialog .resident-detail-view > .resident-detail-layout {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .resident-dialog .resident-detail-view .resident-detail-tabs {
+        flex: 0 0 auto;
+        max-height: 106px;
+        overflow-y: auto;
+        scrollbar-width: none;
+    }
+
+    .resident-dialog .resident-detail-view .resident-detail-tabs::-webkit-scrollbar {
+        display: none;
+    }
+
+    .resident-dialog .resident-detail-view .resident-detail-card {
+        flex: 1 1 auto;
+        height: auto;
+        max-height: none;
+    }
+}
+
+
+/* 주민/밭/가공소 단계별 해금 */
+#farm-area {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: max-content;
+    max-width: calc(100% - 16px);
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    align-items: center;
+    justify-content: center;
+    gap: clamp(4px, .75vw, 12px) !important;
+}
+
+#farm-area .farm-section-label {
+    grid-column: 1/-1;
+    bottom: calc(100% + 4px);
+}
+
+#farm-area .farm {
+    width: clamp(65px, 7.1vw, 126px) !important;
+    min-width: 0;
+    position: relative;
+}
+
+#farm-area .farm.farm-progression-locked {
+    cursor: pointer;
+    isolation: isolate;
+}
+
+#farm-area .farm.farm-progression-locked::after {
+    content: attr(data-lock-label);
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 7px;
+    box-sizing: border-box;
+    background: #181818;
+    color: #d4c19b;
+    border: 1px solid #9A7F50;
+    border-radius: 4px;
+    white-space: normal;
+    font-size: 10px;
+    line-height: 1.5;
+    pointer-events: none;
+}
+
+body.light-mode #farm-area .farm.farm-progression-locked::after {
+    background: rgba(247, 248, 249, .92);
+    color: #877453;
+    border-color: #9A7F50;
+}
+
+@media(max-width:700px) {
+    #farm-area {
+        gap: 4px !important;
+    }
+
+    #farm-area .farm {
+        width: clamp(57px, 21vw, 90px) !important;
+    }
+}
+
+.resident-tile-locked {
+    opacity: .82;
+    cursor: pointer;
+}
+
+.resident-tile-locked .resident-tile-visual {
+    filter: grayscale(1);
+}
+
+.order-resident-locked {
+    opacity: .74;
+    white-space: normal;
+    font-size: 10px;
+    line-height: 1.5;
+    color: #9A7F50 !important;
+}
+
+.workshop-card.progression-building {
+    position: relative;
+    min-height: 135px;
+}
+
+.progression-workshop-gate {
+    position: absolute;
+    inset: 0;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+    background: #181818;
+    border: 1px solid rgba(154, 127, 80, .5);
+    border-radius: 5px;
+    color: #ecedf0;
+    font-size: 11px;
+}
+
+.progression-workshop-gate strong {
+    color: #9A7F50;
+    font-size: 13px;
+}
+
+.progression-workshop-gate button {
+    min-height: 30px;
+    border: 1px solid #9A7F50;
+    border-radius: 4px;
+    background: #877453;
+    color: white;
+    padding: 4px 12px;
+    cursor: pointer;
+}
+
+.progression-workshop-gate button:disabled {
+    background: #4f5255;
+    color: #b8b9bc;
+    border-color: #707174;
+    cursor: not-allowed;
+}
+
+body.light-mode .progression-workshop-gate {
+    background: rgba(250, 250, 250, .98);
+    color: #26303c;
+}
+
+body.light-mode .progression-workshop-gate button {
+    color: white;
+}
+
+
+/* 주민 상호작용: 좁은 화면에서도 표를 가로로 끌어 이동 */
+.resident-dialog .resident-detail-view .resident-tab-panel.active[data-tab="interaction"] {
+    overflow-x: hidden !important;
+}
+
+.resident-dialog .resident-detail-view .resident-matrix-scroll {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-x: auto !important;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    cursor: grab;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    touch-action: pan-x pan-y;
+}
+
+.resident-dialog .resident-detail-view .resident-matrix-scroll.drag-scrolling {
+    cursor: grabbing;
+    user-select: none;
+}
+
+.resident-dialog .resident-detail-view .resident-matrix-scroll::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.resident-dialog .resident-detail-view .resident-matrix-scroll .resident-matrix {
+    width: max-content !important;
+    min-width: 100%;
+}
+
+.resident-dialog .resident-detail-view .resident-matrix-scroll .resident-matrix-header,
+.resident-dialog .resident-detail-view .resident-matrix-scroll .resident-matrix-row {
+    grid-template-columns: repeat(var(--matrix-columns), minmax(155px, 1fr));
+}
+
+.resident-dialog .resident-detail-view .resident-matrix-scroll input {
+    cursor: text;
+    user-select: text;
+}
+
+/* 디버그: 영구 삭제 액션을 일반 테스트 버튼과 구분 */
+#debug-dialog .debug-actions #debug-reset-all {
+    flex-basis: 100%;
+    width: 100%;
+    border-color: rgba(154, 127, 80, .68) !important;
+    color: #e5d7bb !important;
+    background: rgba(90, 65, 45, .34) !important;
+}
+
+#debug-dialog .debug-actions #debug-reset-all:hover {
+    background: rgba(116, 82, 50, .52) !important;
+}
+
+body.light-mode #debug-dialog .debug-actions #debug-reset-all {
+    border-color: #9A7F50 !important;
+    color: #654929 !important;
+    background: rgba(154, 127, 80, .13) !important;
+}
+
+body.light-mode #debug-dialog .debug-actions #debug-reset-all:hover {
+    background: rgba(154, 127, 80, .23) !important;
+}
+
+
+/* 주민 > 기본정보: 왼쪽 이미지, 오른쪽 이름/성별/나이 */
+.resident-dialog .resident-basic-grid {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 0 !important;
+    min-width: 0;
+}
+
+.resident-dialog .resident-basic-grid .resident-basic-top {
+    display: grid !important;
+    grid-template-columns: minmax(150px, 33%) minmax(0, 1fr) !important;
+    gap: 16px !important;
+    align-items: start;
+    min-width: 0;
+    width: 100%;
+}
+
+.resident-dialog .resident-basic-image-column,
+.resident-dialog .resident-basic-info-column {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-width: 0;
+}
+
+.resident-dialog .resident-basic-image-column > label,
+.resident-dialog .resident-basic-info-column > label {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.resident-dialog .resident-basic-image-column .resident-image-wrap {
+    width: 100%;
+    min-width: 0;
+}
+
+.resident-dialog .resident-basic-image-column .resident-image-input {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.resident-dialog .resident-basic-image-column .resident-image-preview {
+    width: 100%;
+    max-width: 185px;
+    height: 175px;
+    object-fit: contain;
+    object-position: center bottom;
+}
+
+.resident-dialog .resident-basic-image-column .resident-image-note {
+    overflow-wrap: anywhere;
+}
+
+.resident-dialog .resident-basic-info-column input,
+.resident-dialog .resident-basic-info-column select {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+@media(max-width:480px) {
+    .resident-dialog .resident-basic-grid .resident-basic-top {
+        grid-template-columns: minmax(110px, 38%) minmax(0, 1fr) !important;
+        gap: 10px !important;
+    }
+
+    .resident-dialog .resident-basic-image-column .resident-image-preview {
+        height: 145px;
+    }
+}
+
+/* 주민 기본정보: 생일과 좋아하는 장소도 오른쪽 정보열에 포함 */
+.resident-dialog .resident-basic-info-column .resident-birthday {
+    display: flex;
+    gap: 7px;
+    min-width: 0;
+}
+
+.resident-dialog .resident-basic-info-column .resident-birthday select {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+
+/* 주문판 잠금/교체 칸: 전체 카드 가로·세로 중앙 배치 + 3줄 잠금 안내. */
+#order-board #order-residents > .order-resident.order-resident-locked,
+#order-board #order-residents > .order-resident.order-resident-cooldown,
+#order-board #order-residents > .order-resident:has(> .order-card-empty) {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 3px !important;
+}
+
+#order-board .order-locked-icon,
+#order-board .order-locked-title,
+#order-board .order-locked-value,
+#order-board .order-cooldown-label,
+#order-board .order-cooldown-time {
+    display: block;
+    width: 100%;
+    text-align: center !important;
+    line-height: 1.3;
+    white-space: nowrap;
+}
+
+#order-board .order-locked-icon {
+    font-size: 14px;
+    margin-bottom: 2px;
+}
+
+#order-board .order-locked-title,
+#order-board .order-locked-value {
+    font-size: clamp(10px, 1.2vw, 13px);
+}
+
+#order-board .order-card-center {
+    position: absolute !important;
+    inset: 0 !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 3px !important;
+    width: 100% !important;
+    height: 100% !important;
+    padding: 5px !important;
+    margin: 0 !important;
+    text-align: center !important;
+}
+
+#order-board .order-card-empty .order-portrait {
+    display: block !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    font-size: 20px !important;
+    line-height: 1.3 !important;
+    border: 0 !important;
+}
+
+#order-board .order-card-empty .order-resident-name {
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    text-align: center !important;
+}
+
+/* 주민 만남에서는 각자 말풍선 대신 중앙의 말풍선 하나만 보입니다. */
+#main-area .resident-meeting-bubble {
+    position: absolute;
+    z-index: 100;
+    transform: translate(-50%, -100%);
+    max-width: min(260px, 80vw);
+    min-width: 44px;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    background: rgba(251, 251, 251, .97);
+    color: #232323;
+    border: 1px solid rgba(240, 240, 240, .95);
+    border-radius: 10px;
+    box-shadow: 0 5px 14px #0006;
+    text-align: center;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+    font: 600 13px/1.5 'Paperozi', sans-serif;
+    pointer-events: none;
+}
+
+#main-area .resident-meeting-bubble[hidden] {
+    display: none !important;
+}
+
+#main-area .resident-avatar .resident-nap-bubble {
+    position: absolute;
+    z-index: 22;
+    left: 50%;
+    bottom: calc(100% + 8px);
+    transform: translateX(-50%);
+    padding: 6px 10px;
+    background: rgba(251, 251, 251, .97);
+    border: 1px solid #e9e9e9;
+    border-radius: 9px;
+    box-shadow: 0 4px 12px #0006;
+    font-size: 15px;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+#main-area .resident-avatar .resident-nap-bubble[hidden] {
+    display: none !important;
+}
+
+/* 음악과 환경음을 분리한 하단 4버튼 */
+
+#youtube-ambient-player {
+    position: fixed !important;
+    left: -10000px !important;
+    top: -10000px !important;
+    width: 200px !important;
+    height: 200px !important;
+    pointer-events: none !important;
+}
+
+
+/* 주민 이모지 반응: 위치는 유지하고 이모지에만 가벼운 반복 모션을 적용 */
+@keyframes dowon-nap-sway {
+
+    0%,
+    100% {
+        transform: translateX(-50%) rotate(-9deg)
+    }
+
+    50% {
+        transform: translateX(-50%) rotate(9deg)
+    }
+}
+
+#main-area .resident-avatar .resident-nap-bubble:not([hidden]) {
+    transform-origin: 50% 90%;
+    animation: dowon-nap-sway 2.2s ease-in-out infinite;
+}
+
+@keyframes dowon-friend-bounce {
+
+    0%,
+    100% {
+        transform: translateY(0) scale(1)
+    }
+
+    35% {
+        transform: translateY(-9px) scale(1.08, .94)
+    }
+
+    55% {
+        transform: translateY(1px) scale(.94, 1.06)
+    }
+
+    72% {
+        transform: translateY(-3px) scale(1.03, .98)
+    }
+}
+
+@keyframes dowon-heart-first {
+
+    0%,
+    42% {
+        opacity: 1;
+        transform: scale(1);
+        filter: brightness(1)
+    }
+
+    48%,
+    92% {
+        opacity: 0;
+        transform: scale(.72);
+        filter: brightness(1.15)
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: brightness(1)
+    }
+}
+
+@keyframes dowon-heart-second {
+
+    0%,
+    42% {
+        opacity: 0;
+        transform: scale(.72);
+        filter: brightness(1)
+    }
+
+    48%,
+    92% {
+        opacity: 1;
+        transform: scale(1.18);
+        filter: brightness(1.15)
+    }
+
+    100% {
+        opacity: 0;
+        transform: scale(.72);
+        filter: brightness(1)
+    }
+}
+
+@media(prefers-reduced-motion:reduce) {
+
+    #main-area .resident-avatar .resident-nap-bubble:not([hidden]) {
+        animation: none !important;
+    }
+}
+
+
+/* 주민 대사 편집: 이동 중·아침·장소 대사는 가로로 나누지 않고 세로로 이어 표시. */
+.resident-dialog .resident-tab-panel[data-tab="dialogue"] .resident-dialogue-grid,
+.resident-dialog .resident-tab-panel[data-tab="dialogue"] .resident-dialogue-places-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    column-gap: 0 !important;
+    width: 100%;
+    max-height: none !important;
+    overflow: visible !important;
+    padding-right: 0 !important;
+}
+
+.resident-dialog .resident-tab-panel[data-tab="dialogue"] .resident-dialogue-grid > label,
+.resident-dialog .resident-tab-panel[data-tab="dialogue"] .resident-dialogue-places-grid > label {
+    display: block;
+    grid-column: 1 / -1 !important;
+    min-width: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.resident-dialog .resident-tab-panel[data-tab="dialogue"] textarea {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    overflow-y: auto !important;
+    scrollbar-width: thin !important;
+    scrollbar-color: #A1885E transparent;
+}
+
+.resident-dialog .resident-tab-panel[data-tab="dialogue"] textarea::-webkit-scrollbar {
+    display: block !important;
+    width: 7px !important;
+    height: 7px !important;
+}
+
+.resident-dialog .resident-tab-panel[data-tab="dialogue"] textarea::-webkit-scrollbar-thumb {
+    background: #A1885E;
+    border-radius: 6px;
+}
+
+.resident-dialog .resident-tab-panel.active[data-tab="dialogue"] {
+    overflow-y: scroll !important;
+    scrollbar-width: auto !important;
+    scrollbar-color: #A1885E transparent;
+}
+
+.resident-dialog .resident-detail-view .resident-tab-panel.active[data-tab="dialogue"]::-webkit-scrollbar {
+    display: block !important;
+    width: 9px !important;
+    height: 9px !important;
+}
+
+.resident-dialog .resident-detail-view .resident-tab-panel.active[data-tab="dialogue"]::-webkit-scrollbar-thumb {
+    background: #A1885E;
+    border-radius: 7px;
+}
+
+body.light-mode .resident-dialog .resident-tab-panel.active[data-tab="dialogue"],
+body.light-mode .resident-dialog .resident-tab-panel[data-tab="dialogue"] textarea {
+    scrollbar-color: #A1885E transparent;
+}
+
+
+/* 주민 호감도와 1인 부탁 UI */
+.resident-affinity-toast {
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%);
+    z-index: 350;
+    display: block;
+    white-space: nowrap;
+    padding: 5px 9px;
+    background: #000000;
+    border: 1px solid #9A7F50;
+    border-radius: 12px;
+    color: #fff;
+    font-size: 20px;
+    line-height: 1.2;
+    pointer-events: none;
+}
+
+.resident-affinity-toast[hidden] {
+    display: none !important;
+}
+
+body.light-mode body.light-mode body.light-mode /* 2026-09-23 affinity badge layout refinement */
+.dowon-affinity-badge {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    min-width: 0;
+    margin-top: 0;
+    vertical-align: middle;
+}
+
+.dowon-affinity-hearts {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 1px;
+    white-space: nowrap;
+    font-family: Arial, sans-serif;
+    font-size: clamp(10px, 1vw, 14px);
+    line-height: 1;
+}
+
+.dowon-affinity-tooltip {
+    position: absolute;
+    left: 50%;
+    top: calc(100% + 6px);
+    transform: translateX(-50%);
+    z-index: 50;
+    display: block;
+    padding: 5px 8px;
+    border: 1px solid rgba(154, 127, 80, .55);
+    border-radius: 4px;
+    background: rgba(12, 18, 24, .96);
+    color: #f2f4f6;
+    font-size: 10px;
+    line-height: 1.45;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, .28);
+}
+
+.dowon-affinity-badge:hover .dowon-affinity-tooltip,
+.dowon-affinity-badge:focus-visible .dowon-affinity-tooltip {
+    opacity: 1;
+    visibility: visible;
+}
+
+body.light-mode .dowon-affinity-tooltip {
+    background: rgba(255, 255, 255, .98);
+    color: #233140;
+    border-color: rgba(154, 127, 80, .42);
+}
+
+/* MPC resident gallery/detail: name with hearts on the same line, hearts on the right */
+.resident-dialog .resident-tile-footer {
+    display: grid !important;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    column-gap: 6px;
+    row-gap: 4px;
+}
+
+.resident-dialog .resident-tile-footer strong {
+    grid-column: 2;
+    grid-row: 1;
+    min-width: 0;
+    margin: 0;
+}
+
+.resident-dialog .resident-tile-footer .dowon-affinity-badge {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+}
+
+.resident-dialog .resident-detail-top {
+    align-items: center;
+}
+
+.resident-dialog .resident-detail-top .resident-detail-title {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.resident-dialog .resident-detail-top .dowon-affinity-badge {
+    flex: 0 0 auto;
+    margin-left: auto;
+}
+
+
+/* 부탁 말풍선은 주민 이미지 밖으로 나와도 직접 클릭할 수 있습니다. */
+#main-area .resident-avatar .resident-affinity-toast:not(:disabled) {
+    pointer-events: auto !important;
+    cursor: pointer;
+    touch-action: manipulation;
+}
+
+#main-area .resident-avatar .resident-affinity-toast:disabled {
+    pointer-events: none !important;
+}
+
+
+/* NPC 호감도: 주민 목록 단추가 아니라 선택된 NPC의 주문 제목 오른쪽에 표시 */
+#order-board .order-heading-title {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 12px;
+}
+
+#order-board .order-heading-title h3 {
+    flex: 0 1 auto;
+    min-width: 0;
+    margin: 0;
+}
+
+#order-board .order-heading-title .dowon-affinity-badge {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 3px 0;
+    cursor: help;
+}
+
+#order-board .order-heading-title .dowon-affinity-hearts {
+    font-size: clamp(11px, 1.25vw, 15px);
+    white-space: nowrap;
+    line-height: 1.2;
+}
+
+#order-board .order-heading-title .dowon-affinity-tooltip {
+    left: 0;
+    transform: none;
+}
+
+@media(max-width:600px) {
+    #order-board .order-detail-heading {
+        gap: 5px;
+    }
+
+    #order-board .order-heading-title {
+        gap: 5px;
+    }
+
+    #order-board .order-heading-title .dowon-affinity-hearts {
+        font-size: 10px;
+    }
+}
+
+/* Plain heart glyphs: only color indicates locked/unlocked state. */
+.dowon-affinity-heart {
+    display: inline-block;
+    flex: 0 0 auto;
+    font-family: Arial, sans-serif;
+    font-weight: 700;
+    font-size: inherit;
+    line-height: 1;
+}
+
+.dowon-affinity-heart.is-locked {
+    color: #101015;
+    text-shadow: 0 0 1px #79818b, 0 0 1px #79818b;
+}
+
+.dowon-affinity-heart.is-unlocked {
+    color: #e3bf42;
+    text-shadow: 0 0 2px rgba(255, 213, 98, .3);
+}
+
+body.light-mode .dowon-affinity-heart.is-locked {
+    color: #252b34;
+    text-shadow: none;
+}
+
+body.light-mode .dowon-affinity-heart.is-unlocked {
+    color: #bf900f;
+    text-shadow: none;
+}
+
+/* Debug: compact editor beneath main action buttons; popup can scroll when needed. */
+#debug-dialog #debug-affinity-panel {
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid rgba(154, 127, 80, .48);
+    border-radius: 4px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    align-items: center;
+}
+
+#debug-dialog #debug-affinity-panel[hidden] {
+    display: none !important;
+}
+
+#debug-dialog #debug-affinity-panel strong,
+#debug-dialog #debug-affinity-panel .debug-affinity-info {
+    grid-column: 1/-1;
+}
+
+#debug-dialog #debug-affinity-panel select,
+#debug-dialog #debug-affinity-panel input {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 7px 5px;
+    background: rgba(14, 22, 30, .8);
+    border: 1px solid rgba(174, 184, 194, .4);
+    color: #f3f4f6;
+    font: inherit;
+}
+
+#debug-dialog #debug-affinity-panel .debug-affinity-info {
+    font-size: 11px;
+    margin: 0;
+    color: #bba47a;
+}
+
+#debug-dialog #debug-affinity-panel button {
+    min-width: 0;
+    padding: 7px 4px;
+}
+
+body.light-mode #debug-dialog #debug-affinity-panel select,
+body.light-mode #debug-dialog #debug-affinity-panel input {
+    background: #fff;
+    color: #233140;
+    border-color: #a0a6ad;
+}
+
+
+
+/* 주민 카드 명부: 이전의 누적된 충돌 규칙을 제거하고 카드 레이아웃 하나로 통합 */
+@font-face {
+    font-family: Eutman;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2206-02@1.0/OKCHAN.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: TwaySky;
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_tway@1.0/twaysky.woff') format('woff');
+    font-weight: 400;
+    font-display: swap;
+}
+
+#resident-dialog:has(.resident-cards.resident-gallery) {
+    box-sizing: border-box;
+    height: min(620px, calc(100dvh - 28px));
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#resident-dialog:has(.resident-cards.resident-gallery) > .resident-heading,
+#resident-dialog:has(.resident-cards.resident-gallery) > .resident-hint {
+    flex: none;
+}
+
+#resident-dialog .resident-heading {
+    align-items: center;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(154, 127, 80, .35);
+}
+
+#resident-dialog .resident-heading .panel-eyebrow {
+    font-size: 12px;
+    letter-spacing: .18em;
+    color: #bda477 !important;
+}
+
+#resident-dialog .resident-heading h2 {
+    font-size: 38px;
+    line-height: 1.1;
+    margin: 2px 0 0;
+}
+
+#resident-dialog .resident-hint {
+    font-size: 12px;
+    margin: 12px 0 14px;
+}
+
+#resident-dialog .resident-cards.resident-gallery {
+    display: grid !important;
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+    gap: 12px;
+    flex: 1 1 auto;
+    min-height: 0;
+    height: auto;
+    padding: 2px 2px 5px;
+    align-items: stretch;
+    overflow-x: auto;
+    overflow-y: hidden;
+    box-sizing: border-box;
+    scrollbar-width: thin;
+    scrollbar-color: #A1885E transparent;
+}
+
+#resident-dialog .resident-cards.resident-gallery > .resident-tile {
+    position: relative;
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 1px solid rgba(181, 158, 115, .44) !important;
+    border-radius: 17px !important;
+    overflow: hidden !important;
+    background: linear-gradient(145deg,#282828,#121212) !important;
+    color: #f2f4f6;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .03);
+    transition: transform .15s ease, border-color .15s ease;
+}
+
+#resident-dialog .resident-cards.resident-gallery > .resident-tile:hover,
+#resident-dialog .resident-cards.resident-gallery > .resident-tile:focus-visible {
+    transform: translateY(-2px);
+    border-color: #b7a074 !important;
+    outline: none;
+}
+
+#resident-dialog .resident-cards.resident-gallery > .resident-tile::before {
+    content: '';
+    position: absolute;
+    inset: 10px;
+    z-index: 0;
+    border: 1px solid rgba(181, 158, 115, .18);
+    border-radius: 14px;
+    pointer-events: none;
+}
+
+/* 모두 같은 이미지 영역과 같은 하단 영역을 사용: +도 완전히 같은 높이 */
+#resident-dialog .resident-cards.resident-gallery > .resident-tile > .resident-tile-visual {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    flex: 1 1 0 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+    background: transparent !important;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-visual::before {
+    content: '';
+    position: absolute;
+    inset: 10px 10px 0;
+    border: 1px solid rgba(194, 171, 122, .2);
+    border-radius: 72px 72px 12px 12px;
+    background: transparent !important;
+    pointer-events: none;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-frame-number {
+    position: absolute;
+    top: 8px;
+    left: 10px;
+    z-index: 1;
+    font-family: Eutman, Georgia, serif !important;
+    font-size: clamp(58px, 7vw, 92px);
+    font-weight: 400;
+    line-height: 1.1;
+    letter-spacing: -.04em;
+    color: rgba(161, 136, 94, .28);
+    pointer-events: none;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-frame-label {
+    position: absolute;
+    top: 99px;
+    right: 11px;
+    z-index: 1;
+    font-size: 9px;
+    line-height: 1.3;
+    letter-spacing: .14em;
+    text-align: right;
+    color: rgba(161, 136, 94, .62);
+    pointer-events: none;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-frame-deco {
+    display: none !important;
+}
+
+/* 기존 캐릭터 크기를 회복: 이미지 자체를 키우지 않고 가운데 기준 우측/아래로 이동 */
+#resident-dialog .resident-cards.resident-gallery .resident-tile-filled .resident-tile-visual img {
+    position: absolute !important;
+    z-index: 2;
+    left: 50% !important;
+    top: 50% !important;
+    right: auto !important;
+    bottom: auto !important;
+    width: 220% !important;
+    height: 220% !important;
+    max-width: none !important;
+    max-height: none !important;
+    object-fit: contain !important;
+    object-position: center center !important;
+    transform: translate(calc(-50% + 30px), calc(-50% + 70px)) !important;
+    filter: drop-shadow(0 5px 7px rgba(0, 0, 0, .26));
+    pointer-events: none;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-empty .resident-tile-visual,
+#resident-dialog .resident-cards.resident-gallery .resident-tile-locked .resident-tile-visual {
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 !important;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-placeholder,
+#resident-dialog .resident-cards.resident-gallery .resident-tile-plus {
+    position: relative !important;
+    z-index: 2;
+    flex: 0 0 82px !important;
+    display: grid !important;
+    place-items: center !important;
+    box-sizing: border-box !important;
+    width: 82px !important;
+    height: 82px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    top: auto !important;
+    left: auto !important;
+    border-radius: 50% !important;
+    border: 1px solid rgba(221, 227, 237, .38) !important;
+    background: #292929 !important;
+    color: #f0f2f4;
+    font-size: 43px !important;
+    transform: none !important;
+    align-self: center !important;
+}
+
+/* 하단 띠는 잠금/빈 슬롯/등록 카드 전부 동일한 높이 */
+#resident-dialog .resident-cards.resident-gallery > .resident-tile > .resident-tile-footer {
+    position: relative !important;
+    z-index: 3;
+    display: flex !important;
+    flex: 0 0 78px !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    height: 78px !important;
+    min-height: 78px !important;
+    padding: 4px 6px !important;
+    margin: 0 !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 4px !important;
+    text-align: center !important;
+    background: #181818 !important;
+    border-top: 1px solid rgba(194, 171, 122, .16) !important;
+}
+
+/* 이름은 이미지/하단 띠 사이 경계선 위에 직접 배치하므로 잘리지 않음 */
+#resident-dialog .resident-cards.resident-gallery > .resident-tile-filled > .resident-tile-display-name {
+    position: absolute !important;
+    z-index: 12 !important;
+    bottom: 61px !important;
+    left: 7px !important;
+    right: 7px !important;
+    display: block !important;
+    box-sizing: border-box !important;
+    max-width: calc(100% - 14px) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: auto !important;
+    height: auto !important;
+    font-family: TwaySky, 'Paperozi', sans-serif !important;
+    font-weight: 400 !important;
+    font-size: clamp(26px, 2.6vw, 40px) !important;
+    line-height: 1.1 !important;
+    text-align: left !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    background: none !important;
+    color: #fff !important;
+    text-shadow: 0 2px 5px #08101a, 0 0 9px #08101a !important;
+    pointer-events: none;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-filled .resident-tile-footer {
+    justify-content: flex-end !important;
+    padding: 0 5px 25px !important;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-filled .resident-tile-footer .dowon-affinity-badge {
+    position: relative !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    width: auto !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    align-self: center !important;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-filled .resident-tile-footer .dowon-affinity-hearts {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0 !important;
+    white-space: nowrap !important;
+    width: auto !important;
+    max-width: none !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    letter-spacing: -1px !important;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-filled .resident-tile-footer .dowon-affinity-heart {
+    display: inline-block !important;
+    flex: 0 0 auto !important;
+    font-size: 20px !important;
+    line-height: 1 !important;
+    letter-spacing: -1px !important;
+}
+
+/* 잠긴/빈 슬롯은 동일한 3줄 중앙 정렬 */
+#resident-dialog .resident-cards.resident-gallery .resident-tile-locked .resident-tile-footer,
+#resident-dialog .resident-cards.resident-gallery .resident-tile-empty .resident-tile-footer {
+    padding: 4px 4px !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4px !important;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-locked .resident-tile-footer .resident-tile-display-name,
+#resident-dialog .resident-cards.resident-gallery .resident-tile-empty .resident-tile-footer .resident-tile-display-name {
+    display: block !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    color: #f4f5f7 !important;
+    font: 700 13px/1.35 'Paperozi', sans-serif !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-locked .resident-tile-footer .resident-tile-lock {
+    display: block !important;
+    margin: 0 !important;
+    font-size: 14px !important;
+    line-height: 1 !important;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-locked .resident-tile-footer .resident-tile-cost,
+#resident-dialog .resident-cards.resident-gallery .resident-tile-empty .resident-tile-footer .resident-tile-cost {
+    display: block !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    align-self: center !important;
+    text-align: center !important;
+    font: 700 11px/1.25 'Paperozi', sans-serif !important;
+    color: #f1f2f4 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+#resident-dialog .resident-cards.resident-gallery .resident-tile-empty .resident-tile-footer .resident-tile-empty-note {
+    color: #aeb7c4 !important;
+    font-size: 10px !important;
+}
+
+body.light-mode #resident-dialog .resident-cards.resident-gallery > .resident-tile {
+    background: linear-gradient(170deg, rgba(244, 247, 250, .96), rgba(228, 237, 246, .96)) !important;
+    color: #263345 !important;
+    border-color: rgba(154, 127, 80, .4) !important;
+}
+
+body.light-mode #resident-dialog .resident-cards.resident-gallery > .resident-tile > .resident-tile-footer {
+    background: rgba(233, 240, 247, .87) !important;
+}
+
+body.light-mode #resident-dialog .resident-cards.resident-gallery .resident-tile-locked .resident-tile-footer .resident-tile-display-name,
+body.light-mode #resident-dialog .resident-cards.resident-gallery .resident-tile-empty .resident-tile-footer .resident-tile-display-name,
+body.light-mode #resident-dialog .resident-cards.resident-gallery .resident-tile-locked .resident-tile-footer .resident-tile-cost {
+    color: #263345 !important;
+}
+
+body.light-mode #resident-dialog .resident-cards.resident-gallery .resident-tile-filled > .resident-tile-display-name {
+    color: #fff !important;
+}
+
+@media(max-width:1080px) {
+    #resident-dialog .resident-cards.resident-gallery {
+        grid-template-columns: repeat(5, minmax(170px, 1fr)) !important;
+    }
+
+    #resident-dialog .resident-cards.resident-gallery > .resident-tile-filled > .resident-tile-display-name {
+        font-size: 30px !important;
+    }
+}
+
+/* 20px hearts need visible outlines even before unlocking */
+#resident-dialog .resident-cards.resident-gallery .resident-tile-filled .dowon-affinity-heart.is-locked {
+    color: #283242 !important;
+    text-shadow: 0 0 1px #a0a9b7, 0 0 1px #a0a9b7 !important;
+}
+
+
+/* 주민 대사: 맑은 날 / 비 오는 날 모두 낮·밤 입력칸을 좌우 2열로 표시 */
+.resident-dialog .resident-tab-panel[data-tab="dialogue"] .resident-dialogue-times {
+  display:flex !important;
+  flex-direction:column !important;
+  gap:12px !important;
+  min-width:0 !important;
+  max-height:none !important;
+  overflow:visible !important;
+}
+.resident-dialog .resident-tab-panel[data-tab="dialogue"] .resident-dialogue-time-row {
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:12px !important;
+  min-width:0 !important;
+  width:100% !important;
+}
+.resident-dialog .resident-tab-panel[data-tab="dialogue"] .resident-dialogue-time-row > label {
+  display:block !important;
+  grid-column:auto !important;
+  min-width:0 !important;
+  width:100% !important;
+  margin:0 !important;
+  box-sizing:border-box !important;
+}
+.resident-dialog .resident-tab-panel[data-tab="dialogue"] .resident-dialogue-time-row textarea {
+  width:100% !important;
+  max-width:100% !important;
+  min-width:0 !important;
+  box-sizing:border-box !important;
+}
+@media(max-width:540px){
+  .resident-dialog .resident-tab-panel[data-tab="dialogue"] .resident-dialogue-time-row {
+    grid-template-columns:minmax(0,1fr) !important;
+  }
+}
+
+
+/* 주민 호감도: 목록 카드에서 제거하고 상세 기본 정보 제목 옆에 표시 */
+#resident-dialog .resident-cards.resident-gallery .resident-tile-footer .dowon-affinity-badge,
+#resident-dialog .resident-detail-top .dowon-affinity-badge{
+  display:none!important;
+}
+#resident-dialog .resident-tab-panel[data-tab="basic"] > h4{
+  display:flex!important;
+  align-items:center!important;
+  flex-wrap:wrap!important;
+  gap:10px!important;
+}
+#resident-dialog .resident-tab-panel[data-tab="basic"] > h4 > .dowon-affinity-badge{
+  display:inline-flex!important;
+  flex:0 0 auto!important;
+  align-items:center!important;
+  margin:0!important;
+  padding:0!important;
+  font-family:Arial,sans-serif!important;
+  font-weight:400!important;
+}
+#resident-dialog .resident-tab-panel[data-tab="basic"] > h4 > .dowon-affinity-badge .dowon-affinity-hearts{
+  display:inline-flex!important;
+  align-items:center!important;
+  gap:0!important;
+  font:400 15px/1 Arial,sans-serif!important;
+  letter-spacing:0!important;
+}
+#resident-dialog .resident-tab-panel[data-tab="basic"] > h4 > .dowon-affinity-badge .dowon-affinity-heart{
+  display:inline-block!important;
+  flex:0 0 auto!important;
+  font:400 15px/1 Arial,sans-serif!important;
+  letter-spacing:0!important;
+}
+
+/* 디버그: 쾌적도 조정과 낮/밤 전환은 날씨 버튼처럼 한 줄에 두 개씩 표시 */
+#debug-dialog .debug-actions .debug-two-buttons {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 8px !important;
+  min-width: 0;
+}
+#debug-dialog .debug-actions .debug-two-buttons > button {
+  min-width: 0;
+  width: 100%;
+  margin: 0 !important;
+  box-sizing: border-box;
+  text-align: center !important;
+  padding: 8px 5px !important;
+  white-space: nowrap;
+}
+
+/* 밭 업그레이드: 현재 다음 순서의 밭만 공통 버튼으로 표시합니다. */
+#farm-area .farm-section-label{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:8px;
+  overflow:visible;
+  pointer-events:none;
+}
+#farm-area .farm-section-label .farm-upgrade-button{
+  pointer-events:auto;
+  flex:0 0 auto;
+  min-width:0;
+  min-height:27px;
+  padding:4px 8px;
+  border:1px solid #9A7F50;
+  border-radius:3px;
+  background:#2a2a2a;
+  color:#ecd6ad;
+  font:600 10px/1.35 'Paperozi',sans-serif;
+  letter-spacing:0;
+  text-shadow:none;
+  white-space:nowrap;
+  cursor:pointer;
+}
+#farm-area .farm-section-label .farm-upgrade-button[hidden]{display:none!important;}
+#farm-area .farm-section-label .farm-upgrade-button:disabled{opacity:.6;cursor:not-allowed;}
+#farm-area .farm-section-label .farm-upgrade-button:not(:disabled):hover,
+#farm-area .farm-section-label .farm-upgrade-button:not(:disabled):focus-visible{
+  background:#9A7F50;
+  color:#101820;
+}
+#farm-area .farm.farm-upgraded:not(.farm-progression-locked){
+  border-color:#c6a56a!important;
+  box-shadow:0 0 0 1px #c6a56a99,0 8px 20px #0006!important;
+}
+#farm-area .farm.farm-upgraded:not(.farm-progression-locked)::before{
+  content:'×2';
+  position:absolute;
+  top:2px;
+  right:2px;
+  z-index:2;
+  font:700 9px/1 'Paperozi',sans-serif;
+  color:#f4d7a1;
+  background:#181818;
+  border-radius:2px;
+  padding:3px;
+  pointer-events:none;
+}
+body.light-mode #farm-area .farm-section-label .farm-upgrade-button{
+  color:#534029;
+  background:#f8f0e1;
+  border-color:#9A7F50;
+}
+body.light-mode #farm-area .farm-section-label .farm-upgrade-button:not(:disabled):hover{
+  background:#9A7F50;
+  color:#fff;
+}
+@media(max-width:700px){
+  #farm-area .farm-section-label .farm-upgrade-button{
+    font-size:9px;
+    padding:4px 5px;
+    min-height:24px;
+  }
+}
+
+
+/* 화이트 테마 주민 카드: 실제 index.html에 연결된 스타일에서 번호·영문 강조 */
+body.light-mode #resident-dialog .resident-cards.resident-gallery .resident-tile-visual > .resident-tile-frame-number {
+  color: #9a7f50 !important;
+  opacity: .92 !important;
+  font-size: clamp(66px, 7.5vw, 96px) !important;
+}
+body.light-mode #resident-dialog .resident-cards.resident-gallery .resident-tile-visual > .resident-tile-frame-label {
+  color: #9a7f50 !important;
+  opacity: 1 !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  letter-spacing: .06em !important;
+}
+
+
+/* 상단 우측 유틸리티: 동전 표시 대신 디버그·브금·환경음·테마 */
+#top-right.top-utility-controls{display:flex!important;align-items:center!important;justify-content:flex-end!important;gap:6px!important;pointer-events:auto!important}
+#top-right.top-utility-controls>button{height:30px!important;min-width:30px!important;padding:0 8px!important;display:inline-flex!important;align-items:center!important;justify-content:center!important;gap:4px!important;border:1px solid var(--dw-stroke,#ffffff35)!important;border-radius:3px!important;background:#2a2a2a!important;color:#f4f1ea!important;font:inherit!important;font-size:10px!important;cursor:pointer!important;white-space:nowrap!important;box-sizing:border-box!important}
+#top-right.top-utility-controls>button:hover{background:#333333!important}
+#top-right.top-utility-controls .material-symbols-outlined{font-family:'Material Symbols Outlined'!important;font-size:17px!important;line-height:1!important;font-weight:400!important;font-style:normal!important;font-feature-settings:'liga'!important}
+#top-right.top-utility-controls .utility-label{font-size:10px!important;letter-spacing:0!important}
+body.light-mode #top-right.top-utility-controls>button{background:#ffffff!important;color:#262626!important;border-color:#c8c0b3!important}
+body.light-mode #top-right.top-utility-controls>button:hover{background:#eee8dd!important}
+@media(max-width:700px){#top-right.top-utility-controls{gap:4px!important}#top-right.top-utility-controls>button{width:30px!important;min-width:30px!important;padding:0!important}.top-utility-controls .utility-label{display:none!important}}
+
+/* 맷돌 떡가루도 다른 가공품과 동일하게 제작 완료 전 어둡게 표시 */
+#mill-rice-powder-slots .chopper-slot.is-processing img{filter:brightness(.28) grayscale(.35)!important;opacity:.78!important}
+
+/* 대사 말풍선과 같은 둥근 모양 및 꼬리: 새 부탁(❓)에만 적용합니다.
+   기존 부탁 표시의 검정 바탕과 클릭 기능은 유지합니다. */
+/* 주민 부탁 말풍선: 대사형 흰 배경, 무테 (모든 부탁 상태 공통) */
+/* 주민 관계 행동 아이콘: 연인을 찾아가는 중/기다리는 중에는 해당 주민 머리 위에 표시 */
+#main-area .resident-avatar .resident-action-emoji {
+    position: absolute;
+    z-index: 101;
+    left: 50%;
+    bottom: calc(100% + 7px);
+    transform: translateX(-50%);
+    min-width: 30px;
+    height: 30px;
+    box-sizing: border-box;
+    display: grid;
+    place-items: center;
+    padding: 3px 6px;
+    border-radius: 11px;
+    background: rgba(251, 251, 251, .97);
+    border: 0;
+    box-shadow: 0 3px 9px #0005;
+    font-size: 19px;
+    line-height: 1;
+    white-space: nowrap;
+    pointer-events: none;
+}
+#main-area .resident-avatar .resident-action-emoji[hidden] { display: none !important; }
+#main-area .resident-avatar .resident-action-emoji::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(251, 251, 251, .97);
+}
+
+/* 주민 둘이 함께 행동할 때 공유하는 이모지 말풍선 */
+#main-area .resident-meeting-bubble.meeting-bubble-event-emoji {
+    min-width: 34px;
+    max-width: none;
+    padding: 6px 8px;
+    border: 0;
+    border-radius: 11px;
+    font-size: 21px;
+    line-height: 1;
+    white-space: nowrap;
+}
+#main-area .resident-meeting-bubble.meeting-bubble-event-emoji::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(251, 251, 251, .97);
+}

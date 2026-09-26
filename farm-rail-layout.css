@@ -1,0 +1,154 @@
+/* Keep all four fields inside the visible game area, clear of the menu rail.
+   This rule intentionally overrides the older centered/max-content farm styles. */
+#main-area #farm-area {
+  box-sizing: border-box;
+  position: absolute;
+  left: 66px !important;
+  right: 8px !important;
+  width: auto !important;
+  max-width: none !important;
+  transform: none !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  gap: clamp(2px, .7vw, 10px) !important;
+  justify-content: center !important;
+  align-items: center;
+  min-width: 0;
+}
+#main-area #farm-area > .farm {
+  box-sizing: border-box;
+  display: grid;
+  flex: 0 1 126px !important;
+  width: 126px !important;
+  max-width: 126px;
+  min-width: 0;
+  aspect-ratio: 1 / 1;
+}
+#main-area #farm-area .farm-section-label { grid-column: 1 / -1; }
+#left-area.open ~ #main-area #farm-area { left: 218px !important; }
+/* Keep the seed chooser clear of the menu as well. */
+#main-area #crop-palette {
+  box-sizing: border-box;
+  left: max(66px, 50%) !important;
+  right: 8px;
+  max-width: calc(100% - 74px) !important;
+}
+#left-area.open ~ #main-area #crop-palette {
+  left: max(218px, 50%) !important;
+  max-width: calc(100% - 226px) !important;
+}
+@media (max-width: 700px) {
+  #main-area #farm-area { left: 54px !important; right: 6px !important; gap: 3px !important; }
+  #left-area.open ~ #main-area #farm-area { left: min(216px, 75vw) !important; }
+  #main-area #farm-area > .farm { flex-basis: 92px !important; padding: 2px; }
+}
+
+/* 밭 업그레이드 버튼은 밭 묶음 바로 위 중앙에 고정합니다. */
+#main-area #farm-area .farm-section-label {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: calc(100% + 8px) !important;
+  width: 100% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  pointer-events: none;
+  z-index: 8;
+}
+#main-area #farm-area .farm-section-label .farm-upgrade-button {
+  pointer-events: auto;
+  margin: 0 auto !important;
+}
+
+
+/* 모바일 작물 선택창: 화면 안에서 가로 스와이프로 모든 작물을 볼 수 있게 합니다. */
+@media (max-width: 700px) {
+  #main-area #crop-palette {
+    box-sizing:border-box !important;
+    left:54px !important;
+    right:6px !important;
+    width:auto !important;
+    max-width:none !important;
+    transform:translateY(15px) !important;
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    justify-content:flex-start !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    overscroll-behavior-x:contain;
+    touch-action:pan-x !important;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+    scroll-behavior:smooth;
+  }
+  #main-area #crop-palette.visible {
+    transform:translateY(0) !important;
+  }
+  #main-area #crop-palette::-webkit-scrollbar {
+    display:none;
+    width:0;
+    height:0;
+  }
+  #main-area #crop-palette .crop-option {
+    flex:0 0 46px !important;
+    touch-action:pan-x !important;
+  }
+  #main-area #crop-palette .crop-option img {
+    pointer-events:none;
+    user-select:none;
+    -webkit-user-drag:none;
+  }
+  #left-area.open ~ #main-area #crop-palette {
+    left:min(216px, 75vw) !important;
+    right:6px !important;
+    width:auto !important;
+    max-width:none !important;
+  }
+}
+
+/* 좁은 PC 화면에서도 작물 선택줄을 가로로 탐색할 수 있게 합니다.
+   모바일 규칙은 그대로 두고, 701~1100px 데스크톱 뷰포트만 확장합니다. */
+@media (min-width: 701px) and (max-width: 1100px) {
+  #main-area #crop-palette {
+    box-sizing:border-box !important;
+    left:66px !important;
+    right:8px !important;
+    width:auto !important;
+    max-width:none !important;
+    transform:translateY(15px) !important;
+    display:flex !important;
+    flex-wrap:nowrap !important;
+    justify-content:flex-start !important;
+    overflow-x:auto !important;
+    overflow-y:hidden !important;
+    overscroll-behavior-x:contain;
+    touch-action:pan-x !important;
+    scrollbar-width:none;
+    scroll-behavior:smooth;
+  }
+  #main-area #crop-palette.visible {
+    transform:translateY(0) !important;
+  }
+  #main-area #crop-palette::-webkit-scrollbar {
+    display:none;
+    width:0;
+    height:0;
+  }
+  #main-area #crop-palette .crop-option {
+    flex:0 0 55px !important;
+  }
+  #left-area.open ~ #main-area #crop-palette {
+    left:218px !important;
+    right:8px !important;
+    width:auto !important;
+    max-width:none !important;
+  }
+}
+
+/* PC에서는 작물 자체의 기존 드래그 심기를 보존하기 위해
+   선택줄의 빈 여백을 잡아 좌우로 끌 수 있게 표시합니다. */
+@media (pointer:fine) {
+  #main-area #crop-palette.crop-pan-ready { cursor:grab; }
+  #main-area #crop-palette.crop-pan-dragging { cursor:grabbing; scroll-behavior:auto; }
+}

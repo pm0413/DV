@@ -1,0 +1,227 @@
+/* 낚시 위치 마커 */
+#main-area .fishing-marker{
+  position:absolute;left:0;top:0;width:48px;height:58px;padding:0;border:0;background:transparent;
+  z-index:44;cursor:pointer;transform:translate(-50%,-100%);overflow:visible;
+  animation:fishing-marker-bob 2.4s ease-in-out infinite;
+}
+#main-area .fishing-marker:focus-visible{outline:2px solid rgba(255,255,255,.85);outline-offset:5px;border-radius:22px}
+#main-area .fishing-pin-shape{
+  display:flex;align-items:center;justify-content:center;width:43px;height:43px;
+  background:#fff;border:0;border-radius:50% 50% 50% 8px;transform:rotate(-45deg);
+  filter:drop-shadow(0 3px 6px rgba(0,0,0,.38));
+}
+#main-area .fishing-pin-icon{
+  transform:rotate(45deg);font-size:25px;line-height:1;color:#17191d;
+  font-variation-settings:'FILL' 1,'wght' 500,'GRAD' 0,'opsz' 24;
+}
+@keyframes fishing-marker-bob{0%,100%{margin-top:0}50%{margin-top:-9px}}
+@media(prefers-reduced-motion:reduce){#main-area .fishing-marker{animation:none}}
+#main-area .fishing-marker-status{
+  position:absolute;z-index:46;transform:translate(-50%,-100%);padding:7px 10px;border-radius:4px;
+  background:rgba(15,17,20,.92);color:#fff;font-size:12px;white-space:nowrap;pointer-events:none;
+}
+
+/* 낚시 미니게임 팝업 */
+body.fishing-open{overflow:hidden}
+.fishing-backdrop{
+  position:fixed;inset:0;z-index:1190;background:rgba(3,7,10,.48);backdrop-filter:blur(1.5px)
+}
+.fishing-dialog{
+  position:fixed;z-index:1200;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(440px,calc(100vw - 32px));height:min(500px,calc(100vh - 32px));
+  overflow:hidden;box-sizing:border-box;background:linear-gradient(145deg,#282828,#121212);color:#fff;
+  border:1px solid rgba(161,136,94,.42);box-shadow:0 18px 55px rgba(0,0,0,.58);padding:0;
+}
+.fishing-heading{
+  position:relative;z-index:5;height:61px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 15px;border-bottom:1px solid rgba(255,255,255,.12);box-sizing:border-box
+}
+.fishing-title-wrap{padding:0;background:transparent;backdrop-filter:none;border-radius:0;pointer-events:none}
+.fishing-heading .panel-eyebrow{display:block;font-size:9px;line-height:1;letter-spacing:.16em;color:#d4ba81;margin-bottom:4px}
+.fishing-heading h2{margin:0;font-size:20px;line-height:1.05;color:#fff;text-shadow:none}
+.fishing-heading button{
+  width:34px;height:34px;padding:0;border:0;background:transparent;color:#fff;font-size:26px;line-height:32px;cursor:pointer
+}
+.fishing-hud{
+  position:relative;z-index:5;top:auto;left:auto;transform:none;width:auto;padding:14px 16px 0;pointer-events:none;box-sizing:border-box
+}
+.fishing-meta{display:flex;justify-content:space-between;gap:18px;margin-bottom:8px;padding:0;color:#e8e6de;font-size:12px;text-shadow:none}
+.fishing-meta strong{color:#fff;font-size:13px}
+.fishing-progress{
+  height:10px;background:#080d10;border-radius:999px;overflow:hidden;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.06)
+}
+#fishing-progress-fill{
+  width:0;height:100%;
+  transition:width .22s ease
+}
+.fishing-stage{
+  position:absolute;z-index:2;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;
+  padding:8px 18px 20px;min-height:0;pointer-events:none;box-sizing:border-box
+}
+.fishing-dial{
+  position:relative;left:auto;top:auto;width:min(250px,66vw,40vh);height:min(250px,66vw,40vh);padding:0;border:0;border-radius:50%;
+  background:transparent;transform:none;cursor:pointer;overflow:visible;pointer-events:auto;touch-action:manipulation;flex:0 0 auto
+}
+.fishing-dial:focus-visible{outline:2px solid rgba(255,255,255,.82);outline-offset:10px}
+
+/* 고정 과녁 */
+.fishing-target{
+  position:absolute;left:50%;top:50%;width:100%;height:100%;transform:translate(-50%,-50%);border-radius:50%;pointer-events:none;
+  
+  }
+.fishing-target::after{
+  content:"";position:absolute;left:50%;top:50%;width:34%;height:34%;transform:translate(-50%,-50%);border-radius:50%;
+  box-shadow:0 0 0 2px rgba(255,255,255,.07),inset 0 0 18px rgba(0,0,0,.45)
+}
+
+/* 바깥에서 안쪽으로 수축하는 빛나는 원 */
+.fishing-pulse{
+  position:absolute;left:50%;top:50%;width:100%;height:100%;border-radius:50%;box-sizing:border-box;pointer-events:none;
+  border:5px solid rgba(128,229,255,.96);
+  
+  transform:translate(-50%,-50%) scale(2.05);will-change:transform,opacity
+}
+.fishing-pulse::before,.fishing-pulse::after{content:"";position:absolute;border-radius:50%;pointer-events:none}
+.fishing-pulse::before{inset:-12px;border:2px solid rgba(116,210,255,.28);}
+.fishing-pulse::after{inset:7px;border:1px solid rgba(255,255,255,.34)}
+
+.fishing-judgement{
+  position:absolute;z-index:4;left:50%;top:-42px;transform:translateX(-50%);min-width:120px;text-align:center;
+  font-size:26px;font-weight:900;letter-spacing:.06em;color:#fff;text-shadow:0 2px 6px #000,0 0 10px rgba(255,255,255,.35);pointer-events:none
+}
+.fishing-judgement.is-miss{color:#f3f3f3;opacity:.9}
+
+.fishing-result{
+  position:absolute;z-index:10;left:50%;top:54%;transform:translate(-50%,-50%);width:min(330px,calc(100% - 34px));box-sizing:border-box;
+  padding:22px 20px;text-align:center;background:#1f1f1f;border:1px solid rgba(161,136,94,.38);border-radius:4px;
+  box-shadow:0 15px 42px rgba(0,0,0,.5)
+}
+.fishing-result strong{display:block;font-size:24px;color:#fff}.fishing-result p{margin:8px 0 19px;color:#d8d3c8;font-size:13px}
+.fishing-result-actions{display:flex;justify-content:center;gap:8px}.fishing-result-actions button{
+  min-width:112px;padding:10px 13px;border:1px solid rgba(255,255,255,.2);background:#282828;color:#fff;cursor:pointer;border-radius:3px
+}
+.fishing-result-actions button:disabled{opacity:.45;cursor:default}
+
+body.light-mode .fishing-dialog{background:#f4f1e8;color:#252525;border-color:rgba(0,0,0,.18)}
+body.light-mode .fishing-heading{border-bottom-color:rgba(0,0,0,.16)}
+body.light-mode .fishing-heading h2,body.light-mode .fishing-heading button{color:#222}
+body.light-mode .fishing-meta,body.light-mode .fishing-meta strong{color:#2d2d2d}
+body.light-mode .fishing-progress{background:#d7d4cb}
+body.light-mode .fishing-result{background:#f2eee5;color:#222;border-color:rgba(0,0,0,.16)}
+body.light-mode .fishing-result strong{color:#222}body.light-mode .fishing-result p{color:#555}
+
+@media(max-width:700px){
+  #main-area .fishing-marker{width:40px;height:49px}
+  #main-area .fishing-pin-shape{width:36px;height:36px}
+  #main-area .fishing-pin-icon{font-size:21px}
+  .fishing-dialog{width:min(420px,calc(100vw - 20px));height:min(470px,calc(100vh - 20px))}
+  .fishing-heading{height:56px;padding:0 12px}.fishing-heading h2{font-size:18px}.fishing-heading button{width:32px;height:32px}
+  .fishing-hud{padding:12px 13px 0}
+  .fishing-stage{padding:6px 14px 15px}
+  .fishing-dial{width:min(225px,62vw,35vh);height:min(225px,62vw,35vh)}
+  .fishing-judgement{top:-35px;font-size:22px}
+}
+@media(max-width:430px){
+  .fishing-dialog{height:min(440px,calc(100vh - 16px));width:calc(100vw - 16px)}
+  .fishing-dial{width:min(205px,60vw,32vh);height:min(205px,60vw,32vh)}
+  .fishing-result{top:56%;padding:18px 14px}.fishing-result-actions button{min-width:96px}
+}
+
+/* === 물고기 등급 / 정확한 판정띠 / 도감 확장 === */
+.fishing-dialog{
+  --fishing-accent:#58aef7;
+  --fishing-accent-light:#d8efff;
+  --fishing-accent-glow:rgba(88,174,247,.72);
+  --fishing-accent-soft:rgba(88,174,247,.20);
+}
+.fishing-dialog.fish-grade-a{
+  --fishing-accent:#e6bf4f;
+  --fishing-accent-light:#fff0a4;
+  --fishing-accent-glow:rgba(230,191,79,.78);
+  --fishing-accent-soft:rgba(230,191,79,.20);
+}
+.fishing-dialog.fish-grade-b{
+  --fishing-accent:#58aef7;
+  --fishing-accent-light:#d8efff;
+  --fishing-accent-glow:rgba(88,174,247,.78);
+  --fishing-accent-soft:rgba(88,174,247,.20);
+}
+.fishing-dialog.fish-grade-c{
+  --fishing-accent:#a6df7b;
+  --fishing-accent-light:#e7ffd2;
+  --fishing-accent-glow:rgba(166,223,123,.78);
+  --fishing-accent-soft:rgba(166,223,123,.20);
+}
+.fishing-heading-actions{display:flex;align-items:center;gap:3px}
+
+#fishing-progress-fill{
+  background:linear-gradient(90deg,var(--fishing-accent),var(--fishing-accent-light));
+  box-shadow:0 0 10px var(--fishing-accent-glow)
+}
+.fishing-current{
+  height:30px;margin-top:8px;align-items:center;justify-content:center;gap:7px;
+  color:#e9e6dc;font-size:11px
+}
+.fishing-current[hidden]{display:none}
+.fishing-current img{width:26px;height:26px;object-fit:contain;filter:drop-shadow(0 2px 4px rgba(0,0,0,.45))}
+.fishing-current strong{font-size:12px;color:#fff}
+
+/* 화면에 보이는 가장 넓은 등급색 띠 전체가 PERFECT 판정 영역입니다. */
+.fishing-target{
+  background:
+    radial-gradient(circle at 50% 50%,
+      #1f1f1f 0 29%,
+      #343434 30% 34%,
+      #171717 35% 42%,
+      var(--fishing-accent) 43% 59%,
+      #303030 60% 64%,
+      #191919 65% 80%,
+      #383838 81% 84%,
+      #1b1b1b 85% 100%);
+  box-shadow:
+    0 0 0 3px rgba(3,8,12,.58),
+    0 7px 22px rgba(0,0,0,.42),
+    inset 0 0 18px var(--fishing-accent-soft)
+}
+.fishing-pulse{
+  border-color:var(--fishing-accent-light);
+  box-shadow:
+    0 0 5px 2px rgba(255,255,255,.86),
+    0 0 13px 5px var(--fishing-accent-glow),
+    0 0 27px 10px var(--fishing-accent-soft),
+    inset 0 0 8px rgba(255,255,255,.55)
+}
+.fishing-pulse::before{border-color:var(--fishing-accent-soft);box-shadow:0 0 22px var(--fishing-accent-glow)}
+.fishing-judgement.is-perfect{color:var(--fishing-accent-light);text-shadow:0 2px 6px #000,0 0 13px var(--fishing-accent-glow)}
+.fishing-judgement.is-good{color:#f3f0e8;text-shadow:0 2px 6px #000,0 0 10px var(--fishing-accent-glow)}
+
+.fishing-stage{top:143px}
+body.light-mode .fishing-current,body.light-mode .fishing-current strong{color:#272727}
+
+@media(max-width:700px){
+  .fishing-stage{top:130px}
+  .fishing-current{height:27px;margin-top:6px}
+  .fishing-current img{width:23px;height:23px}
+}
+@media(max-width:430px){
+  .fishing-stage{top:126px}
+}
+
+/* === 낚시 시작 확인 / 3초 준비 / 잡은 물고기 크기·무게 === */
+.fishing-start{
+  position:absolute;z-index:12;left:50%;top:54%;transform:translate(-50%,-50%);
+  width:min(330px,calc(100% - 34px));box-sizing:border-box;padding:23px 20px;text-align:center;
+  background:#1f1f1f;border:1px solid rgba(161,136,94,.38);border-radius:4px;box-shadow:0 15px 42px rgba(0,0,0,.5)
+}
+.fishing-start[hidden]{display:none}.fishing-start>strong{display:block;font-size:20px;color:#fff}.fishing-start p{margin:9px 0 18px;color:#c9c6be;font-size:12px;line-height:1.5}
+.fishing-start-actions{display:flex;justify-content:center;gap:8px}.fishing-start-actions button{min-width:105px;padding:10px 13px;border:1px solid rgba(255,255,255,.2);background:#282828;color:#fff;cursor:pointer;border-radius:3px}
+.fishing-start-actions button:disabled{opacity:.45;cursor:default}
+.fishing-countdown{position:absolute;z-index:6;left:50%;top:50%;transform:translate(-50%,-50%);font-size:44px;font-weight:900;color:#fff;text-shadow:0 2px 8px #000,0 0 16px var(--fishing-accent-glow);pointer-events:none}
+.fishing-result-fish{display:grid;grid-template-columns:52px 1fr;grid-template-rows:auto auto auto;column-gap:10px;align-items:center;text-align:left;margin:-5px auto 15px;max-width:225px}
+.fishing-result-fish[hidden]{display:none}.fishing-result-fish img{grid-row:1/4;width:52px;height:52px;object-fit:contain;filter:drop-shadow(0 3px 5px rgba(0,0,0,.4))}
+.fishing-result-grade{font-size:9px;font-weight:800;color:var(--fishing-accent-light);letter-spacing:.04em}.fishing-result-fish strong{font-size:14px!important;line-height:1.25}.fishing-result-fish small{font-size:11px;color:#c9c6be}
+/* 낚기 전에는 물고기 이름/이미지를 절대 표시하지 않습니다. */
+.fishing-current{display:none!important}
+body.light-mode .fishing-start{background:#f2eee5;border-color:rgba(0,0,0,.16)}body.light-mode .fishing-start>strong{color:#222}body.light-mode .fishing-start p{color:#555}
+body.light-mode .fishing-result-fish small{color:#555}

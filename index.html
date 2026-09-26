@@ -1,0 +1,602 @@
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>전원생활일지</title>
+    <!-- 완전 초기화: 게임 스크립트가 실행되기 전에 이전 날짜와 모든 저장 기록을 최종 제거 -->
+    <script>
+        (() => {
+            const marker = '__dangcheong_dowon_full_reset_pending__';
+            try {
+                if (localStorage.getItem(marker) !== '1') return;
+                const legacyExtraKeys = new Set(['nakwon-resident-pair-relations-v1']);
+                const isGameKey = key => typeof key === 'string' &&
+                    (key.startsWith('dangcheong-dowon-') || key.startsWith('dowon-audio-') || legacyExtraKeys.has(key));
+                const clearGame = store => {
+                    const keys = [];
+                    for (let i = 0; i < store.length; i++) {
+                        const key = store.key(i);
+                        if (isGameKey(key)) keys.push(key);
+                    }
+                    for (const key of keys) store.removeItem(key);
+                };
+                clearGame(localStorage);
+                clearGame(sessionStorage);
+                localStorage.removeItem(marker);
+            } catch (error) {
+                console.error('전원생활일지 새 게임 초기화 실패', error);
+            }
+        })();
+    </script>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"> 
+    <link rel="stylesheet" href="style.css"> 
+    <link rel="stylesheet" href="shop-order-layout.css"> 
+    <link rel="stylesheet" href="ui-polish.css"> 
+    <link rel="stylesheet" href="shop-redesign.css?v=20260925-1425"> 
+    <link rel="stylesheet" href="kitchen.css"> 
+    <link rel="stylesheet" href="menu-dialog-unified.css">
+    <link rel="stylesheet" href="collection.css"> 
+    <link rel="stylesheet" href="material-menu-icons.css"> 
+    <link rel="stylesheet" href="workshop-fold.css"> 
+    <link rel="stylesheet" href="village-features.css"> 
+    <link rel="stylesheet" href="village-cats.css"> 
+    <link rel="stylesheet" href="village-news.css"> 
+    <link rel="stylesheet" href="save-transfer.css"> 
+    <link rel="stylesheet" href="gold-clover-cursor.css"> 
+    <link rel="stylesheet" href="settings-panel.css"> 
+    <link rel="stylesheet" href="farm-rail-layout.css"> 
+    <link rel="stylesheet" href="workshop-adaptive.css"> 
+    <link rel="stylesheet" href="fishing.css"> 
+ 
+    <meta property="og:type" content="website"> 
+    <meta property="og:title" content="전원생활일지"> 
+    <meta property="og:description" content=""> 
+    <meta property="og:image" content="https://pm0413.github.io/LJ/thumbnail.png"> 
+    <meta property="og:url" content="https://pm0413.github.io/"> 
+ 
+    <meta name="twitter:card" content="summary_large_image"> 
+    <meta name="twitter:title" content="전원생활일지"> 
+    <meta name="twitter:description" content=""> 
+    <meta name="twitter:image" content="https://pm0413.github.io/LJ/thumbnail.png"> 
+</head>
+
+<body>
+
+    <div id="game">
+
+        <!-- ========================================
+             상단 40px
+             ======================================== -->
+
+        <header id="top-bar">
+
+            <div id="top-left"><span class="brand-mark material-symbols-outlined" aria-hidden="true">home_and_garden</span><span class="brand-name">전원생활일지</span><span class="brand-subtitle">NAKWON LIFE JOURNAL</span></div>
+
+            <div id="top-right" class="top-utility-controls" aria-label="게임 설정">
+                <button id="settings-open" type="button" aria-haspopup="dialog" aria-controls="save-transfer-dialog" aria-expanded="false" title="설정"><span class="material-symbols-outlined" aria-hidden="true">settings</span><span class="utility-label">설정</span></button>
+                <button id="music-toggle" type="button" aria-label="배경음 켜기" aria-pressed="false" title="배경음 켜기"><span class="music-button-icon material-symbols-outlined" aria-hidden="true">music_off</span><span class="music-button-label utility-label">배경음</span></button>
+                <button id="ambient-toggle" type="button" aria-label="환경음 켜기" aria-pressed="false" title="환경음 켜기"><span class="ambient-button-icon material-symbols-outlined" aria-hidden="true">volume_off</span><span class="ambient-button-label utility-label">환경음</span></button>
+                <button id="theme-toggle" type="button" aria-label="화이트 모드로 변경" title="테마 변경"><span class="theme-button-icon material-symbols-outlined" aria-hidden="true">contrast</span></button>
+            </div>
+
+        </header>
+
+
+        <!-- ========================================
+             게임 영역
+             ======================================== -->
+
+        <div id="game-area">
+
+
+            <!-- ====================================
+                 왼쪽 패널
+                 ==================================== -->
+
+            <aside id="left-area">
+
+                <div id="left-content"><button id="left-toggle" class="rail-expand" type="button" aria-label="메뉴 크게 보기" aria-expanded="false" title="메뉴 펼치기"><span class="menu-toggle-symbol material-symbols-outlined" aria-hidden="true">menu</span></button><div class="sidebar-title">MENU <span>01 / 09</span></div><button type="button" class="sidebar-entry selected" id="menu-residents"><span class="sidebar-glyph material-symbols-outlined">person</span><span class="sidebar-label">주민</span></button><button type="button" class="sidebar-entry" id="menu-warehouse" aria-controls="warehouse" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">box</span><span class="sidebar-label">창고</span></button><button type="button" class="sidebar-entry" id="menu-kitchen" aria-controls="kitchen-dialog" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">chef_hat</span><span class="sidebar-label">부엌</span></button><button type="button" class="sidebar-entry" id="menu-shop" aria-controls="shop-dialog" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined">local_convenience_store</span><span class="sidebar-label">상점</span></button><button type="button" class="sidebar-entry" id="menu-orders" aria-controls="order-board" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined">list_alt</span><span class="sidebar-label">주민 주문판</span></button><button type="button" class="sidebar-entry" id="menu-cats"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">pets</span><span class="sidebar-label">반려동물</span></button><button type="button" class="sidebar-entry" id="menu-achievements"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">editor_choice</span><span class="sidebar-label">마을 업적</span></button><button type="button" class="sidebar-entry" id="menu-collection" aria-controls="collection-dialog" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">developer_guide</span><span class="sidebar-label">도감</span></button><button type="button" class="sidebar-entry" id="menu-news"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">notification_sound</span><span class="sidebar-label">마을 기록</span></button></div>
+
+            </aside>
+
+
+            <!-- ====================================
+                 중앙 메인 영역
+                 ==================================== -->
+
+            <main id="main-area">
+    <button id="village-news-notice" type="button" hidden aria-live="polite"></button>
+<div id="village-status" class="village-status" aria-label="마을 시간과 쾌적도"><div class="village-time-row"><span id="village-time-icon" aria-hidden="true">☀</span><div><span class="village-date-label"><span id="village-day">1일째</span><span class="village-date-separator" aria-hidden="true">·</span><span id="village-season">여름</span></span><strong id="village-clock">06:00</strong></div><span id="village-period">아침</span></div><div class="village-comfort-row"><span>쾌적도</span><strong id="village-comfort">0</strong></div></div><div class="cat-bowls"><button type="button" class="cat-bowl" id="stray-cat-bowl" title="길냥이 밥그릇"><img alt="길냥이 밥그릇"><span>길냥이</span></button><button type="button" class="cat-bowl" id="home-cat-bowl" title="집냥이 밥그릇" hidden><img alt="집냥이 밥그릇"><span>집냥이</span></button></div><button id="village-sleep" class="village-sleep-bubble" type="button" hidden disabled title="22:00 이후 잠자리에 들 수 있습니다" aria-label="자러가기">자러가기</button>
+<button id="fishing-marker" class="fishing-marker" type="button" aria-label="낚시" title="낚시"><span class="fishing-pin-shape" aria-hidden="true"><span class="material-symbols-outlined fishing-pin-icon">phishing</span></span></button>
+<div id="fishing-marker-status" class="fishing-marker-status" role="status" aria-live="polite" hidden></div>
+
+
+                <!-- ==================================
+                     밭 + 창고
+                     ================================== -->
+
+                <div id="farm-area"><div class="farm-section-label" aria-label="밭 업그레이드"></div>
+
+
+                    <!-- ==================================
+                         밭 1
+                         ================================== -->
+
+                    <div
+                        class="farm"
+                        data-farm-id="0"
+                    >
+
+                        <div class="farm-cell" data-cell="0"></div>
+                        <div class="farm-cell" data-cell="1"></div>
+                        <div class="farm-cell" data-cell="2"></div>
+
+                        <div class="farm-cell" data-cell="3"></div>
+                        <div class="farm-cell" data-cell="4"></div>
+                        <div class="farm-cell" data-cell="5"></div>
+
+                        <div class="farm-cell" data-cell="6"></div>
+                        <div class="farm-cell" data-cell="7"></div>
+                        <div class="farm-cell" data-cell="8"></div>
+
+                    </div>
+
+
+                    <!-- ==================================
+                         밭 2
+                         ================================== -->
+
+                    <div
+                        class="farm"
+                        data-farm-id="1"
+                    >
+
+                        <div class="farm-cell" data-cell="0"></div>
+                        <div class="farm-cell" data-cell="1"></div>
+                        <div class="farm-cell" data-cell="2"></div>
+
+                        <div class="farm-cell" data-cell="3"></div>
+                        <div class="farm-cell" data-cell="4"></div>
+                        <div class="farm-cell" data-cell="5"></div>
+
+                        <div class="farm-cell" data-cell="6"></div>
+                        <div class="farm-cell" data-cell="7"></div>
+                        <div class="farm-cell" data-cell="8"></div>
+
+                    </div>
+
+
+                    <!-- ==================================
+                         밭 3
+                         ================================== -->
+
+                    <div
+                        class="farm"
+                        data-farm-id="2"
+                    >
+
+                        <div class="farm-cell" data-cell="0"></div>
+                        <div class="farm-cell" data-cell="1"></div>
+                        <div class="farm-cell" data-cell="2"></div>
+
+                        <div class="farm-cell" data-cell="3"></div>
+                        <div class="farm-cell" data-cell="4"></div>
+                        <div class="farm-cell" data-cell="5"></div>
+
+                        <div class="farm-cell" data-cell="6"></div>
+                        <div class="farm-cell" data-cell="7"></div>
+                        <div class="farm-cell" data-cell="8"></div>
+
+                    </div>
+
+
+                    <!-- ==================================
+                         밭 4
+                         ================================== -->
+
+                    <div
+                        class="farm"
+                        data-farm-id="3"
+                    >
+
+                        <div class="farm-cell" data-cell="0"></div>
+                        <div class="farm-cell" data-cell="1"></div>
+                        <div class="farm-cell" data-cell="2"></div>
+
+                        <div class="farm-cell" data-cell="3"></div>
+                        <div class="farm-cell" data-cell="4"></div>
+                        <div class="farm-cell" data-cell="5"></div>
+
+                        <div class="farm-cell" data-cell="6"></div>
+                        <div class="farm-cell" data-cell="7"></div>
+                        <div class="farm-cell" data-cell="8"></div>
+
+                    </div>
+
+
+                    <!-- ==================================
+                         창고
+                         ================================== -->
+
+
+
+
+                </div>
+
+
+                    <div id="warehouse" role="dialog" aria-modal="true" aria-labelledby="warehouse-heading" aria-hidden="true"><header id="warehouse-title"><div class="warehouse-heading-copy"><span class="panel-eyebrow">VILLAGE STORAGE</span><h2 id="warehouse-heading">창고</h2></div><button id="warehouse-close" type="button" aria-label="창고 닫기">×</button></header>
+
+                        <div class="warehouse-tabs" role="tablist" aria-label="창고 보관 종류"><button id="warehouse-tab-production" class="is-active" role="tab" type="button" aria-selected="true">생산</button><button id="warehouse-tab-material" role="tab" type="button" aria-selected="false">재료</button><button id="warehouse-tab-food" role="tab" type="button" aria-selected="false">음식</button><button id="warehouse-tab-decoration" role="tab" type="button" aria-selected="false">장식</button></div>
+                        <div id="warehouse-grid">
+
+                            <!-- JS에서 창고 아이템 생성 -->
+
+                        </div>
+
+                    </div>
+
+                <div id="warehouse-backdrop" aria-hidden="true"></div>
+
+                <!-- ==================================
+                     작물 선택창
+                     ================================== -->
+
+                <div id="crop-palette">
+                    <div
+                        class="crop-option"
+                        draggable="true"
+                        data-crop="rice"
+                        title="밀 · 성장 시간 15초"
+                    >
+                        <img class="item-icon" src="item/작물/밀.png" alt="밀">
+                        <span class="crop-option-name">밀</span>
+                    </div>
+                    <div
+                        class="crop-option"
+                        draggable="true"
+                        data-crop="bean"
+                        title="콩 · 성장 시간 30초"
+                    >
+                        <img class="item-icon" src="item/작물/콩.png" alt="콩">
+                        <span class="crop-option-name">콩</span>
+                    </div>
+                    <div class="crop-option" draggable="true" data-crop="sugarcane" title="사탕수수 · 성장 시간 1분">
+                        <img class="item-icon" src="item/작물/사탕수수.png" alt="사탕수수">
+                        <span class="crop-option-name">사탕수수</span>
+                    </div>
+                    <div class="crop-option" draggable="true" data-crop="paddy" title="벼 · 성장 시간 2분">
+                        <img class="item-icon" src="item/작물/벼.png" alt="벼">
+                        <span class="crop-option-name">벼</span>
+                    </div>
+                    <div class="crop-option" draggable="true" data-crop="cabbage" title="배추 · 성장 시간 2분 30초">
+                        <img class="item-icon" src="item/작물/배추.png" alt="배추">
+                        <span class="crop-option-name">배추</span>
+                    </div>
+                    <div class="crop-option" draggable="true" data-crop="pepper" title="고추 · 성장 시간 3분">
+                        <img class="item-icon" src="item/작물/고추.png" alt="고추">
+                        <span class="crop-option-name">고추</span>
+                    </div>
+                    <div class="crop-option" draggable="true" data-crop="potato" title="감자 · 성장 시간 4분">
+                        <img class="item-icon" src="item/작물/감자.png" alt="감자">
+                        <span class="crop-option-name">감자</span>
+                    </div>
+                    <div class="crop-option" draggable="true" data-crop="ramie" title="모시풀 · 성장 시간 5분"><img class="item-icon" src="item/작물/모시풀.png" alt="모시풀"><span class="crop-option-name">모시풀</span></div>
+                    <div class="crop-option" draggable="true" data-crop="cotton" title="솜 · 성장 시간 6분"><img class="item-icon" src="item/작물/솜.png" alt="솜"><span class="crop-option-name">솜</span></div>
+                    <div class="crop-option" draggable="true" data-crop="pumpkin" title="호박 · 성장 시간 8분"><img class="item-icon" src="item/작물/호박.png" alt="호박"><span class="crop-option-name">호박</span></div>
+                    <div class="crop-option" draggable="true" data-crop="sweetPotato" title="고구마 · 성장 시간 10분"><img class="item-icon" src="item/작물/고구마.png" alt="고구마"><span class="crop-option-name">고구마</span></div>
+                </div>
+                <!-- 등록된 주민 캐릭터는 주민 설정에서 생성됩니다. -->
+
+            </main>
+
+
+            <!-- ====================================
+                 오른쪽 영역
+                 ==================================== -->
+
+            <aside id="right-area">
+                <div class="workshop-panel-heading"><span class="section-symbol">⚒</span><div><span class="panel-eyebrow">PRODUCTION</span><strong>가공소</strong></div><span class="workshop-panel-count workshop-coin-wallet" id="workshop-coin-wallet" role="status" aria-label="보유 동전"><span aria-hidden="true">◈</span> <span class="coin-amount">0</span></span></div><div id="workshop-list" aria-label="가공소 목록">
+                    <section class="workshop-card" id="mill-workshop">
+                        <div class="workshop-heading"><strong>맷돌</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="mill-content" aria-label="맷돌 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div>
+                        <div class="workshop-content" id="mill-content">
+                            
+                            <div class="workshop-production"><div class="chopper-action"><button id="mill-start" type="button" aria-describedby="mill-tooltip">밀가루</button><div id="mill-tooltip" role="tooltip">필요 재료: 밀 2개<br>제작 시간: 30초</div></div><div id="mill-slots" aria-label="밀가루 제작 칸 6개"></div></div>
+                            <div class="workshop-production"><div class="chopper-action"><button id="mill-rice-powder-start" type="button" aria-describedby="mill-rice-powder-tooltip">떡가루</button><div id="mill-rice-powder-tooltip" role="tooltip">필요 재료: 벼 2개<br>제작 시간: 1분 30초</div></div><div id="mill-rice-powder-slots" aria-label="떡가루 제작 칸 6개"></div></div>
+                            <div class="workshop-production"><div class="chopper-action"><button id="extra-potatoStarch-start" type="button" aria-describedby="extra-potatoStarch-tooltip">감자전분</button><div id="extra-potatoStarch-tooltip" role="tooltip">필요 재료: 감자 3개<br>제작 시간: 2분</div></div><div id="extra-potatoStarch-slots" aria-label="감자전분 제작 칸 6개"></div></div>
+<div class="workshop-production"><div class="chopper-action"><button id="extra-sweetPotatoStarch-start" type="button" aria-describedby="extra-sweetPotatoStarch-tooltip">고구마 전분</button><div id="extra-sweetPotatoStarch-tooltip" role="tooltip">필요 재료: 고구마 3개<br>제작 시간: 3분</div></div><div id="extra-sweetPotatoStarch-slots" aria-label="고구마 전분 제작 칸 6개"></div></div>
+<p id="mill-message" role="status" aria-live="polite"></p>
+                        </div>
+                    </section>
+                    <section class="workshop-card comfort-locked" id="tofu-workshop" aria-disabled="true">
+                        <div class="workshop-heading"><strong>콩공방</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="tofu-content" aria-label="콩공방 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div>
+                        <div class="workshop-content" id="tofu-content">
+                            <div class="workshop-production"><div class="chopper-action"><button id="tofu-start" type="button" disabled aria-describedby="tofu-tooltip">두부</button><div id="tofu-tooltip" role="tooltip">필요 재료: 콩 2개<br>제작 시간: 2분</div></div><div id="tofu-slots" aria-label="콩공방 제작 칸 6개"></div></div>
+                            <div class="workshop-production"><div class="chopper-action"><button id="extra-soyMilk-start" type="button" aria-describedby="extra-soyMilk-tooltip">두유</button><div id="extra-soyMilk-tooltip" role="tooltip">필요 재료: 콩 3개<br>제작 시간: 3분</div></div><div id="extra-soyMilk-slots" aria-label="두유 제작 칸 6개"></div></div>
+<div class="workshop-production"><div class="chopper-action"><button id="extra-blackBeanPaste-start" type="button" aria-describedby="extra-blackBeanPaste-tooltip">검은콩장</button><div id="extra-blackBeanPaste-tooltip" role="tooltip">필요 재료: 콩 3개 · 고추 3개<br>제작 시간: 5분</div></div><div id="extra-blackBeanPaste-slots" aria-label="검은콩장 제작 칸 6개"></div></div>
+<p id="tofu-message" role="status" aria-live="polite"></p>
+                        </div>
+                    </section>
+                    <section class="workshop-card" id="chopper-workshop">
+                        <div class="workshop-heading"><strong>작두</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="chopper-content" aria-label="작두 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div>
+                        <div class="workshop-content" id="chopper-content">
+                            <div class="workshop-production"><div class="chopper-action"><button id="chopper-start" type="button" aria-describedby="chopper-tooltip">닭 사료</button><div id="chopper-tooltip" role="tooltip">필요 재료: 밀 2개 · 콩 1개<br>제작 시간: 1분</div></div><div id="chopper-slots" aria-label="작두 제작 칸 6개"></div></div>
+                            <div class="workshop-production"><div class="chopper-action"><button id="extra-sheepFeed-start" type="button" aria-describedby="extra-sheepFeed-tooltip">양 사료</button><div id="extra-sheepFeed-tooltip" role="tooltip">필요 재료: 밀 2개 · 사탕수수 1개<br>제작 시간: 1분 30초</div></div><div id="extra-sheepFeed-slots" aria-label="양 사료 제작 칸 6개"></div></div><p id="chopper-message" role="status" aria-live="polite"></p>
+                        </div>
+                    </section>
+                    <section class="workshop-card" id="coop-workshop">
+                        <div class="workshop-heading"><strong>닭장</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="coop-content" aria-label="닭장 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div>
+                        <div class="workshop-content" id="coop-content">
+                            <div class="workshop-production"><div class="chopper-action"><button id="coop-start" type="button" aria-describedby="coop-tooltip">달걀</button><div id="coop-tooltip" role="tooltip">필요 재료: 닭 사료 1개<br>제작 시간: 2분</div></div><div id="coop-slots" aria-label="닭장 제작 칸 6개"></div></div>
+                            <p id="coop-message" role="status" aria-live="polite"></p>
+                        </div>
+                    </section>
+                    <section class="workshop-card comfort-locked" id="sugar-workshop" aria-disabled="true">
+                        <div class="workshop-heading"><strong>설탕공방</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="sugar-content" aria-label="설탕공방 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div>
+                        <div class="workshop-content" id="sugar-content">
+                            <div class="workshop-production"><div class="chopper-action"><button id="sugar-start" type="button" disabled aria-describedby="sugar-tooltip">설탕</button><div id="sugar-tooltip" role="tooltip">필요 재료: 사탕수수 2개<br>제작 시간: 2분 30초</div></div><div id="sugar-slots" aria-label="설탕공방 제작 칸 6개"></div></div>
+                            <div class="workshop-production"><div class="chopper-action"><button id="extra-brownSugar-start" type="button" aria-describedby="extra-brownSugar-tooltip">흑설탕</button><div id="extra-brownSugar-tooltip" role="tooltip">필요 재료: 사탕수수 3개<br>제작 시간: 3분</div></div><div id="extra-brownSugar-slots" aria-label="흑설탕 제작 칸 6개"></div></div><div class="workshop-production"><div class="chopper-action"><button id="extra-maltSyrup-start" type="button" aria-describedby="extra-maltSyrup-tooltip">엿</button><div id="extra-maltSyrup-tooltip" role="tooltip">필요 재료: 사탕수수 3개 · 밀 3개<br>제작 시간: 4분</div></div><div id="extra-maltSyrup-slots" aria-label="엿 제작 칸 6개"></div></div>
+<p id="sugar-message" role="status" aria-live="polite"></p>
+                        </div>
+                    </section>
+                    <section class="workshop-card" id="pancake-workshop">
+                        <div class="workshop-heading"><strong>전병방</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="pancake-content" aria-label="전병방 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div>
+                        <div class="workshop-content" id="pancake-content">
+                            
+                            <div class="workshop-production"><div class="chopper-action"><button id="pancake-start" type="button" aria-describedby="pancake-tooltip">계란전</button><div id="pancake-tooltip" role="tooltip">필요 재료: 밀가루 1개 · 달걀 2개<br>제작 시간: 4분</div></div><div id="pancake-slots" aria-label="계란전 제작 칸 6개"></div></div>
+                            <div class="workshop-production"><div class="chopper-action"><button id="extra-hotteok-start" type="button" aria-describedby="extra-hotteok-tooltip">호떡</button><div id="extra-hotteok-tooltip" role="tooltip">필요 재료: 밀가루 2개 · 설탕 1개<br>제작 시간: 6분</div></div><div id="extra-hotteok-slots" aria-label="호떡 제작 칸 6개"></div></div>
+<div class="workshop-production"><div class="chopper-action"><button id="extra-vegetablePancake-start" type="button" aria-describedby="extra-vegetablePancake-tooltip">채소전</button><div id="extra-vegetablePancake-tooltip" role="tooltip">필요 재료: 밀가루 2개 · 달걀 3개 · 배추 3개<br>제작 시간: 7분</div></div><div id="extra-vegetablePancake-slots" aria-label="채소전 제작 칸 6개"></div></div>
+<div class="workshop-production"><div class="chopper-action"><button id="extra-potatoPancake-start" type="button" aria-describedby="extra-potatoPancake-tooltip">감자전</button><div id="extra-potatoPancake-tooltip" role="tooltip">필요 재료: 감자전분 1개 · 달걀 3개 · 흑설탕 1개<br>제작 시간: 8분</div></div><div id="extra-potatoPancake-slots" aria-label="감자전 제작 칸 6개"></div></div>
+<p id="pancake-message" role="status" aria-live="polite"></p>
+                        </div>
+                    </section>
+                    <section class="workshop-card" id="salter-workshop">
+                        <div class="workshop-heading"><strong>절임통</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="salter-content" aria-label="절임통 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div>
+                        <div class="workshop-content" id="salter-content">
+                            
+                            <div class="workshop-production"><div class="chopper-action"><button id="salter-start" type="button" aria-describedby="salter-tooltip">소금달걀</button><div id="salter-tooltip" role="tooltip">필요 재료: 달걀 2개<br>제작 시간: 4분</div></div><div id="salter-slots" aria-label="소금달걀 제작 칸 6개"></div></div>
+                            <div class="workshop-production"><div class="chopper-action"><button id="salter-vegetable-start" type="button" aria-describedby="salter-vegetable-tooltip">절임채소</button><div id="salter-vegetable-tooltip" role="tooltip">필요 재료: 배추 3개<br>제작 시간: 5분</div></div><div id="salter-vegetable-slots" aria-label="절임채소 제작 칸 6개"></div></div>
+                            <div class="workshop-production"><div class="chopper-action"><button id="extra-pickledPotato-start" type="button" aria-describedby="extra-pickledPotato-tooltip">절임감자</button><div id="extra-pickledPotato-tooltip" role="tooltip">필요 재료: 감자 3개 · 고추 3개<br>제작 시간: 6분</div></div><div id="extra-pickledPotato-slots" aria-label="절임감자 제작 칸 6개"></div></div>
+<p id="salter-message" role="status" aria-live="polite"></p>
+                        </div>
+                    </section>
+                    <section class="workshop-card" id="tofu-processing-workshop">
+                        <div class="workshop-heading"><strong>두부가공 시설</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="tofu-processing-content" aria-label="두부가공 시설 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div>
+                        <div class="workshop-content" id="tofu-processing-content">
+                            
+                            <div class="workshop-production"><div class="chopper-action"><button id="tofu-processing-start" type="button" aria-describedby="tofu-processing-tooltip">유부</button><div id="tofu-processing-tooltip" role="tooltip">필요 재료: 두부 1개 · 밀가루 1개<br>제작 시간: 5분</div></div><div id="tofu-processing-slots" aria-label="유부 제작 칸 6개"></div></div>
+                            <div class="workshop-production"><div class="chopper-action"><button id="extra-tofuStick-start" type="button" aria-describedby="extra-tofuStick-tooltip">푸주</button><div id="extra-tofuStick-tooltip" role="tooltip">필요 재료: 두유 1개 · 설탕 1개<br>제작 시간: 6분</div></div><div id="extra-tofuStick-slots" aria-label="푸주 제작 칸 6개"></div></div>
+<div class="workshop-production"><div class="chopper-action"><button id="extra-fermentedTofu-start" type="button" aria-describedby="extra-fermentedTofu-tooltip">두부유</button><div id="extra-fermentedTofu-tooltip" role="tooltip">필요 재료: 두부 2개 · 고추 2개<br>제작 시간: 7분</div></div><div id="extra-fermentedTofu-slots" aria-label="두부유 제작 칸 6개"></div></div>
+<div class="workshop-production"><div class="chopper-action"><button id="extra-tofuSkin-start" type="button" aria-describedby="extra-tofuSkin-tooltip">두부피</button><div id="extra-tofuSkin-tooltip" role="tooltip">필요 재료: 두유 1개 · 흑설탕 1개<br>제작 시간: 7분</div></div><div id="extra-tofuSkin-slots" aria-label="두부피 제작 칸 6개"></div></div>
+<p id="tofu-processing-message" role="status" aria-live="polite"></p>
+                        </div>
+                    </section>
+<section class="workshop-card" id="sheep-workshop"><div class="workshop-heading"><strong>양우리</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="sheep-content" aria-label="양우리 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div><div class="workshop-content" id="sheep-content"><div class="workshop-production"><div class="chopper-action"><button id="extra-wool-start" type="button" aria-describedby="extra-wool-tooltip">양털</button><div id="extra-wool-tooltip" role="tooltip">필요 재료: 양 사료 1개<br>제작 시간: 2분 30초</div></div><div id="extra-wool-slots" aria-label="양털 제작 칸 6개"></div></div><p id="extra-sheep-message" role="status" aria-live="polite"></p></div></section>
+<section class="workshop-card" id="ricecake-workshop"><div class="workshop-heading"><strong>떡방</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="ricecake-content" aria-label="떡방 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div><div class="workshop-content" id="ricecake-content"><div class="workshop-production"><div class="chopper-action"><button id="extra-stickyRiceCake-start" type="button" aria-describedby="extra-stickyRiceCake-tooltip">찹쌀떡</button><div id="extra-stickyRiceCake-tooltip" role="tooltip">필요 재료: 떡가루 1개 · 설탕 1개<br>제작 시간: 4분</div></div><div id="extra-stickyRiceCake-slots" aria-label="찹쌀떡 제작 칸 6개"></div></div><div class="workshop-production"><div class="chopper-action"><button id="extra-eggBread-start" type="button" aria-describedby="extra-eggBread-tooltip">계란빵</button><div id="extra-eggBread-tooltip" role="tooltip">필요 재료: 달걀 3개 · 떡가루 1개 · 흑설탕 1개<br>제작 시간: 7분</div></div><div id="extra-eggBread-slots" aria-label="계란빵 제작 칸 6개"></div></div><div class="workshop-production"><div class="chopper-action"><button id="extra-steamedRiceCake-start" type="button" aria-describedby="extra-steamedRiceCake-tooltip">증편</button><div id="extra-steamedRiceCake-tooltip" role="tooltip">필요 재료: 달걀 3개 · 떡가루 1개 · 엿 1개<br>제작 시간: 9분</div></div><div id="extra-steamedRiceCake-slots" aria-label="증편 제작 칸 6개"></div></div>
+<div class="workshop-production"><div class="chopper-action"><button id="extra-pumpkinRiceCake-start" type="button" aria-describedby="extra-pumpkinRiceCake-tooltip">호박떡</button><div id="extra-pumpkinRiceCake-tooltip" role="tooltip">필요 재료: 호박 3개 · 떡가루 1개 · 흑설탕 1개<br>제작 시간: 8분</div></div><div id="extra-pumpkinRiceCake-slots" aria-label="호박떡 제작 칸 6개"></div></div>
+<p id="extra-ricecake-message" role="status" aria-live="polite"></p></div></section>
+<section class="workshop-card" id="dryer-workshop"><div class="workshop-heading"><strong>건조장</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="dryer-content" aria-label="건조장 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div><div class="workshop-content" id="dryer-content"><div class="workshop-production"><div class="chopper-action"><button id="extra-pumpkinSeed-start" type="button" aria-describedby="extra-pumpkinSeed-tooltip">호박씨</button><div id="extra-pumpkinSeed-tooltip" role="tooltip">필요 재료: 호박 3개<br>제작 시간: 3분</div></div><div id="extra-pumpkinSeed-slots" aria-label="호박씨 제작 칸 6개"></div></div><div class="workshop-production"><div class="chopper-action"><button id="extra-glassNoodles-start" type="button" aria-describedby="extra-glassNoodles-tooltip">당면</button><div id="extra-glassNoodles-tooltip" role="tooltip">필요 재료: 감자전분 1개<br>제작 시간: 5분</div></div><div id="extra-glassNoodles-slots" aria-label="당면 제작 칸 6개"></div></div>
+<div class="workshop-production"><div class="chopper-action"><button id="extra-driedBlackBeanPaste-start" type="button" aria-describedby="extra-driedBlackBeanPaste-tooltip">말린검은콩장</button><div id="extra-driedBlackBeanPaste-tooltip" role="tooltip">필요 재료: 검은콩장 1개<br>제작 시간: 7분</div></div><div id="extra-driedBlackBeanPaste-slots" aria-label="말린검은콩장 제작 칸 6개"></div></div>
+<p id="extra-dryer-message" role="status" aria-live="polite"></p></div></section>
+<section class="workshop-card" id="roastery-workshop"><div class="workshop-heading"><strong>구이방</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="roastery-content" aria-label="구이방 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div><div class="workshop-content" id="roastery-content"><div class="workshop-production"><div class="chopper-action"><button id="extra-roastedSweetPotato-start" type="button" aria-describedby="extra-roastedSweetPotato-tooltip">군고구마</button><div id="extra-roastedSweetPotato-tooltip" role="tooltip">필요 재료: 고구마 3개<br>제작 시간: 4분</div></div><div id="extra-roastedSweetPotato-slots" aria-label="군고구마 제작 칸 6개"></div></div><div class="workshop-production"><div class="chopper-action"><button id="extra-roastedPotato-start" type="button" aria-describedby="extra-roastedPotato-tooltip">구운감자</button><div id="extra-roastedPotato-tooltip" role="tooltip">필요 재료: 감자 3개 · 고추 2개<br>제작 시간: 5분</div></div><div id="extra-roastedPotato-slots" aria-label="구운감자 제작 칸 6개"></div></div>
+<div class="workshop-production"><div class="chopper-action"><button id="extra-grilledTofu-start" type="button" aria-describedby="extra-grilledTofu-tooltip">구운두부</button><div id="extra-grilledTofu-tooltip" role="tooltip">필요 재료: 두부 2개 · 고추 2개<br>제작 시간: 6분</div></div><div id="extra-grilledTofu-slots" aria-label="구운두부 제작 칸 6개"></div></div>
+<p id="extra-roastery-message" role="status" aria-live="polite"></p></div></section>
+<section class="workshop-card" id="textile-workshop"><div class="workshop-heading"><strong>옷공방</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="textile-content" aria-label="옷공방 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div><div class="workshop-content" id="textile-content"><div class="workshop-production"><div class="chopper-action"><button id="extra-hempCloth-start" type="button" aria-describedby="extra-hempCloth-tooltip">삼베</button><div id="extra-hempCloth-tooltip" role="tooltip">필요 재료: 모시풀 4개<br>제작 시간: 4분</div></div><div id="extra-hempCloth-slots" aria-label="삼베 제작 칸 6개"></div></div><div class="workshop-production"><div class="chopper-action"><button id="extra-yarn-start" type="button" aria-describedby="extra-yarn-tooltip">털실</button><div id="extra-yarn-tooltip" role="tooltip">필요 재료: 양털 4개<br>제작 시간: 5분</div></div><div id="extra-yarn-slots" aria-label="털실 제작 칸 6개"></div></div><div class="workshop-production"><div class="chopper-action"><button id="extra-cottonFabric-start" type="button" aria-describedby="extra-cottonFabric-tooltip">면직물</button><div id="extra-cottonFabric-tooltip" role="tooltip">필요 재료: 솜 4개<br>제작 시간: 4분</div></div><div id="extra-cottonFabric-slots" aria-label="면직물 제작 칸 6개"></div></div><p id="extra-textile-message" role="status" aria-live="polite"></p></div></section>
+<section class="workshop-card" id="embroidery-workshop"><div class="workshop-heading"><strong>자수방</strong><button class="workshop-fold" type="button" aria-expanded="true" aria-controls="embroidery-content" aria-label="자수방 접기"><span class="workshop-fold-arrow" aria-hidden="true">▾</span></button></div><div class="workshop-content" id="embroidery-content"><div class="workshop-production"><div class="chopper-action"><button id="extra-clothDoll-start" type="button" aria-describedby="extra-clothDoll-tooltip">수국</button><div id="extra-clothDoll-tooltip" role="tooltip">필요 재료: 삼베 1개 · 털실 1개<br>제작 시간: 6분</div></div><div id="extra-clothDoll-slots" aria-label="수국 제작 칸 6개"></div></div><div class="workshop-production"><div class="chopper-action"><button id="extra-sachet-start" type="button" aria-describedby="extra-sachet-tooltip">향주머니</button><div id="extra-sachet-tooltip" role="tooltip">필요 재료: 면직물 1개 · 삼베 1개<br>제작 시간: 10분</div></div><div id="extra-sachet-slots" aria-label="향주머니 제작 칸 6개"></div></div><p id="extra-embroidery-message" role="status" aria-live="polite"></p></div></section>
+                </div>
+            </aside>
+
+
+        </div>
+
+    </div>
+
+
+
+
+<!-- 상점: 중앙 팝업 -->
+<div id="shop-backdrop" class="shop-backdrop" hidden></div>
+<section id="shop-dialog" class="shop-dialog" role="dialog" aria-modal="true" aria-labelledby="shop-title" hidden>
+  <header class="shop-heading"><div><span class="panel-eyebrow">VILLAGE SHOP</span><h2 id="shop-title">상점</h2></div><button id="shop-close" type="button" aria-label="상점 닫기">×</button></header>
+  <div class="shop-wallet">보유 동전 <strong id="shop-coins"><span class="coin-icon" aria-hidden="true">◈</span><span class="coin-amount">0</span></strong></div>
+  <div class="shop-category-tabs" role="tablist" aria-label="상점 상품 분류">
+    <button type="button" id="shop-tab-materials" class="shop-category-tab is-active" role="tab" aria-selected="true" aria-controls="shop-products">재료</button>
+    <button type="button" id="shop-tab-pets" class="shop-category-tab" role="tab" aria-selected="false" aria-controls="shop-products">반려동물</button>
+  </div>
+  <div id="shop-products" class="shop-products" role="tabpanel" aria-labelledby="shop-tab-materials"></div>
+  <p id="shop-status" class="shop-status" role="status" aria-live="polite"></p>
+</section>
+
+<!-- 부엌: 타이밍 요리와 레시피별 숙련도 -->
+<div id="kitchen-backdrop" hidden></div>
+<section id="kitchen-dialog" role="dialog" aria-modal="true" aria-labelledby="kitchen-title" hidden>
+  <header class="kitchen-heading"><div><span class="kitchen-eyebrow">DOWON KITCHEN</span><h2 id="kitchen-title">부엌 · 요리</h2></div><button id="kitchen-collection-toggle" type="button">요리 도감</button><button id="kitchen-close" type="button" aria-label="부엌 닫기">×</button></header>
+  <div class="kitchen-progress" id="kitchen-progress"><span class="kitchen-level">요리 <strong id="kitchen-level">1</strong>레벨</span><div class="kitchen-progress-body"><div class="kitchen-progress-note"><span id="kitchen-level-info">다음 레벨까지</span><span id="kitchen-experience">0 / 40 EXP</span></div><div class="kitchen-exp-track"><div id="kitchen-exp-fill" class="kitchen-exp-fill"></div></div></div></div>
+  <div class="kitchen-content" id="kitchen-content"><div id="kitchen-recipe-list" class="kitchen-list" aria-label="요리 레시피"></div>
+    <div class="kitchen-detail"><div class="kitchen-dish-title"><span id="kitchen-dish-icon" class="kitchen-dish-icon">🍳</span><div><h3 id="kitchen-dish-name">레시피를 선택해 주세요</h3><p id="kitchen-dish-level"></p></div></div>
+      <div id="kitchen-ingredients" class="kitchen-ingredients"></div><div id="kitchen-mastery-label" class="kitchen-mastery-label"></div><div id="kitchen-mastery-track" class="kitchen-mastery-track"></div>
+      <div id="kitchen-actions" class="kitchen-actions"><button type="button" id="kitchen-manual">직접 요리</button><button type="button" id="kitchen-auto">자동 요리</button></div>
+      <div id="kitchen-minigame" hidden><span class="kitchen-game-label">바늘이 주황색 영역 한가운데에 왔을 때 멈춰!</span>
+        <svg class="kitchen-arc" viewBox="0 0 600 290" role="img" aria-label="좌우로 왕복하는 바늘을 중앙 성공 구간에 맞추는 요리 타이밍 게임">
+          <path class="kitchen-arc-outer" d="M55 265 A245 245 0 0 1 545 265 L435 265 A135 135 0 0 0 165 265 Z"/>
+          <path class="kitchen-target" d="M256.1 24.0 A245 245 0 0 1 343.9 24.0 L324.2 132.2 A135 135 0 0 0 275.8 132.2 Z"/>
+          <path class="kitchen-arc-inner" d="M165 265 A135 135 0 0 1 435 265" fill="none"/>
+          <!-- 참고 이미지처럼 게이지 아래에 프라이팬을 배치한 경량 SVG 연출 -->
+          <path d="M392 251 L524 224 Q536 223 538 229 Q540 235 526 238 L400 270 Z" fill="#86664d" stroke="#422f29" stroke-width="3"/>
+          <ellipse cx="300" cy="257" rx="104" ry="27" fill="#392f2b" stroke="#a27b5f" stroke-width="4"/>
+          <ellipse cx="300" cy="251" rx="86" ry="16" fill="#5c5142"/>
+          <ellipse cx="285" cy="249" rx="30" ry="8" fill="#e9bf73" opacity=".9"/>
+          <ellipse cx="310" cy="249" rx="19" ry="7" fill="#83a66a" opacity=".95"/>
+          <line id="kitchen-needle" class="kitchen-needle" x1="300" y1="265" x2="55" y2="265"/><circle class="kitchen-needle-dot" cx="300" cy="265" r="5"/>
+          <text x="300" y="84" text-anchor="middle" class="kitchen-arc-label">PERFECT</text>
+        </svg><button id="kitchen-stop" type="button">여기서 멈추기 · SPACE</button></div>
+      <div id="kitchen-result-panel" class="kitchen-result-panel" hidden><strong id="kitchen-result-title"></strong><p id="kitchen-result-description"></p><button id="kitchen-next" type="button">확인</button></div>
+      <!-- 요리 완료 시 부엌 상세 카드 위에 짧게 나타나는 애니메이션 (이미지는 레시피 icon 그대로 사용) -->
+      <div id="kitchen-complete" class="kitchen-complete" role="status" aria-live="polite" aria-atomic="true" hidden>
+        <span class="kitchen-complete-glow" aria-hidden="true"></span>
+        <span class="kitchen-complete-spark kitchen-complete-spark-a" aria-hidden="true">✦</span>
+        <span class="kitchen-complete-spark kitchen-complete-spark-b" aria-hidden="true">✧</span>
+        <span class="kitchen-complete-spark kitchen-complete-spark-c" aria-hidden="true">✦</span>
+        <span class="kitchen-complete-badge" id="kitchen-complete-badge">완성!</span>
+        <span class="kitchen-complete-dish" id="kitchen-complete-dish" aria-hidden="true"></span>
+        <strong class="kitchen-complete-name" id="kitchen-complete-name"></strong>
+        <span class="kitchen-complete-reward" id="kitchen-complete-reward"></span>
+      </div>
+      <p id="kitchen-help" class="kitchen-help">일반 성공: 경험치 +2 / 완벽 성공: 경험치 +6 · 숙련도 +1 / 자동 요리: 경험치 +4. 숙련도 4/4 달성 후에도 직접 요리를 선택할 수 있습니다.</p>
+      <div id="kitchen-message" class="kitchen-result" role="status" aria-live="polite"></div>
+    </div></div><div id="kitchen-collection" hidden aria-label="요리 도감"></div>
+</section>
+
+<!-- 선물하기 / 마을 업적 공통 팝업 -->
+<div id="village-features-backdrop" hidden></div>
+<section id="village-features-dialog" role="dialog" aria-modal="true" aria-labelledby="village-features-title" hidden>
+  <header class="vf-heading"><div><span class="vf-eyebrow">NAKWON LIFE JOURNAL LIFE</span><h2 id="village-features-title">마을 생활</h2></div><button id="village-features-close" class="vf-close" type="button" aria-label="닫기">×</button></header>
+  <div id="village-features-content" class="vf-body"></div><p id="village-features-status" class="vf-status" role="status" aria-live="polite"></p>
+</section>
+
+<!-- 농장 주민 갤러리: 최대 5명 -->
+<div id="resident-backdrop" class="resident-backdrop" hidden></div>
+<section id="resident-dialog" class="resident-dialog" role="dialog" aria-modal="true" aria-labelledby="resident-title" hidden>
+  <header class="resident-heading"><div><span class="panel-eyebrow">VILLAGE RESIDENTS</span><h2 id="resident-title">주민</h2></div><button type="button" id="resident-close" aria-label="주민 창 닫기">×</button></header>
+  <p class="resident-hint">최대 5명까지 등록할 수 있습니다. 카드를 선택하면 주민 정보를 확인할 수 있습니다.</p>
+  <div id="resident-cards" class="resident-cards"></div>
+</section>
+
+<!-- 주민 주문판: 왼쪽 메뉴에서 열리는 독립 화면 -->
+<div id="order-backdrop" aria-hidden="true"></div>
+<section id="order-board" role="dialog" aria-modal="true" aria-labelledby="order-title" aria-hidden="true">
+  <header class="order-header"><div><span class="panel-eyebrow">VILLAGE REQUESTS</span><h2 id="order-title">주민 주문판</h2></div><div class="order-header-actions"><button type="button" id="order-close" aria-label="주문판 닫기">×</button></div></header>
+  <p class="order-hint">주민을 최대 5명까지 등록할 수 있습니다. 이름과 이미지는 직접 설정할 수 있습니다.</p>
+  <div id="order-residents" class="order-residents"></div>
+  <div id="order-detail" class="order-detail" aria-live="polite"></div>
+  <p class="order-status" id="order-status" role="status" aria-live="polite"></p>
+</section>
+    <!-- 디버그 메뉴: 기존 제작 시간 감기와 게임 시간 이동 -->
+    <div id="village-cats-backdrop" hidden></div>
+    <section id="village-cats-dialog" role="dialog" aria-modal="true" aria-labelledby="cats-title" hidden>
+      <header class="cat-heading"><div><small>NAKWON LIFE JOURNAL CATS</small><h2 id="cats-title">고양이</h2></div><button id="cats-close" class="cat-close" type="button" aria-label="고양이 창 닫기">×</button></header>
+      <div id="cats-content" class="cat-content"></div><p id="cats-status" class="cat-status" role="status" aria-live="polite"></p>
+    </section>
+    <div id="village-news-backdrop" hidden></div>
+    <section id="village-news-dialog" role="dialog" aria-modal="true" aria-labelledby="village-news-title" hidden>
+      <header class="vn-heading"><div><small>NAKWON LIFE JOURNAL DAILY</small><h2 id="village-news-title">마을 기록</h2></div><button id="village-news-close" type="button" aria-label="마을 기록 닫기">×</button></header>
+      <div id="village-news-content"></div>
+    </section>
+    <div id="fishing-backdrop" class="fishing-backdrop" hidden></div>
+    <section id="fishing-dialog" class="fishing-dialog" role="dialog" aria-modal="true" aria-labelledby="fishing-title" hidden>
+      <header class="fishing-heading">
+        <div class="fishing-title-wrap"><span class="panel-eyebrow">FISHING</span><h2 id="fishing-title">낚시</h2></div>
+        <div class="fishing-heading-actions">
+          <button id="fishing-close" type="button" aria-label="낚시 닫기">×</button>
+        </div>
+      </header>
+      <div class="fishing-hud">
+        <div class="fishing-meta"><span>미끼 <strong id="fishing-bait-count">0</strong></span><span>남은 횟수 <strong id="fishing-attempts">-</strong></span></div>
+        <div class="fishing-progress" aria-label="낚시 진행도"><div id="fishing-progress-fill"></div></div>
+        <div id="fishing-current" class="fishing-current" hidden aria-hidden="true"></div>
+      </div>
+      <div id="fishing-start" class="fishing-start">
+        <strong>미끼를 던지겠습니까?</strong>
+        <p id="fishing-start-note">미끼는 ‘네’를 누를 때 1개 소모됩니다.</p>
+        <div class="fishing-start-actions"><button id="fishing-start-yes" type="button">네</button><button id="fishing-start-no" type="button">아니오</button></div>
+      </div>
+      <div id="fishing-stage" class="fishing-stage" hidden>
+        <button id="fishing-dial" class="fishing-dial" type="button" aria-label="수축하는 원이 색상 판정 띠 안에 들어왔을 때 누르기">
+          <span id="fishing-target" class="fishing-target" aria-hidden="true"></span>
+          <span id="fishing-pointer" class="fishing-pulse" aria-hidden="true"></span>
+          <span id="fishing-countdown" class="fishing-countdown" aria-live="polite"></span>
+          <span id="fishing-judgement" class="fishing-judgement" aria-live="polite"></span>
+        </button>
+      </div>
+      <div id="fishing-result" class="fishing-result" hidden>
+        <div id="fishing-result-fish" class="fishing-result-fish" hidden>
+          <span id="fishing-result-grade" class="fishing-result-grade"></span>
+          <img id="fishing-result-image" alt="" draggable="false">
+          <strong id="fishing-result-name"></strong>
+          <small id="fishing-result-measure"></small>
+        </div>
+        <strong id="fishing-result-title"></strong><p id="fishing-result-text"></p>
+        <div class="fishing-result-actions"><button id="fishing-again" type="button">다시 낚시</button><button id="fishing-exit" type="button">나가기</button></div>
+      </div>
+    </section>
+    <div class="collection-backdrop" id="collection-backdrop" hidden></div>
+    <section class="collection-dialog" id="collection-dialog" role="dialog" aria-modal="true" aria-labelledby="collection-title" hidden>
+      <div class="collection-heading"><div><span class="panel-eyebrow">COLLECTION</span><strong id="collection-title">도감</strong></div><button id="collection-close" type="button" aria-label="도감 닫기">×</button></div>
+      <div class="collection-summary"><strong id="collection-total">0 / 0</strong><span id="collection-percent">전체 수집률 0%</span></div>
+      <div class="collection-tabs" role="tablist" aria-label="도감 분류">
+        <button type="button" class="is-active" data-collection-tab="crop" role="tab" aria-selected="true">작물 <span id="collection-count-crop">0/0</span></button>
+        <button type="button" data-collection-tab="processed" role="tab" aria-selected="false">가공품 <span id="collection-count-processed">0/0</span></button>
+        <button type="button" data-collection-tab="cooking" role="tab" aria-selected="false">요리 <span id="collection-count-cooking">0/0</span></button>
+        <button type="button" data-collection-tab="fish" role="tab" aria-selected="false">물고기 <span id="collection-count-fish">0/0</span></button>
+        <button type="button" data-collection-tab="cat" role="tab" aria-selected="false">고양이 <span id="collection-count-cat">0/0</span></button>
+      </div>
+      <div class="collection-body"><div id="collection-grid" class="collection-grid"></div><aside id="collection-detail" class="collection-detail" aria-live="polite"><span>항목을 선택해 주세요.</span></aside></div>
+    </section>
+    <div class="save-transfer-backdrop" id="save-transfer-backdrop" hidden></div>
+    <section class="save-transfer-dialog" id="save-transfer-dialog" role="dialog" aria-modal="true" aria-labelledby="save-transfer-title" hidden>
+      <div class="save-transfer-heading"><strong id="save-transfer-title">설정</strong><button id="save-transfer-close" type="button" aria-label="설정 닫기">×</button></div>
+      <div class="settings-tabs" role="tablist" aria-label="설정 분류">
+        <button type="button" class="is-active" role="tab" id="settings-tab-general" aria-controls="settings-panel-general" aria-selected="true">일반</button>
+        <button type="button" role="tab" id="settings-tab-backup" aria-controls="settings-panel-backup" aria-selected="false">백업</button>
+      </div>
+      <div id="settings-panel-general" class="settings-panel" role="tabpanel" aria-labelledby="settings-tab-general">
+        <div class="settings-card"><div class="settings-row"><div><strong>게임 시간</strong><p>게임 안의 날짜와 시각만 멈춥니다. 가공·작물의 제작 타이머는 그대로 진행됩니다.</p></div><button id="settings-pause-time" type="button" aria-pressed="false">시간 멈추기</button></div><p id="settings-pause-status" class="settings-status" role="status" aria-live="polite">시간 진행 중</p></div>
+        <div class="settings-card settings-danger"><strong>저장 데이터 초기화</strong><p>주민, 창고, 가공소, 날짜와 음악 설정 등 이 기기의 전원생활일지 저장 데이터를 모두 삭제합니다. 삭제 전 백업 탭에서 내보내세요.</p><button id="settings-reset-all" type="button" class="settings-reset-all">모든 데이터 삭제</button></div>
+      </div>
+      <div id="settings-panel-backup" class="settings-panel save-transfer-body" role="tabpanel" aria-labelledby="settings-tab-backup" hidden>
+        <p>PC와 휴대폰은 저장 데이터가 자동으로 연동되지 않습니다. PC에서 백업 파일을 내려받아 휴대폰으로 옮긴 뒤, 휴대폰에서 불러오세요.</p>
+        <div class="save-transfer-section"><strong>① 현재 기기 데이터 내보내기</strong><p>작물·창고·동전·주민·고양이·업적 등 이 기기의 게임 진행 상황을 JSON 파일로 저장합니다.</p><button type="button" id="save-transfer-export">⬇️ 저장 데이터 내보내기</button></div>
+        <div class="save-transfer-section"><strong>② 다른 기기에서 데이터 가져오기</strong><p class="save-transfer-warning">⚠️ 가져오기를 하면 이 기기의 기존 전원생활일지 저장 데이터가 백업 파일 내용으로 덮어써집니다. 필요한 경우 먼저 이 기기에서도 내보내기를 해 주세요.</p><label for="save-transfer-file" class="save-transfer-file-label">📂 백업 파일 선택 (.json)</label><input type="file" id="save-transfer-file" accept=".json,application/json"><span id="save-transfer-filename" class="save-transfer-filename">선택한 파일 없음</span><button type="button" id="save-transfer-import" disabled>⬆️ 선택한 데이터 가져오기</button></div>
+        <p class="save-transfer-note">파일을 다른 사람과 공유하지 마세요. 저장 파일에는 등록한 주민의 이름·이미지 등 개인화 정보가 포함될 수 있습니다. 게임 이미지·음원 파일 자체는 저장 데이터에 포함되지 않습니다.</p>
+        <p id="save-transfer-status" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+    <div id="youtube-bgm-player" aria-hidden="true"></div>
+    <div id="youtube-ambient-player" aria-hidden="true"></div>
+    <div id="sleep-transition" aria-hidden="true"></div>
+    <script src="save-version.js?v=20260925-2305"></script>
+    <script src="data-reset.js?v=20260925-2335"></script>
+    <script src="cooking-recipes.js?v=20260925-2305"></script>
+    <script src="item-descriptions.js?v=20260925-2305"></script>
+    <script src="progression.js?v=20260925-2305"></script>
+    <script src="village-request-items.js?v=20260925-2305"></script>
+    <script src="resident-request-rewards.js?v=20260925-2305"></script>
+    <script src="script.js?v=20260925-2305"></script>
+    <script src="resident-gifts.js?v=20260925-2305"></script>
+    <script src="default-residents.js?v=20260925-2305"></script>
+    <script src="resident-pair-relations.js?v=20260925-2305"></script>
+    <script src="residents.js?v=20260925-2305"></script>
+    <script src="resident-horizontal-drag.js?v=20260925-2305"></script>
+    <script src="shop-catalog.js?v=20260925-2305"></script>
+    <script src="cat-shop-catalog.js?v=20260925-2305"></script>
+    <script src="shop.js?v=20260925-2305"></script>
+    <script src="kitchen.js?v=20260925-2305"></script>
+    <script src="crop-image-fallback.js?v=20260925-2305"></script>
+    <script src="slot-navigation.js?v=20260925-2305"></script>
+    <script src="workshop-fold.js?v=20260925-2305"></script>
+    <script src="order-board.js?v=20260925-2305"></script>
+    <script src="item-sales.js?v=20260925-2305"></script>
+    <script src="resident-affinity.js?v=20260925-2305"></script>
+    <script src="village-seasons.js?v=20260925-2305"></script>
+    <script src="village-weather.js?v=20260925-2305"></script>
+    <script src="village-time.js?v=20260925-2305"></script>
+    <script src="village-youtube-api.js?v=20260925-2305"></script>
+    <script src="village-music.js?v=20260925-2305"></script>
+    <script src="village-ambient.js?v=20260925-2305"></script>
+    <script src="village-features.js?v=20260925-2305"></script>
+    <script src="village-cat-config.js?v=20260925-2305"></script>
+    <script src="village-cat-gifts.js?v=20260925-2305"></script>
+    <script src="village-cats.js?v=20260925-2305"></script>
+    <script src="village-news.js?v=20260925-2305"></script>
+    <script src="collection.js?v=20260926-collection1"></script>
+    <script src="fishing.js?v=20260925-2305"></script>
+    <script src="save-transfer.js?v=20260925-2305"></script>
+    <script src="settings-panel.js?v=20260925-2305"></script>
+    <script src="crop-palette-pan.js?v=20260925-2305"></script>
+
+    <!-- 선택형 디버그: debug-menu.js 파일이 있을 때만 버튼/팝업이 생성됩니다. 배포 시 이 파일만 빼면 됩니다. -->
+    <script src="debug-menu.js?v=20260925-optional" onerror="this.remove()"></script>
+
+</body>
+</html>

@@ -1,0 +1,50 @@
+/* 상점 레이아웃: 기존 style.css 버전과 무관하게 독립적으로 적용 */
+#shop-backdrop[hidden], #shop-dialog[hidden] {display:none!important}
+#shop-backdrop:not([hidden]) {position:fixed!important;inset:0!important;display:block!important;background:rgba(8,8,8,.80)!important;z-index:2800!important}
+#shop-dialog:not([hidden]) {
+ display:flex!important; flex-direction:column!important; position:fixed!important;
+ inset:auto!important;top:50%!important;left:50%!important;right:auto!important;bottom:auto!important;
+ transform:translate(-50%,-50%)!important; z-index:2801!important;
+ width:min(790px,calc(100vw - 32px))!important;max-width:calc(100vw - 32px)!important;
+ max-height:calc(100dvh - 32px)!important;min-width:0!important;min-height:0!important;
+ margin:0!important;padding:22px!important; overflow-y:auto!important;overflow-x:hidden!important;
+ box-sizing:border-box!important;border:1px solid rgba(187,187,187,.50)!important;border-radius:3px!important;
+ background:linear-gradient(145deg,#282828,#121212)!important;color:#f3ece0!important;
+ box-shadow:0 24px 90px rgba(0,0,0,.76)!important;font-family:'Paperozi',sans-serif!important;
+}
+#shop-dialog *,#shop-dialog *::before,#shop-dialog *::after {box-sizing:border-box!important}
+#shop-dialog .shop-heading {display:flex!important;flex:0 0 auto!important;align-items:center!important;justify-content:space-between!important;gap:16px!important;padding:0 0 13px!important;margin:0!important;border-bottom:1px solid rgba(217,217,217,.26)!important}
+#shop-dialog .shop-heading .panel-eyebrow {display:block!important;margin:0 0 5px!important;color:#b7b7b7!important;letter-spacing:.18em!important;font-size:10px!important}
+#shop-dialog .shop-heading h2 {margin:0!important;color:inherit!important;font-size:23px!important;line-height:1.3!important}
+#shop-dialog #shop-close {display:grid!important;place-items:center!important;flex:0 0 34px!important;width:34px!important;height:34px!important;margin:0!important;padding:0!important;border:1px solid rgba(204,204,204,.58)!important;border-radius:3px!important;font:24px/1 sans-serif!important;cursor:pointer!important}
+#shop-dialog .shop-wallet {display:flex!important;flex:0 0 auto!important;align-items:center!important;gap:12px!important;}
+#shop-dialog #shop-products {grid-template-columns:repeat(3,minmax(0,1fr))!important;align-items:stretch!important;width:100%!important;min-width:0!important}
+#shop-dialog #shop-status {flex:0 0 auto!important;margin:14px 0 0!important;font-size:12px!important;}
+body.light-mode #shop-dialog:not([hidden]) {background:linear-gradient(135deg,#f8f4ec,#eee4d5)!important;color:#2a251e!important;border-color:#c9b494!important}
+body.light-mode #shop-dialog .shop-wallet {color:#585858!important}
+body.light-mode #shop-dialog .shop-heading .panel-eyebrow,body.light-mode #shop-dialog #shop-status {color:#585858!important}
+@media(max-width:580px){#shop-dialog:not([hidden]){padding:13px!important}#shop-dialog #shop-products{grid-template-columns:1fr!important;gap:8px!important}}
+
+/* 주문판: 내용과 하단 보상이 화면 밖으로 잘리지 않게 높이와 스크롤 분리 */
+#order-board.is-open {display:flex!important;flex-direction:column!important;min-height:0!important;max-height:calc(100dvh - 22px)!important;height:min(690px,calc(100dvh - 22px))!important;overflow:hidden!important;padding:clamp(9px,1.5vw,17px)!important}
+#order-board .order-header {flex:0 0 auto!important}
+#order-board .order-hint {flex:0 0 auto!important;margin:6px 0 3px!important}
+#order-board .order-roster {flex:0 0 auto!important;min-height:0!important}
+#order-board .order-roster-heading {margin:4px 0!important}
+#order-board .order-roster-people {margin:0 0 5px!important;gap:5px!important}
+#order-board #order-residents {flex:0 0 auto!important;min-height:0!important;margin:4px 0 6px!important;gap:5px!important}
+#order-board .order-resident {padding:4px 3px!important;gap:3px!important}
+#order-board .order-portrait {min-height:0!important;}
+#order-board #order-detail {flex:1 1 auto!important;display:flex!important;flex-direction:column!important;min-height:0!important;overflow-x:hidden!important;overflow-y:auto!important;padding-top:7px!important;padding-bottom:5px!important}
+#order-board .order-detail-heading {flex:0 0 auto!important;margin-bottom:6px!important}
+#order-board .order-items {flex:0 0 auto!important;min-height:0!important;overflow:visible!important;align-content:start!important;gap:6px!important}
+#order-board .order-item {min-width:65px!important;padding:6px!important;gap:2px!important}
+#order-board .order-footer {position:sticky!important;bottom:0!important;z-index:2!important;flex:0 0 auto!important;min-width:0!important;margin-top:auto!important;padding:9px 0 3px!important;flex-wrap:wrap!important;}
+#order-board .order-footer-actions {display:flex!important;flex:0 0 auto!important;gap:6px!important;margin-left:auto!important}
+#order-board .order-footer button {min-height:30px!important}
+#order-board #order-status {flex:0 0 auto!important;margin:3px 0 0!important}
+@media(max-height:720px){#order-board .order-hint{font-size:11px!important}#order-board .order-roster-people{margin-bottom:2px!important}}
+
+#order-board .order-item .owned-count,
+#order-board .order-item .sufficient { color:#caa15e !important; }
+#order-board .order-item .insufficient { color:#e38f8f !important; }

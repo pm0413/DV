@@ -1,0 +1,17 @@
+#village-news-backdrop{position:fixed;inset:0;background:#060a0dba;z-index:4200}#village-news-dialog{position:fixed;z-index:4201;left:50%;top:50%;transform:translate(-50%,-50%);width:min(720px,calc(100vw - 24px));max-height:min(690px,calc(100dvh - 24px));box-sizing:border-box;padding:20px;background:linear-gradient(145deg,#282828,#121212);color:#f4f1ea;border:1px solid #bda37a88;box-shadow:0 24px 70px #000a;overflow:auto}#village-news-dialog[hidden],#village-news-backdrop[hidden],#village-news-notice[hidden]{display:none!important}.vn-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #ffffff2e;padding-bottom:12px}.vn-heading small{display:block;color:#bda37a;font-size:10px;letter-spacing:.17em}.vn-heading h2{margin:4px 0 0}.vn-heading button{width:34px;height:34px;background:#ffffff12;color:inherit;border:1px solid #ffffff45;font-size:22px;cursor:pointer}.vn-day{margin-top:14px;padding:14px;border:1px solid #bda37a45;background:#ffffff06}.vn-day h3{margin:0 0 10px;color:#d3b276;font-size:16px}.vn-day p{margin:6px 0;font-size:13px;line-height:1.5}.vn-empty{color:#b7ac9a;font-size:12px}#village-news-notice{position:absolute;z-index:95;top:18px;left:50%;transform:translateX(-50%);border:1px solid #caa15e88;background:#1b2328e8;color:#f5e8d0;padding:8px 12px;font:inherit;font-size:12px;cursor:pointer;box-shadow:0 8px 20px #0006}body.light-mode #village-news-dialog{background:#fbf7ef;color:#2b261f;border-color:#bca27b}body.light-mode .vn-day{background:#fff;border-color:#cdb995}body.light-mode #village-news-notice{background:#fff8ec;color:#3c2d1b;border-color:#b88f50}
+
+/* 다음날 마을 소식: 상단바가 아니라 마을 배경 화면의 가로·세로 정중앙에 표시 */
+#main-area > #village-news-notice {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  transform: translate(-50%, -50%);
+  width: max-content;
+  max-width: calc(100% - 24px);
+  box-sizing: border-box;
+  white-space: normal;
+  text-align: center;
+  z-index: 95;
+}

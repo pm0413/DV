@@ -1,0 +1,29 @@
+/* 데이터 이동 창: 고양이 도감과 동일한 짙은 청회색 다크 테마 / 밝은 화이트 테마 */
+#save-transfer-backdrop[hidden],#save-transfer-dialog[hidden]{display:none!important}
+#save-transfer-backdrop{position:fixed;inset:0;background:#020508bc;z-index:30000}
+#save-transfer-dialog{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:30001;box-sizing:border-box;overflow-y:auto;border:1px solid #bda37a8c;border-radius:0;background:linear-gradient(145deg,#282828,#121212);color:#f2ede4;box-shadow:0 26px 70px #000b;font-family:inherit;scrollbar-width:none;-ms-overflow-style:none}
+#save-transfer-dialog::-webkit-scrollbar{display:none}
+#save-transfer-dialog .save-transfer-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 17px;background:linear-gradient(145deg,#282828,#121212);border-bottom:1px solid #bda37a80;font-size:18px;}
+#save-transfer-dialog #save-transfer-close{width:33px;height:33px;padding:0;border:1px solid #ffffff6c;border-radius:0;color:inherit;background:transparent;font-size:24px;cursor:pointer}
+#save-transfer-dialog .save-transfer-body{padding:16px;display:grid;gap:14px;font-size:13px;line-height:1.65}
+#save-transfer-dialog p{margin:0}
+#save-transfer-dialog .save-transfer-section{display:grid;gap:8px;padding:13px;border:1px solid #bda37a60;border-radius:0;background:#ffffff08}
+#save-transfer-dialog .save-transfer-section strong{font-size:14px;color:#efe1bd}
+#save-transfer-dialog .save-transfer-section button,#save-transfer-dialog .save-transfer-file-label{display:block;text-align:center;width:100%;box-sizing:border-box;padding:11px;border:1px solid #cba66fa1;border-radius:0;background:#caa15e;color:#22272b;font:inherit;font-weight:700;cursor:pointer}
+#save-transfer-dialog .save-transfer-section button:disabled{opacity:.45;cursor:not-allowed}
+#save-transfer-dialog .save-transfer-file-label{background:#ffffff10;color:#f2ede4}
+#save-transfer-dialog #save-transfer-file{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+#save-transfer-dialog #save-transfer-file:focus-visible+.save-transfer-filename{outline:2px solid #d8b57a}
+#save-transfer-dialog .save-transfer-filename{overflow-wrap:anywhere;color:#cbbda7}
+#save-transfer-dialog .save-transfer-warning{color:#ebba80}
+#save-transfer-dialog .save-transfer-note{font-size:12px;opacity:.85}
+#save-transfer-dialog #save-transfer-status:empty{display:none}
+body.light-mode #save-transfer-dialog{background:#faf7f2;color:#30281c;border-color:#bda37a8c}
+body.light-mode #save-transfer-dialog .save-transfer-heading{background:#faf7f2;border-color:#d6c4a6}
+body.light-mode #save-transfer-dialog #save-transfer-close{color:#30281c;border-color:#95866f}
+body.light-mode #save-transfer-dialog .save-transfer-section{background:#f3ece0;border-color:#d6c4a6}
+body.light-mode #save-transfer-dialog .save-transfer-section strong{color:#6f5937}
+body.light-mode #save-transfer-dialog .save-transfer-section button,body.light-mode #save-transfer-dialog .save-transfer-file-label{border-color:#b99b6c}
+body.light-mode #save-transfer-dialog .save-transfer-file-label{color:#30281c;background:#fffaf0}
+body.light-mode #save-transfer-dialog .save-transfer-warning{color:#9a421e}
+body.light-mode #save-transfer-dialog .save-transfer-filename{color:#675744}
