@@ -55,19 +55,20 @@
 }
 
 @media (max-width:700px) {
-  /* 모바일 가공소: 접힘은 헤더만, 펼침은 화면 높이의 38%로 확보 */
+  /* 모바일: 마을 화면 높이는 가공소 접기/펼치기와 무관하게 고정.
+     가공소가 펼쳐지면 아래로 늘어나며 game-area 자체를 스크롤한다. */
   #game-area {
     display:flex !important;
     flex-direction:column !important;
+    height:calc(100svh - 50px) !important;
     overflow-y:auto !important;
     overflow-x:hidden !important;
   }
-  /* 가공소 접힘/펼침과 무관하게 마을 장면의 높이/배경 스케일을 고정 */
   #main-area {
-    flex:0 0 56svh !important;
-    height:56svh !important;
-    min-height:56svh !important;
-    max-height:56svh !important;
+    flex:0 0 calc(100svh - 102px) !important;
+    height:calc(100svh - 102px) !important;
+    min-height:420px !important;
+    max-height:none !important;
   }
   #right-area {
     flex:0 0 38svh !important;
