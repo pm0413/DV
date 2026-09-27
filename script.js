@@ -1392,7 +1392,7 @@ const SCENE_IMAGE_WIDTH = 1920;
 const SCENE_IMAGE_HEIGHT = 1080;
 const SCENE_ROUTES = [
  {name:'지붕 1',x:650,y:300,links:[14],jump:[14]},
- {name:'지붕 2',x:1250,y:200,links:[4],jump:[4]},
+ {name:'지붕 2',x:1250,y:210,links:[4],jump:[4]},
  {name:'별채',x:550,y:520,links:[5,14]},
  {name:'본채',x:1300,y:520,links:[2,5],jump:[2]},
  {name:'계단',x:1110,y:520,links:[3,4,10,14]},
@@ -1665,13 +1665,25 @@ function eventLineSlots(person,other,event,role){
  return [data[role]||'','',''];
 }
 function eventDialogue(a,b,type,now,duration){
- const openings=eventLineSlots(a,b,type,'opening');
- const replies=eventLineSlots(b,a,type,'reply');
- const usable=[];for(let i=0;i<4;i++)if(residentDialogueOptions(openings[i]).length)usable.push(i);
- if(!usable.length)return;
- const slot=usable[Math.floor(Math.random()*usable.length)];const opening=openings[slot];const reply=replies[slot]||'';
- showResidentDialogue(a,opening,now);a.dialogueUntil=now+duration;
- if(residentDialogueOptions(reply).length){showResidentDialogue(b,reply,now);b.dialogueUntil=now+duration;}
+ // 만남을 먼저 감지한 주민(a)에게 해당 이벤트 대사가 비어 있어도,
+ // 상대 주민(b) 쪽에 같은 이벤트 대사가 설정돼 있으면 말하는 순서만 바꿔 재생합니다.
+ // 이동/관계 판정에는 영향을 주지 않고 대사가 통째로 사라지는 경우만 막습니다.
+ let speaker=a,listener=b;
+ let openings=eventLineSlots(speaker,listener,type,'opening');
+ let usable=[];for(let i=0;i<4;i++)if(residentDialogueOptions(openings[i]).length)usable.push(i);
+ if(!usable.length){
+  const reverseOpenings=eventLineSlots(b,a,type,'opening');
+  const reverseUsable=[];for(let i=0;i<4;i++)if(residentDialogueOptions(reverseOpenings[i]).length)reverseUsable.push(i);
+  if(!reverseUsable.length)return false;
+  speaker=b;listener=a;openings=reverseOpenings;usable=reverseUsable;
+ }
+ const replies=eventLineSlots(listener,speaker,type,'reply');
+ const slot=usable[Math.floor(Math.random()*usable.length)];
+ const opening=openings[slot];const reply=replies[slot]||'';
+ const spoke=showResidentDialogue(speaker,opening,now);
+ if(spoke)speaker.dialogueUntil=now+duration;
+ if(residentDialogueOptions(reply).length){showResidentDialogue(listener,reply,now);listener.dialogueUntil=now+duration;}
+ return spoke;
 }
 const meetingBubble=document.createElement('span');
 meetingBubble.className='resident-meeting-bubble';meetingBubble.hidden=true;
@@ -1761,7 +1773,8 @@ function startEncounter(a,b,now,manualPoint=null,forcedType=null){
  if(!type||(noWalkHere&&(type==='walk'||type==='follow')))type=types[Math.floor(Math.random()*types.length)]||'greet';
  const point=manualPoint||{x:(a.routeX+b.routeX)/2,y:(a.routeY+b.routeY)/2};
  const walk=type==='walk'||type==='follow';
- const dialogueDuration=eventLineSlots(a,b,type,'opening').some(line=>residentDialogueOptions(line).length)?3800:0;
+ // 주민끼리 상호작용할 때는 대사 말풍선을 띄우지 않고 행동/이모지만 표시합니다.
+ const dialogueDuration=0;
  // 연인의 함께 걷기는 행동 구간만 최소 7초 유지합니다. 다른 이동형 상호작용은 기존 4~6초입니다.
  const loveWalk=type==='walk'&&pairState(a,b).love;
  const actionDuration=walk?(loveWalk?7000+Math.random()*2000:4000+Math.random()*2000):3000;
@@ -1782,8 +1795,8 @@ function startEncounter(a,b,now,manualPoint=null,forcedType=null){
   person.element.classList.remove('resident-meeting-left','resident-meeting-right');
  }
  meetingBubble.hidden=true;meetingBubble.dataset.eventEmoji='';
- eventDialogue(a,b,type,now,dialogueDuration||duration);
- if(!dialogueDuration)updateEncounterEmoji(activeEncounter,now);
+ // 상호작용 중에는 주민 대사 말풍선을 호출하지 않습니다.
+ updateEncounterEmoji(activeEncounter,now);
  return true;
 }
 /* 작물 심기: 성공한 심기의 30% 확률로 주민 1명이 밭으로 달려옵니다.

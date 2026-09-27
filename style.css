@@ -1857,7 +1857,7 @@ body.light-mode {
   z-index:20!important;
   left:50%!important;
   top:auto!important;
-  bottom:calc(100% + 10px)!important;
+  bottom:calc(100% + 0px)!important;
   transform:translateX(-50%)!important;
   display:block;
   width:max-content;
@@ -2393,11 +2393,7 @@ body.light-mode #sugar-slots .chopper-slot { background:#1414140a; border-color:
   transform:none;
 }
 
-/* 만남 시 말풍선의 가로 기준점을 주민 몸통 중심 가까이 당기고 높이도 약간 낮춥니다. */
-#main-area .resident-avatar.resident-meeting-left .resident-dialogue-bubble,
-#main-area .resident-avatar.resident-meeting-right .resident-dialogue-bubble {
-  bottom:calc(100% - 12px)!important;
-}
+/* 주민 말풍선 높이는 일반 대사와 동일한 기존 위치를 사용합니다. */
 
 /* 설탕공방 제작 정보: 작두·닭장과 동일한 hover/focus 말풍선. */
 #sugar-workshop { position:relative; overflow:visible; }
