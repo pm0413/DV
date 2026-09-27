@@ -131,7 +131,7 @@
  }
  const knownCount=()=>CONFIG.filter(c=>profile(c.id).visits>0).length;
  function markVisit(id){const p=profile(id);const first=p.visits===0;p.visits+=1;p.firstDay??=day();p.points+=1;state.visitCount++;state.visits++;state.visitors.push(id);save();if(first)grantComfort(3);document.dispatchEvent(new CustomEvent('dowon:activity',{detail:{type:'cat-visit',catId:id,first}}));rollGift(id);}
- function centerOf(node){const s=scene.getBoundingClientRect(),r=node.getBoundingClientRect();return {x:r.left-s.left+r.width/2,y:r.top-s.top+r.height/2};}
+ function centerOf(node){const s=scene.getBoundingClientRect(),r=node.getBoundingClientRect(),cam=window.DohwaMobileCamera?.getX?.()||0;return {x:r.left-s.left+r.width/2-cam,y:r.top-s.top+r.height/2};}
  const random=(a,b)=>a+Math.random()*(b-a);
  // 가까워진 순간에만 한 번 판정합니다. 다시 떨어지기 전에는 재판정하지 않습니다.
  const MEETING_EMOJIS=['🐱','😼','😾','🦋','🐭','🐦','🐟','❤️','💔'];

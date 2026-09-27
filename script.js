@@ -2122,7 +2122,7 @@ mainArea.addEventListener('pointerdown',e=>{
  if(!character)return;
  const rect=mainArea.getBoundingClientRect();
  residentDrag.active={character,id:e.pointerId,startX:e.clientX,startY:e.clientY,
-  offsetX:e.clientX-rect.left-character.routeX,offsetY:e.clientY-rect.top-character.routeY,
+  offsetX:e.clientX-rect.left-(window.DohwaMobileCamera?.getX?.()||0)-character.routeX,offsetY:e.clientY-rect.top-character.routeY,
   original:{routeNode:character.routeNode,routeTarget:character.routeTarget,routeX:character.routeX,routeY:character.routeY,
    routePause:character.routePause,routeJump:character.routeJump,arrival:character.arrival,
    favoriteJourney:character.favoriteJourney,meetJourney:character.meetJourney,meetTarget:character.meetTarget},started:false};
@@ -2138,7 +2138,7 @@ function residentDragMove(e){
  interruptEncounterFor(d.character,performance.now());
  const c=d.character,rect=mainArea.getBoundingClientRect();
  c.element.classList.add('resident-being-dragged');
- c.routeX=Math.max(0,Math.min(rect.width,e.clientX-rect.left-d.offsetX));
+ c.routeX=Math.max(0,Math.min(rect.width,e.clientX-rect.left-(window.DohwaMobileCamera?.getX?.()||0)-d.offsetX));
  c.routeY=Math.max(0,Math.min(rect.height,e.clientY-rect.top-d.offsetY));
  c.element.style.left=`${c.routeX-c.element.offsetWidth/2}px`;
  c.element.style.top=`${c.routeY-c.element.offsetHeight}px`;

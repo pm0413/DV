@@ -55,26 +55,18 @@
 }
 
 @media (max-width:700px) {
-  /* 모바일: 마을 화면 높이는 가공소 접기/펼치기와 무관하게 고정.
-     가공소가 펼쳐지면 아래로 늘어나며 game-area 자체를 스크롤한다. */
-  #game-area {
-    display:flex !important;
-    flex-direction:column !important;
-    height:calc(100svh - 50px) !important;
-    overflow-y:auto !important;
-    overflow-x:hidden !important;
-  }
+  /* 모바일 가공소: 접힘은 헤더만, 펼침은 화면 높이의 38%로 확보 */
+  #game-area {display:flex !important;flex-direction:column !important;}
   #main-area {
-    flex:0 0 calc(100svh - 102px) !important;
-    height:calc(100svh - 102px) !important;
-    min-height:420px !important;
-    max-height:none !important;
+    flex:1 1 auto !important;
+    height:auto !important;
+    min-height:0 !important;
   }
   #right-area {
-    flex:0 0 38svh !important;
-    height:38svh !important;
+    flex:0 0 38dvh !important;
+    height:38dvh !important;
     min-height:86px !important;
-    max-height:38svh !important;
+    max-height:38dvh !important;
     transition:flex-basis .2s ease,height .2s ease,max-height .2s ease;
   }
   #right-area.mobile-workshop-collapsed {
@@ -239,4 +231,94 @@
   #top-bar #village-status .village-date-label { margin-right:2px !important; gap:2px !important; }
   #top-bar #village-status #village-day,
   #top-bar #village-status #village-season { font-size:9px !important; }
+}
+
+/* 2026-09-27 모바일 최종: 마을 화면 크기는 접힌 상태 기준으로 고정하고,
+   가공소는 레이아웃을 밀지 않는 하단 오버레이로 위쪽에 펼칩니다. */
+@media (max-width:700px) {
+  #game { height:100svh !important; }
+  #game-area {
+    position:relative !important;
+    display:block !important;
+    height:auto !important;
+    flex:1 1 0 !important;
+    min-height:0 !important;
+    overflow:hidden !important;
+  }
+  #main-area {
+    position:absolute !important;
+    top:0 !important;
+    right:0 !important;
+    bottom:52px !important;
+    left:0 !important;
+    width:100% !important;
+    height:auto !important;
+    min-height:0 !important;
+    max-height:none !important;
+    flex:none !important;
+  }
+  #right-area {
+    position:absolute !important;
+    z-index:120 !important;
+    right:0 !important;
+    bottom:0 !important;
+    left:48px !important;
+    width:auto !important;
+    max-width:none !important;
+    margin:0 !important;
+    box-sizing:border-box !important;
+    flex:none !important;
+    height:38svh !important;
+    min-height:52px !important;
+    max-height:38svh !important;
+    overflow:hidden !important;
+    transition:height .2s ease,max-height .2s ease !important;
+  }
+  #right-area.mobile-workshop-collapsed {
+    height:52px !important;
+    min-height:52px !important;
+    max-height:52px !important;
+  }
+  #right-area:not(.mobile-workshop-collapsed) #workshop-list {
+    display:block !important;
+    height:calc(38svh - 52px) !important;
+    max-height:calc(38svh - 52px) !important;
+    overflow-y:auto !important;
+    overflow-x:hidden !important;
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior:contain;
+  }
+}
+
+/* ===== 모바일 마을 카메라 =====
+   배경과 '마을 좌표계' 오브젝트만 함께 이동합니다.
+   밭/잠금 카드와 화면 UI는 카메라에서 제외합니다. */
+@media (max-width:700px) and (orientation:portrait) {
+  #main-area {
+    --mobile-camera-x: 0px;
+    background-position: calc(50% + var(--mobile-camera-x)) center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+    touch-action: pan-y;
+  }
+  #main-area::after {
+    background-position: calc(50% + var(--mobile-camera-x)) center !important;
+  }
+
+  /* 마을 좌표에 붙어 있어야 하는 요소 */
+  #main-area .resident-avatar,
+  #main-area .character,
+  #main-area .village-cat,
+  #main-area .cat-bowls,
+  #main-area .fishing-marker,
+  #main-area .fishing-marker-status,
+  #main-area .scene-coordinate-marker-layer {
+    translate: var(--mobile-camera-x) 0;
+  }
+
+  /* 밭과 밭 잠금/해금 레이아웃은 화면 좌표에 고정 */
+  #main-area #farm-area,
+  #main-area #farm-area * {
+    --mobile-camera-x: 0px;
+  }
 }

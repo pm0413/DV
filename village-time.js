@@ -79,9 +79,9 @@
  const FALLBACK='겨울맑은아침.png';
  let lastSceneKey='';
  function backgroundCss(file,darkness=0){
-   const nightOverlay=window.dowonSeasons?.get()?.season==='winter' && data.minute>=1080 ? .46 : 0;
-   const shade=Math.min(.75,darkness+nightOverlay);
-   return `linear-gradient(rgba(4,8,17,${shade.toFixed(3)}),rgba(4,8,17,${shade.toFixed(3)})),linear-gradient(180deg,rgba(5,8,13,.34),rgba(6,10,14,.18) 45%,rgba(5,8,12,.56)),url("bg/${file}")`;
+   // 배경 위에 덧씌우던 반투명 검정 그라데이션 제거.
+   // 낮/노을/밤 분위기는 각 배경 이미지 자체로 표현합니다.
+   return `url("bg/${file}")`;
  }
  function background(file,darkness=0){scene.style.backgroundImage=backgroundCss(file,darkness);}
  function fallbackFile(season,weather,phase){

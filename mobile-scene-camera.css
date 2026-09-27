@@ -1,0 +1,23 @@
+/* Mobile scene camera: pan only the painted village and fixed farm layer.
+   Residents/cats keep their own screen-space movement coordinates. */
+@media (max-width:700px) and (orientation:portrait) {
+  #main-area {
+    --mobile-scene-pan-x: 0px;
+    background-position: calc(50% + var(--mobile-scene-pan-x)) center !important;
+    touch-action: none;
+  }
+  #main-area::after {
+    background-position: calc(50% + var(--mobile-scene-pan-x)) center !important;
+  }
+  #main-area #farm-area {
+    transform: translateX(var(--mobile-scene-pan-x)) !important;
+    will-change: transform;
+  }
+  /* Interactive/moving actors are deliberately NOT transformed by the camera. */
+  #main-area .resident-avatar,
+  #main-area .village-cat,
+  #main-area .cat-meeting-bubble,
+  #main-area .cat-bowls {
+    --mobile-scene-pan-x: 0px;
+  }
+}

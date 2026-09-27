@@ -1,0 +1,20 @@
+/* 모바일 세로 마을 카메라: 빈 배경을 좌우로 드래그해 cover로 잘린 좌우를 확인합니다. */
+@media (max-width:700px) and (orientation:portrait) {
+  #main-area {
+    --village-camera-x: 0px;
+    background-position: calc(50% + var(--village-camera-x)) center !important;
+    touch-action: pan-y;
+  }
+  #main-area.mobile-camera-dragging { cursor: grabbing; }
+  /* 화면 고정 UI는 제외하고 마을에 붙어 있는 오브젝트만 배경과 함께 이동 */
+  #main-area > #farm-area,
+  #main-area > .cat-bowls,
+  #main-area > #fishing-marker,
+  #main-area > #fishing-marker-status,
+  #main-area > .resident-avatar,
+  #main-area > .village-cat,
+  #main-area > .cat-meeting-bubble,
+  #main-area > .scene-coordinate-marker-layer {
+    translate: var(--village-camera-x) 0;
+  }
+}
