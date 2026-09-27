@@ -1527,9 +1527,10 @@ function shortestRoute(from,to){
  }return [];
 }
 // 주민 대사: 자유 이동 중 일반 대사, 장소에 멈춰 있을 때 장소별 전용 대사.
-// 대사 구분자는 |이며, 텍스트만 출력해 HTML이 실행되지 않게 합니다.
+// 대사 구분자는 |입니다. 같은 대사 안에서 사용자가 입력한 \n은 실제 줄바꿈으로 바꿉니다.
+// textContent로 출력하므로 HTML은 실행되지 않습니다.
 function residentDialogueOptions(source){
- return String(source||'').split('|').map(line=>line.trim()).filter(Boolean);
+ return String(source||'').split('|').map(line=>line.trim().replace(/\\n/g,'\n')).filter(Boolean);
 }
 function showResidentDialogue(character,source,now){
  const options=residentDialogueOptions(source);
@@ -1647,10 +1648,11 @@ const encounterClock={next:performance.now()+12000};
 const PAIR_COOLDOWNS=new Map();
 const pairKey=(a,b)=>[a.residentIndex,b.residentIndex].sort((x,y)=>x-y).join(':');
 const pairState=(a,b)=>window.nakwonResidentPairs?.get(a.residentIndex,b.residentIndex)||{score:0,love:false,relation:'초면'};
-const EVENT_CHOICES={초면:['greet','awkward'],'아는 사이':['greet','awkward','rest'],친구:['greet','rest','walk'],'친한 친구':['greet','rest','walk','follow'],연인:['greet','rest','walk']};
+const EVENT_CHOICES={'혐오':['hate'],'사이 나쁨':['bad'],초면:['greet','awkward'],'아는 사이':['greet','awkward','rest'],친구:['greet','rest','walk'],'친한 친구':['greet','rest','walk','follow'],연인:['greet','rest','walk']};
 const EVENT_EMOJIS={greet:'👋',awkward:'😅',rest:'🙂',follow:'🤭'};
+const NEGATIVE_RELATION_EMOJIS={hate:['🤬','😡'],bad:['😑','😒','🤨']};
 const WALK_EMOJIS=['🐱','🌱','🐟','🎶'];
-function pickEventEmoji(type){return type==='walk'?WALK_EMOJIS[Math.floor(Math.random()*WALK_EMOJIS.length)]:(EVENT_EMOJIS[type]||'💬');}
+function pickEventEmoji(type){if(NEGATIVE_RELATION_EMOJIS[type]){const list=NEGATIVE_RELATION_EMOJIS[type];return list[Math.floor(Math.random()*list.length)];}return type==='walk'?WALK_EMOJIS[Math.floor(Math.random()*WALK_EMOJIS.length)]:(EVENT_EMOJIS[type]||'💬');}
 function eventLineSlots(person,other,event,role){
  const data=person.eventLines?.[event]||{};const override=data.overrides?.[String(other.residentIndex)]||{};
  const slots=override[`${role}Slots`];
@@ -1739,13 +1741,13 @@ function startEncounter(a,b,now,manualPoint=null,forcedType=null){
  if(now<(PAIR_COOLDOWNS.get(key)||0))return false;
  PAIR_COOLDOWNS.set(key,now+120000);
  // 가까워진 순간에만 30% 판정; 연인이 찾아간 경우는 약속된 동행으로 취급.
- if(!forcedType&&Math.random()>=.3){a.meetCooldown=b.meetCooldown=now+30000;return false;}
+ if(!forcedType&&Math.random()>=.4){a.meetCooldown=b.meetCooldown=now+30000;return false;}
  const relation=relationOf(a,b);
  const types=EVENT_CHOICES[relation]||EVENT_CHOICES.초면;
  const type=forcedType||types[Math.floor(Math.random()*types.length)];
  const point=manualPoint||{x:(a.routeX+b.routeX)/2,y:(a.routeY+b.routeY)/2};
  const walk=type==='walk'||type==='follow';
- const dialogueDuration=eventLine(a,b,type,'opening').trim()?3800:0;
+ const dialogueDuration=eventLineSlots(a,b,type,'opening').some(line=>residentDialogueOptions(line).length)?3800:0;
  const actionDuration=walk?4000+Math.random()*2000:3000;
  const duration=dialogueDuration+actionDuration;
  for(const person of [a,b]){person.routeTarget=0;person.routeJump=null;person.arrival=null;person.meetTarget=null;person.meetJourney=[];person.favoriteJourney=[];}
@@ -2031,8 +2033,35 @@ function moveCharacters(now=performance.now()){
  requestAnimationFrame(moveCharacters);
 }
 
+// 연인 아침 장소: 사용자가 지정한 커플은 새 날 06:00에 별채/본채에서 함께 시작합니다.
+let coupleMorningDay=0;
+function placeMorningCouples(day,minute){
+ if(minute!==360||coupleMorningDay===day)return;
+ coupleMorningDay=day;
+ const placed=new Set();
+ for(let i=0;i<characters.length;i++)for(let j=i+1;j<characters.length;j++){
+  const state=window.nakwonResidentPairs?.get(i,j);
+  if(!state?.love||!state.morningPlace)continue;
+  const node=state.morningPlace==='annex'?3:state.morningPlace==='main'?4:0;
+  if(!node)continue;
+  const center=routePoint(node);
+  [[characters[i],-18],[characters[j],18]].forEach(([c,dx])=>{
+   if(!c||placed.has(c.residentIndex))return;
+   placed.add(c.residentIndex);
+   c.routeNode=node;c.routeTarget=0;c.routePrevious=0;c.routePause=3;c.routeJump=null;c.arrival=null;
+   c.favoriteJourney=[];c.meetJourney=[];c.meetTarget=null;c.loverSeekFor=null;c.loverWaitFor=null;
+   c.napping=false;c.napUntil=0;c.meetingUntil=0;c.farmEventBusy=false;
+   c.routeX=center.x+dx;c.routeY=center.y+20;
+   c.element?.classList.remove('resident-napping');c.element?.querySelector('.resident-nap-bubble')?.remove();
+   if(c.element){c.element.style.left=`${c.routeX-c.element.offsetWidth/2}px`;c.element.style.top=`${c.routeY-c.element.offsetHeight}px`;}
+  });
+ }
+ if(placed.size)window.setTimeout(saveScenePositions,50);
+}
+
 let interactionDay=Number(window.dowonClock?.get?.()?.day)||1;
 document.addEventListener('dowon:timechange',event=>{
+ placeMorningCouples(Number(event.detail?.day)||interactionDay,Number(event.detail?.minute));
  const day=Number(event.detail?.day)||interactionDay;
  if(day===interactionDay)return;
  interactionDay=day;if(activeEncounter)finishEncounter(performance.now(),true);

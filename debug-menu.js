@@ -41,6 +41,8 @@
       <div class="debug-amount-control"><label for="debug-comfort-amount">추가할 쾌적도</label><input id="debug-comfort-amount" type="number" min="1" max="1000000000" step="1" inputmode="numeric" value="100"><button id="debug-add-comfort" type="button">쾌적도 추가</button></div>
       <div class="debug-two-buttons" role="group" aria-label="시간 변경"><button id="debug-day" type="button">낮이 되기</button><button id="debug-night" type="button">밤이 되기</button></div>
       <div class="debug-two-buttons" role="group" aria-label="전환 테스트 시간"><button id="debug-sunset-test" type="button">오후 3시가 되기</button><button id="debug-evening" type="button">오후 5시가 되기</button></div>
+      <div class="debug-two-buttons" role="group" aria-label="계절 변경"><button id="debug-spring" type="button">봄이 되기</button><button id="debug-summer" type="button">여름이 되기</button></div>
+      <div class="debug-two-buttons" role="group" aria-label="계절 변경"><button id="debug-autumn" type="button">가을이 되기</button><button id="debug-winter" type="button">겨울이 되기</button></div>
     </div>`;
   document.body.append(backdrop, dialog);
 
@@ -61,6 +63,11 @@
   dialog.querySelector('#debug-night')?.addEventListener('click', () => { window.dowonClock?.jumpTo(22); setOpen(false); });
   dialog.querySelector('#debug-sunset-test')?.addEventListener('click', () => { window.dowonClock?.jumpTo(15, 0); setOpen(false); });
   dialog.querySelector('#debug-evening')?.addEventListener('click', () => { window.dowonClock?.jumpTo(17, 0); setOpen(false); });
+  const setDebugSeason = season => { window.dowonSeasons?.preview?.(season); setOpen(false); };
+  dialog.querySelector('#debug-spring')?.addEventListener('click', () => setDebugSeason('spring'));
+  dialog.querySelector('#debug-summer')?.addEventListener('click', () => setDebugSeason('summer'));
+  dialog.querySelector('#debug-autumn')?.addEventListener('click', () => setDebugSeason('autumn'));
+  dialog.querySelector('#debug-winter')?.addEventListener('click', () => setDebugSeason('winter'));
   dialog.querySelector('#debug-fast-forward')?.addEventListener('click', () => {
     window.dowonProgression?.finishAllConstruction?.();
     window.dowonGrowAllCrops?.();

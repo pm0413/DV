@@ -172,7 +172,7 @@
    }
 
 
-   const dialoguePanel=makePanel('dialogue','대사','날씨별로 낮(06:00~15:59) → 노을(16:00~17:59) → 밤(18:00~24:00) 순서입니다. 여러 대사는 | 로 구분하세요. 노을/밤 칸이 비어 있으면 낮 대사를 사용합니다.');
+   const dialoguePanel=makePanel('dialogue','대사','날씨별로 낮(06:00~15:59) → 노을(16:00~17:59) → 밤(18:00~24:00) 순서입니다. 여러 대사는 | 로 구분하세요. 같은 대사 안에서 강제로 줄을 바꾸려면 \\n 을 입력하세요. 예: 안녕하세요.\\n오늘도 좋은 하루예요. 노을/밤 칸이 비어 있으면 낮 대사를 사용합니다.');
    const weatherTabs=document.createElement('div');weatherTabs.className='resident-weather-tabs';weatherTabs.setAttribute('role','tablist');weatherTabs.setAttribute('aria-label','대사 날씨 선택');
    const weatherViews={};const weatherButtons={};
    for(const [key,label] of [['clear','☀ 맑은 날'],['rain','☂ 비 오는 날']]){
@@ -234,10 +234,14 @@
        const block=document.createElement('div');block.className='resident-pair-entry';
        const name=document.createElement('strong');name.textContent=other.name;
        const status=document.createElement('span');status.textContent=`${saved.relation} · ${saved.score}/100`;
-       const stage=select([['auto','호감도에 따라 자동'],['초면','초면'],['아는 사이','아는 사이'],['친구','친구'],['친한 친구','친한 친구'],['love','연인 · 고정']],saved.love?'love':'auto',`${other.name}과의 관계`);
+       const stage=select([['auto','호감도에 따라 자동'],['hate','혐오 · 고정'],['bad','사이 나쁨 · 고정'],['초면','초면'],['아는 사이','아는 사이'],['친구','친구'],['친한 친구','친한 친구'],['love','연인 · 고정']],saved.forcedRelation==='hate'?'hate':saved.forcedRelation==='bad'?'bad':saved.love?'love':'auto',`${other.name}과의 관계`);
        const score=document.createElement('input');score.type='number';score.min='0';score.max='100';score.step='1';score.value=String(saved.score);score.setAttribute('aria-label',`${other.name}과의 호감도`);
-       stage.addEventListener('change',()=>{if(stage.value==='love')return;const starts={'초면':0,'아는 사이':20,'친구':50,'친한 친구':80};if(stage.value in starts)score.value=String(starts[stage.value]);});
-       block.append(name,status,makeLabel('관계',stage),makeLabel('호감도 (0~100)',score));relationSection.append(block);pairEditors.push({j,stage,score});
+       const morningPlace=select([['','선택 안 함'],['annex','별채'],['main','본채']],saved.morningPlace||'',`${other.name}과 함께 일어날 장소`);
+       const morningPlaceLabel=makeLabel('연인 아침 장소',morningPlace);
+       const syncMorningPlace=()=>{const isLove=stage.value==='love';morningPlace.disabled=!isLove;morningPlaceLabel.hidden=!isLove;};
+       stage.addEventListener('change',()=>{const fixed=stage.value==='love'||stage.value==='hate'||stage.value==='bad';score.disabled=fixed;if(!fixed){const starts={'초면':0,'아는 사이':20,'친구':50,'친한 친구':80};if(stage.value in starts)score.value=String(starts[stage.value]);}syncMorningPlace();});
+       score.disabled=stage.value==='love'||stage.value==='hate'||stage.value==='bad';syncMorningPlace();
+       block.append(name,status,makeLabel('관계',stage),makeLabel('호감도 (0~100)',score),morningPlaceLabel);relationSection.append(block);pairEditors.push({j,stage,score,morningPlace});
      });
      basicPanel.append(relationSection);
    }
@@ -302,8 +306,8 @@
    }
    interactionPanel.append(catInteractionSection);
 
-   const EVENT_TYPES=[['greet','마주 보고 인사'],['awkward','어색하게 엇갈리기'],['rest','나란히 쉬기'],['walk','함께 걷기'],['follow','장난스럽게 따라가기'],['visit','연인 찾아가기'],['wait','연인 기다리기']];
-   const eventPanel=makePanel('event','이벤트','대사를 비워두면 행동만 진행합니다. | 로 여러 대사를 구분하면 무작위 선택됩니다. 상대별 대사가 있으면 공통 대사보다 우선합니다.');
+   const EVENT_TYPES=[['hate','혐오일 때'],['bad','사이 나쁨일 때'],['greet','마주 보고 인사'],['awkward','어색하게 엇갈리기'],['rest','나란히 쉬기'],['walk','함께 걷기'],['follow','장난스럽게 따라가기'],['visit','연인 찾아가기'],['wait','연인 기다리기']];
+   const eventPanel=makePanel('event','이벤트','대사를 비워두면 행동만 진행합니다. | 로 여러 대사를 구분하면 무작위 선택됩니다. 같은 대사 안에서 강제 줄바꿈은 \\n 을 입력하세요. 상대별 대사가 있으면 공통 대사보다 우선합니다.');
    const eventInputs={};
    EVENT_TYPES.forEach(([key,title])=>{
      const section=document.createElement('div');section.className='resident-event-section';
@@ -355,7 +359,7 @@
      farmGrid.append(makeLabel(`${person.name}에게 할 원격 답변`,input,'full'));
    });
    farmPanel.append(farmGrid);
-   const clickPanel=makePanel('click','클릭 반응','캐릭터를 짧게 클릭하면 말풍선이 나옵니다. 한 줄에 대사 하나씩 입력하세요. | 구분도 가능합니다. 비워두면 기본 대사를 사용합니다.');
+   const clickPanel=makePanel('click','클릭 반응','캐릭터를 짧게 클릭하면 말풍선이 나옵니다. | 로 여러 대사를 구분할 수 있고, 같은 대사 안에서 강제 줄바꿈은 \\n 을 입력하세요. 비워두면 기본 대사를 사용합니다.');
    const clickGrid=document.createElement('div');clickGrid.className='resident-dialogue-grid';
    clickGrid.append(makeLabel('기본 클릭 대사',clickLines,'full'),makeLabel('연속 클릭 대사 (3초 내 3~10회)',repeatClickLines,'full'),makeLabel('10회 초과 클릭 대사 (3초 내 11회부터)',tenClickLines,'full'),makeLabel('자는 중 클릭 대사 (취침 상태에서 사용)',sleepClickLines,'full'));
    clickPanel.append(clickGrid);
@@ -394,7 +398,7 @@
      next[i]={...r,name:name.value.trim(),gender:gender.value,age:a,month:m,day:d,image:uploadedImage,favoritePlace:Number(place.value),generalLines:generalLines.value,generalAfternoonLines:generalAfternoonLines.value,generalNightLines:generalNightLines.value,clickLines:clickLines.value,repeatClickLines:repeatClickLines.value,tenClickLines:tenClickLines.value,sleepClickLines:sleepClickLines.value,morningLines:morningLines.value,rainLines:rainLines.value,rainAfternoonLines:rainAfternoonLines.value,rainNightLines:rainNightLines.value,interactionLines:openings.join(' | '),catStrayLines:catStrayLines.value,catAdoptedLines:catAdoptedLineInputs[0]?.value||'',catAdoptedLinesBySlot:Object.fromEntries(catAdoptedLineInputs.map((input,slot)=>[String(slot),input.value])),interactionByResident,relationships,eventLines,farmOpening:farmOpening.value,farmArrival:farmArrival.value,farmRepliesByResident:Object.fromEntries(Object.entries(farmReplies).map(([key,input])=>[key,input.value])),placeLines:Object.fromEntries(Object.entries(placeLines).map(([key,entry])=>[key,entry.value])),placeAfternoonLines:Object.fromEntries(Object.entries(placeAfternoonLines).map(([key,entry])=>[key,entry.value])),placeNightLines:Object.fromEntries(Object.entries(placeNightLines).map(([key,entry])=>[key,entry.value])),rainPlaceLines:Object.fromEntries(Object.entries(rainPlaceLines).map(([key,entry])=>[key,entry.value])),rainPlaceAfternoonLines:Object.fromEntries(Object.entries(rainPlaceAfternoonLines).map(([key,entry])=>[key,entry.value])),rainPlaceNightLines:Object.fromEntries(Object.entries(rainPlaceNightLines).map(([key,entry])=>[key,entry.value]))};
      if(!stored(next)){notice.textContent='저장 공간이 부족합니다. 더 작은 이미지로 다시 등록해 주세요.';return;}
      const changes=[];for(let other=0;other<next.length;other++){if(other===i||!next[other])continue;const before=residents[i]?.relationships?.[String(other)]||residents[other]?.relationships?.[String(i)]||'아는사이';const after=next[i]?.relationships?.[String(other)]||next[other]?.relationships?.[String(i)]||'아는사이';if(before!==after)changes.push({type:'resident-relationship-change',first:next[i].name,second:next[other].name,relationship:after});}
-     pairEditors.forEach(({j,stage,score})=>window.nakwonResidentPairs?.set(i,j,{love:stage.value==='love',score:Number(score.value)}));
+     pairEditors.forEach(({j,stage,score,morningPlace})=>window.nakwonResidentPairs?.set(i,j,{love:stage.value==='love',forcedRelation:stage.value==='hate'?'hate':stage.value==='bad'?'bad':null,score:Number(score.value),morningPlace:stage.value==='love'?(morningPlace.value||null):null}));
      residents=next;for(const detail of changes)document.dispatchEvent(new CustomEvent('dowon:activity',{detail}));renderCharacters();gallery();
    });
 

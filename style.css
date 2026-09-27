@@ -1859,7 +1859,9 @@ body.light-mode {
   color:#2a251e;
   box-shadow:0 4px 14px #00000099;
   font:600 11px/1.45 'Paperozi',sans-serif;
-  white-space:normal;
+  /* 말풍선 대사는 한 줄/여러 줄 모두 가운데 정렬합니다.
+     사용자가 대사에 \n을 입력한 경우도 줄바꿈을 그대로 표시합니다. */
+  white-space:pre-line;
   overflow-wrap:anywhere;
   text-align:center;
   
@@ -2593,7 +2595,7 @@ body.light-mode #dowon-season-toast {background:#fff8ebf5;color:#805923;border-c
   100%{opacity:0;transform:translate(-50%,-7px);}
 }
 /* 수면 버튼은 밤 22시 이후에만 상태 패널 왼쪽의 말풍선으로 표시 */
-#main-area #village-sleep.village-sleep-bubble {
+#top-hud-stack #village-sleep.village-sleep-bubble {
   position:absolute;top:46px;left:auto;right:calc(16px + clamp(145px,17vw,210px) + 14px);
   width:auto;min-width:100px;max-width:130px;margin:0;padding:10px 15px;
   pointer-events:auto;touch-action:manipulation;
@@ -2601,24 +2603,24 @@ body.light-mode #dowon-season-toast {background:#fff8ebf5;color:#805923;border-c
   color:#2a251e;font:700 12px 'Paperozi',sans-serif;line-height:1.2;
   box-shadow:0 6px 18px #0007;cursor:pointer;
 }
-#main-area #village-sleep.village-sleep-bubble[hidden] {display:none!important;}
-#main-area #village-sleep.village-sleep-bubble::after {
+#top-hud-stack #village-sleep.village-sleep-bubble[hidden] {display:none!important;}
+#top-hud-stack #village-sleep.village-sleep-bubble::after {
   content:'';position:absolute;top:50%;right:-7px;width:12px;height:12px;
   background:inherit;border-top:1px solid #aaaaaa;border-right:1px solid #aaaaaa;
   transform:translateY(-50%) rotate(45deg);
 }
-#main-area #village-sleep.village-sleep-bubble:hover:not(:disabled) {
+#top-hud-stack #village-sleep.village-sleep-bubble:hover:not(:disabled) {
   background:#f1f1f1;color:#2a251e;border-color:#888888;
 }
-#main-area #village-sleep.village-sleep-bubble:focus-visible {outline:2px solid #f6d79b;outline-offset:3px;}
-#main-area #village-sleep.village-sleep-bubble:disabled {opacity:.65;cursor:default;}
-body.light-mode #main-area #village-sleep.village-sleep-bubble {
+#top-hud-stack #village-sleep.village-sleep-bubble:focus-visible {outline:2px solid #f6d79b;outline-offset:3px;}
+#top-hud-stack #village-sleep.village-sleep-bubble:disabled {opacity:.65;cursor:default;}
+body.light-mode #top-hud-stack #village-sleep.village-sleep-bubble {
   background:#ffffff;color:#2a251e;border-color:#aaaaaa;box-shadow:0 6px 18px #0003;
 }
-body.light-mode #main-area #village-sleep.village-sleep-bubble::after {border-color:#aaaaaa;}
-body.light-mode #main-area #village-sleep.village-sleep-bubble:hover:not(:disabled) {background:#f1f1f1;color:#2a251e;}
+body.light-mode #top-hud-stack #village-sleep.village-sleep-bubble::after {border-color:#aaaaaa;}
+body.light-mode #top-hud-stack #village-sleep.village-sleep-bubble:hover:not(:disabled) {background:#f1f1f1;color:#2a251e;}
 @media(max-width:700px) {
-  #main-area #village-sleep.village-sleep-bubble {
+  #top-hud-stack #village-sleep.village-sleep-bubble {
     top:28px;right:calc(8px + 142px + 10px);min-width:72px;max-width:90px;
     padding:9px 8px;font-size:11px;
   }
@@ -2629,10 +2631,10 @@ body.light-mode #main-area #village-sleep.village-sleep-bubble:hover:not(:disabl
 
 /* 진행 중 주민 부탁: 쾌적도 패널 바로 아래 상시 임무 카드 */
 #main-area .resident-request-reminder {
-  position:absolute;right:0;top:calc(100% + 10px);z-index:125;
+  position:absolute;right:16px;top:10px;z-index:125;
   width:clamp(190px,17vw,210px);min-height:58px;box-sizing:border-box;
-  padding:9px 11px;border:1px solid #6b6255;border-left:3px solid #A1885E;border-radius:2px;
-  background:linear-gradient(145deg,#282828,#121212);box-shadow:0 5px 16px #0008;color:#f5f2ed;
+  padding:9px 11px;border:1px solid rgba(107,98,85,.72);border-left:3px solid #A1885E;border-radius:2px;
+  background:rgba(18,18,18,.58);backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);box-shadow:0 5px 16px #0005;color:#f5f2ed;
   display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-areas:"title progress" "detail progress";
   gap:3px 8px;align-items:center;pointer-events:auto;cursor:default;outline-offset:3px;
 }
@@ -2642,17 +2644,17 @@ body.light-mode #main-area #village-sleep.village-sleep-bubble:hover:not(:disabl
 #main-area .resident-request-reminder-progress{grid-area:progress;font-size:11px;color:#A1885E;white-space:nowrap;}
 #main-area .resident-request-reminder.is-ready{border-color:#A1885E;border-left-color:#A1885E;cursor:pointer;box-shadow:0 0 0 1px #d8ad5d33,0 5px 16px #0008;}
 #main-area .resident-request-reminder.is-ready .resident-request-reminder-progress{color:#A1885E;font-weight:700;}
-body.light-mode #main-area .resident-request-reminder{background:rgba(255,249,237,.97);color:#382f24;border-color:#b7a98e;border-left-color:#A1885E;box-shadow:0 5px 16px #0003;}
+body.light-mode #main-area .resident-request-reminder{background:rgba(255,249,237,.62);color:#382f24;border-color:rgba(183,169,142,.75);border-left-color:#A1885E;box-shadow:0 5px 16px #0002;}
 body.light-mode #main-area .resident-request-reminder-detail{color:#6f665a;}
 @media(max-width:700px){
- #main-area .resident-request-reminder{right:0;top:calc(100% + 8px);width:142px;min-height:52px;padding:7px 8px;gap:2px 5px;}
+ #main-area .resident-request-reminder{right:8px;top:68px;width:142px;min-height:52px;padding:7px 8px;gap:2px 5px;}
  #main-area .resident-request-reminder-title{font-size:10px;}
  #main-area .resident-request-reminder-detail,#main-area .resident-request-reminder-progress{font-size:9px;}
 }
 
 /* 자러가기: 기존 시간 패널 왼쪽 말풍선 위치·모양 복원.
    부탁 초상화와 안내 말풍선보다 뒤에 표시되도록 레이어 순서만 낮춥니다. */
-#main-area #village-sleep.village-sleep-bubble {
+#top-hud-stack #village-sleep.village-sleep-bubble {
   z-index:60;
 }
 /* 상단 도화마을 로고: 기존 브랜드 위치와 톤을 유지하면서 Material Symbols 아이콘 적용 */
@@ -2778,3 +2780,81 @@ body.light-mode #left-content .sidebar-entry .menu-new-badge{color:#8a6117;text-
 .resident-dialog .resident-event-four-grid label{min-width:0;margin-bottom:10px}
 .resident-dialog .resident-event-four-grid textarea{width:100%;box-sizing:border-box}
 @media(max-width:700px){.resident-dialog .resident-event-four-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+/* 상단 시간 HUD + 자러가기 말풍선: 하나의 좌표계로 정확히 중앙 정렬 */
+#top-hud-stack{
+  position:absolute;
+  left:50%;
+  top:0;
+  height:100%;
+  transform:translateX(-50%);
+  z-index:510;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  pointer-events:none;
+}
+#top-hud-stack #village-status{
+  margin:0 !important;
+}
+#top-hud-stack #village-sleep.village-sleep-bubble{
+  position:absolute;
+  top:calc(100% + 8px);
+  left:50%;
+  right:auto;
+  transform:translateX(-50%);
+  z-index:126;
+  width:auto;
+  min-width:100px;
+  max-width:130px;
+  margin:0;
+  padding:10px 15px;
+  pointer-events:auto;
+  touch-action:manipulation;
+  border:1px solid #aaaaaa;
+  border-radius:12px;
+  background:#ffffff;
+  color:#2a251e;
+  font:700 12px 'Paperozi',sans-serif;
+  line-height:1.2;
+  box-shadow:0 6px 18px #0007;
+  cursor:pointer;
+}
+#top-hud-stack #village-sleep.village-sleep-bubble[hidden]{display:none!important;}
+#top-hud-stack #village-sleep.village-sleep-bubble::after{
+  content:'';
+  position:absolute;
+  top:-7px;
+  bottom:auto;
+  left:50%;
+  right:auto;
+  width:12px;
+  height:12px;
+  background:inherit;
+  border-top:1px solid #aaaaaa;
+  border-left:1px solid #aaaaaa;
+  border-right:0;
+  border-bottom:0;
+  transform:translateX(-50%) rotate(45deg);
+}
+@media(max-width:700px){
+  #top-hud-stack #village-sleep.village-sleep-bubble{
+    top:calc(100% + 6px);
+    min-width:72px;
+    max-width:90px;
+    padding:9px 8px;
+    font-size:11px;
+  }
+}
+
+/* 2026-09-27: 상단 HUD/자러가기의 중심축은 전체 페이지가 아니라 중앙 배경(#main-area) 기준 */
+@media (min-width:701px){
+  #top-hud-stack{
+    left:calc((100% - 350px) / 2);
+  }
+}
+@media (max-width:700px){
+  #top-hud-stack{
+    left:50%;
+  }
+}

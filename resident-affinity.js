@@ -157,10 +157,10 @@
         return el;
     }
 
-    // 수락한 주민 부탁은 재료가 없는 동안에도 쾌적도 패널 바로 아래에서 확인할 수 있습니다.
+    // 수락한 주민 부탁은 게임 화면 우측 상단의 기존 위치에 표시합니다.
     // 저장된 부탁을 재사용하므로 새로고침 후에도 같은 주민·아이템이 표시됩니다.
     const reminder = (() => {
-        const area = document.getElementById('village-status');
+        const area = document.getElementById('main-area');
         if (!area) return null;
         const node = document.createElement('div');
         node.id = 'resident-request-reminder';
