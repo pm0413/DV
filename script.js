@@ -1391,11 +1391,11 @@ window.dowonSceneCharacters = characters;
 const SCENE_IMAGE_WIDTH = 1920;
 const SCENE_IMAGE_HEIGHT = 1080;
 const SCENE_ROUTES = [
- {name:'지붕 1',x:650,y:300,links:[3],jump:[3]},
+ {name:'지붕 1',x:650,y:300,links:[14],jump:[14]},
  {name:'지붕 2',x:1250,y:200,links:[4],jump:[4]},
- {name:'별채',x:550,y:500,links:[1,5],jump:[1]},
+ {name:'별채',x:550,y:500,links:[5,14]},
  {name:'본채',x:1300,y:500,links:[2,5],jump:[2]},
- {name:'계단',x:1110,y:500,links:[3,4,10]},
+ {name:'계단',x:1110,y:500,links:[3,4,10,14]},
  {name:'꽃밭',x:600,y:650,links:[8]},
  {name:'장독대',x:500,y:700,links:[8,9]},
  {name:'연못 1',x:700,y:740,links:[6,7,10]},
@@ -1403,7 +1403,8 @@ const SCENE_ROUTES = [
  {name:'마당 1',x:1000,y:700,links:[5,8,11]},
  {name:'마당 2',x:1450,y:750,links:[10,12,13]},
  {name:'밭',x:1400,y:900,links:[11]},
- {name:'풀숲',x:1550,y:700,links:[11]}
+ {name:'풀숲',x:1550,y:700,links:[11]},
+ {name:'마루',x:700,y:500,links:[1,3,5],jump:[1]}
 ];
 window.dowonPlaceNames=SCENE_ROUTES.map(p=>p.name);
 const routeClock={previous:performance.now()};
