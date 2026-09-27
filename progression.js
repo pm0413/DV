@@ -15,15 +15,15 @@
      chopper:{id:'chopper-workshop',name:'작두',comfort:200,coins:500,duration:10*60*1000},
      coop:{id:'coop-workshop',name:'닭장',comfort:500,coins:800,duration:13*60*1000},
      sugar:{id:'sugar-workshop',name:'설탕공방',comfort:1000,coins:1000,duration:15*60*1000},
-     pancake:{id:'pancake-workshop',name:'전병방',comfort:2000,coins:2000,duration:20*60*1000},
-     salter:{id:'salter-workshop',name:'절임통',comfort:4000,coins:4000,duration:25*60*1000},
-     'tofu-processing':{id:'tofu-processing-workshop',name:'두부가공 시설',comfort:6000,coins:8000,duration:30*60*1000},
-     sheep:{id:'sheep-workshop',name:'양우리',comfort:600,coins:1000,duration:15*60*1000},
-     ricecake:{id:'ricecake-workshop',name:'떡방',comfort:1200,coins:2500,duration:20*60*1000},
-     dryer:{id:'dryer-workshop',name:'건조장',comfort:700,coins:1200,duration:15*60*1000},
-     roastery:{id:'roastery-workshop',name:'구이방',comfort:900,coins:1500,duration:18*60*1000},
-     textile:{id:'textile-workshop',name:'옷공방',comfort:1500,coins:3500,duration:25*60*1000},
-     embroidery:{id:'embroidery-workshop',name:'자수방',comfort:2500,coins:6000,duration:30*60*1000}
+     pancake:{id:'pancake-workshop',name:'전병방',comfort:600,coins:2000,duration:20*60*1000},
+     salter:{id:'salter-workshop',name:'절임통',comfort:700,coins:4000,duration:25*60*1000},
+     'tofu-processing':{id:'tofu-processing-workshop',name:'두부가공 시설',comfort:900,coins:8000,duration:30*60*1000},
+     sheep:{id:'sheep-workshop',name:'양우리',comfort:1200,coins:1000,duration:15*60*1000},
+     ricecake:{id:'ricecake-workshop',name:'떡방',comfort:1500,coins:2500,duration:20*60*1000},
+     dryer:{id:'dryer-workshop',name:'건조장',comfort:2000,coins:1200,duration:15*60*1000},
+     roastery:{id:'roastery-workshop',name:'구이방',comfort:2500,coins:1500,duration:18*60*1000},
+     textile:{id:'textile-workshop',name:'옷공방',comfort:4000,coins:3500,duration:25*60*1000},
+     embroidery:{id:'embroidery-workshop',name:'자수방',comfort:6000,coins:6000,duration:30*60*1000}
    }
  };
  let state={residents:2,farms:1,orders:1,peakComfort:0,workshops:{},upgradedFarms:[false,false,false,false]};

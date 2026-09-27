@@ -105,6 +105,7 @@
  const collectionCount=category=>Number(collectionStats().result?.[category]?.count)||0;
  const collectionTotal=category=>Number(collectionStats().result?.[category]?.total)||0;
  const make=(id,title,category,description,progress,target=1,reward=100)=>[id,title,category,description,progress,target,reward];
+ const targetValue=target=>Math.max(1,Number(typeof target==='function'?target():target)||1);
  const extraDefs=[];
  const add=(id,title,category,description,progress,target=1,reward=100)=>extraDefs.push(make('extra-'+id,title,category,description,progress,target,reward));
 
@@ -136,25 +137,25 @@
  add("extra-fullplant","빈틈없는 농부","농사","사용 가능한 밭 모든 칸에 작물 심기",()=>(n("fullplant")),1);
  add("extra-farmopen","땅을 넓히다","농사","추가 밭 첫 해금",()=>(Math.max(0,(Number(prog().farms)||1)-1)),1);
  add("extra-allfarms","마을의 대농장","농사","모든 밭 해금",()=>(Number(prog().farms)>=4?1:0),1);
- add("extra-crop-wheat","밀밭의 주인","농사","wheat 누적 100개 수확",()=>(itemN("harvest","wheat")),100);
- add("extra-crop-bean","콩 한 바구니","농사","bean 누적 100개 수확",()=>(itemN("harvest","bean")),100);
- add("extra-crop-sugarcane","달콤한 수확","농사","sugarcane 누적 100개 수확",()=>(itemN("harvest","sugarcane")),100);
- add("extra-crop-paddy","쌀밥의 시작","농사","paddy 누적 100개 수확",()=>(itemN("harvest","paddy")),100);
- add("extra-crop-cabbage","채소밭 가꾸기","농사","cabbage 누적 100개 수확",()=>(itemN("harvest","cabbage")),100);
- add("extra-crop-pepper","매콤한 하루","농사","pepper 누적 100개 수확",()=>(itemN("harvest","pepper")),100);
- add("extra-crop-potato","땅속의 보물","농사","potato 누적 100개 수확",()=>(itemN("harvest","potato")),100);
+ add("extra-crop-wheat","밀밭의 주인","농사","밀 누적 100개 수확",()=>(itemN("harvest","wheat")),100);
+ add("extra-crop-bean","콩 한 바구니","농사","콩 누적 100개 수확",()=>(itemN("harvest","bean")),100);
+ add("extra-crop-sugarcane","달콤한 수확","농사","사탕수수 누적 100개 수확",()=>(itemN("harvest","sugarcane")),100);
+ add("extra-crop-paddy","쌀밥의 시작","농사","벼 누적 100개 수확",()=>(itemN("harvest","paddy")),100);
+ add("extra-crop-cabbage","채소밭 가꾸기","농사","배추 누적 100개 수확",()=>(itemN("harvest","cabbage")),100);
+ add("extra-crop-pepper","매콤한 하루","농사","고추 누적 100개 수확",()=>(itemN("harvest","pepper")),100);
+ add("extra-crop-potato","땅속의 보물","농사","감자 누적 100개 수확",()=>(itemN("harvest","potato")),100);
  add("extra-prod500","바쁜 가공소","생산","가공품 누적 500개 수령",()=>(state.stats.processed),500);
  add("extra-prod1000","손이 열 개라도 모자라","생산","가공품 누적 1000개 수령",()=>(state.stats.processed),1000);
- add("extra-prod-chickenFeed","닭들의 식사","생산","chickenFeed 누적 50개 생산",()=>(itemN("processed","chickenFeed")),50);
- add("extra-prod-egg","달걀 한 바구니","생산","egg 누적 50개 생산",()=>(itemN("processed","egg")),50);
- add("extra-prod-sugar","달콤한 공방","생산","sugar 누적 50개 생산",()=>(itemN("processed","sugar")),50);
- add("extra-prod-tofu","두부 장인","생산","tofu 누적 50개 생산",()=>(itemN("processed","tofu")),50);
- add("extra-prod-flour","곡식의 변신","생산","flour 누적 50개 생산",()=>(itemN("processed","flour")),50);
+ add("extra-prod-chickenFeed","닭들의 식사","생산","닭 사료 누적 50개 생산",()=>(itemN("processed","chickenFeed")),50);
+ add("extra-prod-egg","달걀 한 바구니","생산","달걀 누적 50개 생산",()=>(itemN("processed","egg")),50);
+ add("extra-prod-sugar","달콤한 공방","생산","설탕 누적 50개 생산",()=>(itemN("processed","sugar")),50);
+ add("extra-prod-tofu","두부 장인","생산","두부 누적 50개 생산",()=>(itemN("processed","tofu")),50);
+ add("extra-prod-flour","곡식의 변신","생산","밀가루 누적 50개 생산",()=>(itemN("processed","flour")),50);
  add("extra-all-prods","정성 들인 한 끼","생산","서로 다른 가공품 7종 이상 수령",()=>(countKeys(Object.fromEntries(Object.entries(ex().byItem).filter(([k])=>k.startsWith("processed:"))))),7);
  add("extra-sixslots","쉬지 않는 가공소","생산","가공 슬롯 6칸을 동시에 사용",()=>(n("sixslots")),1);
  add("extra-all-workshops","공방이 가득한 마을","생산","모든 가공소 해금",()=>(builtCount()>=Object.keys(window.dowonProgression?.settings?.workshops||{}).length+1?1:0),1);
  add("extra-prod20types","공방의 수집가","생산","서로 다른 가공품 20종 발견",()=>collectionCount("processed"),20);
- add("extra-prodcomplete","가공품 도감 완성","생산","현재 준비된 모든 가공품 발견",()=>collectionCount("processed"),Math.max(1,collectionTotal("processed")));
+ add("extra-prodcomplete","가공품 도감 완성","생산","현재 준비된 모든 가공품 발견",()=>collectionCount("processed"),()=>Math.max(1,collectionTotal("processed")));
  add("extra-cook10","오늘은 내가 요리사","요리","요리 누적 10회 완성",()=>(state.stats.cooked),10);
  add("extra-cook100","마을의 요리사","요리","요리 누적 100회 완성",()=>(state.stats.cooked),100);
  add("extra-cook500","백 번의 식사","요리","요리 누적 500회 완성",()=>(state.stats.cooked),500);
@@ -266,12 +267,12 @@
  add("fish-s-all","환상의 물고기들","낚시","S등급 환상어 10종 모두 발견",sFishDiscovered,10);
  add("fish-all","물고기 도감 완성","낚시","물고기 41종 모두 발견",fishDiscovered,41);
  // 도감 업적: 도감 자체의 현재 등록 수를 그대로 사용합니다.
- add("collection-crop","밭의 기록","도감","작물 도감 완성",()=>collectionCount("crop"),Math.max(1,collectionTotal("crop")));
- add("collection-processed","공방의 기록","도감","가공품 도감 완성",()=>collectionCount("processed"),Math.max(1,collectionTotal("processed")));
- add("collection-cooking","식탁의 기록","도감","요리 도감 완성",()=>collectionCount("cooking"),Math.max(1,collectionTotal("cooking")));
- add("collection-fish","물가의 기록","도감","물고기 도감 완성",()=>collectionCount("fish"),Math.max(1,collectionTotal("fish")));
- add("collection-cat","발자국의 기록","도감","고양이 도감 완성",()=>collectionCount("cat"),Math.max(1,collectionTotal("cat")));
- add("collection-all","도화마을 박물지","도감","작물·가공품·요리·물고기·고양이 도감을 모두 완성",()=>collectionStats().found,Math.max(1,collectionStats().total));
+ add("collection-crop","밭의 기록","도감","작물 도감 완성",()=>collectionCount("crop"),()=>Math.max(1,collectionTotal("crop")));
+ add("collection-processed","공방의 기록","도감","가공품 도감 완성",()=>collectionCount("processed"),()=>Math.max(1,collectionTotal("processed")));
+ add("collection-cooking","식탁의 기록","도감","요리 도감 완성",()=>collectionCount("cooking"),()=>Math.max(1,collectionTotal("cooking")));
+ add("collection-fish","물가의 기록","도감","물고기 도감 완성",()=>collectionCount("fish"),()=>Math.max(1,collectionTotal("fish")));
+ add("collection-cat","발자국의 기록","도감","고양이 도감 완성",()=>collectionCount("cat"),()=>Math.max(1,collectionTotal("cat")));
+ add("collection-all","도화마을 박물지","도감","작물·가공품·요리·물고기·고양이 도감을 모두 완성",()=>collectionStats().found,()=>Math.max(1,collectionStats().total));
  // 주민 관계 업적: 직접 설정한 관계 단계와 실제 발생한 행동 이벤트를 구분합니다.
  const registeredResidentIndices=()=>residents().filter(Boolean).map(p=>p.index);
  const residentPairs=()=>{const idx=registeredResidentIndices(),list=[];for(let i=0;i<idx.length;i++)for(let j=i+1;j<idx.length;j++)list.push({a:idx[i],b:idx[j],...window.nakwonResidentPairs?.get?.(idx[i],idx[j])});return list;};
@@ -297,8 +298,20 @@
  add('relation-lovewalk','너와 함께라면','주민','연인 간 함께 걷기 누적 10회',()=>n('resident-pair-lovewalk'),10);
  add('relation-love10','변함없는 사이','주민','직접 지정한 연인 관계로 게임 내 10일 함께 보내기',()=>Math.max(0,...Object.values(relationCounts()).map(Number)),10);
  achievementDefs.push(...extraDefs);
+ // 구버전은 collection.js보다 먼저 업적 목표를 계산해 도감 완성 목표가 1로 굳는 문제가 있었습니다.
+ // 잘못 완료 처리된 도감 업적은 실제 도감 총량을 읽은 뒤 미완료 상태로 되돌립니다.
+ if(!ex().flags.collectionTargetFix20260927){
+  const affected=new Set(['extra-extra-prodcomplete','extra-collection-crop','extra-collection-processed','extra-collection-cooking','extra-collection-fish','extra-collection-cat','extra-collection-all']);
+  setTimeout(()=>{
+   for(const def of achievementDefs){
+    if(!affected.has(def[0])||!state.claimed[def[0]])continue;
+    if(def[4](state)<targetValue(def[5]))delete state.claimed[def[0]];
+   }
+   ex().flags.collectionTargetFix20260927=true;save();syncAchievementAlerts();
+  },0);
+ }
  // 업적 알림은 '달성했지만 아직 보상을 받지 않은 업적'을 기준으로 유지합니다.
- function pendingAchievementDefs(){return achievementDefs.filter(a=>a[4](state)>=a[5]&&!state.claimed[a[0]]);}
+ function pendingAchievementDefs(){return achievementDefs.filter(a=>a[4](state)>=targetValue(a[5])&&!state.claimed[a[0]]);}
  function pendingAchievementCategories(){return new Set(pendingAchievementDefs().map(a=>a[2]));}
  function syncAchievementAlerts(){
   const pending=pendingAchievementDefs();
@@ -316,7 +329,7 @@
   {name:'고양이',icon:'pets'}
  ];
  function renderAchievements(){
-  const summary=node('p','vf-note',`달성 ${achievementDefs.filter(a=>a[4](state)>=a[5]).length}/${achievementDefs.length} · 보상은 한 번만 받을 수 있습니다.`);
+  const summary=node('p','vf-note',`달성 ${achievementDefs.filter(a=>a[4](state)>=targetValue(a[5])).length}/${achievementDefs.length} · 보상은 한 번만 받을 수 있습니다.`);
   root().append(summary);
   const layout=node('div','vf-achievement-layout');
   const sidebar=node('nav','vf-achievement-sidebar');sidebar.setAttribute('aria-label','업적 분류');
@@ -333,10 +346,10 @@
   results.append(node('h3','vf-achievement-heading',activeAchievementCategory));
   for(const [id,title,category,description,progress,target,reward] of achievementDefs){
    if(category!==activeAchievementCategory)continue;
-   const n=progress(state),done=n>=target,claimed=!!state.claimed[id],card=node('article','vf-card'),head=node('div','vf-card-head');
-   head.append(node('strong','',title),node('span','vf-chip',claimed?'보상 수령 완료':done?'달성!':'진행 중'));if(done&&!claimed){card.classList.add('vf-has-new');const dot=node('span','vf-achievement-new-dot','');dot.setAttribute('aria-hidden','true');card.append(dot);}card.append(head,node('p','',description),node('div','vf-note',`${Math.min(n,target)} / ${target} · 보상 ◈ ${reward} · 쾌적도 +${achievementComfort(title)}`));
-   const bar=node('div','vf-progress'),fill=node('span');fill.style.width=`${Math.min(100,Math.max(0,n/target*100))}%`;bar.append(fill);card.append(bar);
-   if(done&&!claimed)card.append(button('보상 받기',()=>{if(state.claimed[id]||progress(state)<target||!wallet()?.refund)return;state.claimed[id]=true;save();syncAchievementAlerts();emit('achievement-complete',{id,name:title});wallet().refund(reward);const comfort=achievementComfort(title);grantComfort(comfort);renderModal();message(`${title} 업적 보상으로 쾌적도 +${comfort}를 받았습니다.`);},'vf-primary'));
+   const resolvedTarget=targetValue(target),n=progress(state),done=n>=resolvedTarget,claimed=!!state.claimed[id],card=node('article','vf-card'),head=node('div','vf-card-head');
+   head.append(node('strong','',title),node('span','vf-chip',claimed?'보상 수령 완료':done?'달성!':'진행 중'));if(done&&!claimed){card.classList.add('vf-has-new');const dot=node('span','vf-achievement-new-dot','');dot.setAttribute('aria-hidden','true');card.append(dot);}card.append(head,node('p','',description),node('div','vf-note',`${Math.min(n,resolvedTarget)} / ${resolvedTarget} · 보상 ◈ ${reward} · 쾌적도 +${achievementComfort(title)}`));
+   const bar=node('div','vf-progress'),fill=node('span');fill.style.width=`${Math.min(100,Math.max(0,n/resolvedTarget*100))}%`;bar.append(fill);card.append(bar);
+   if(done&&!claimed)card.append(button('보상 받기',()=>{if(state.claimed[id]||progress(state)<resolvedTarget||!wallet()?.refund)return;state.claimed[id]=true;save();syncAchievementAlerts();emit('achievement-complete',{id,name:title});wallet().refund(reward);const comfort=achievementComfort(title);grantComfort(comfort);renderModal();message(`${title} 업적 보상으로 쾌적도 +${comfort}를 받았습니다.`);},'vf-primary'));
    results.append(card);
   }
   layout.append(sidebar,results);root().append(layout);

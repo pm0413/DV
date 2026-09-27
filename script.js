@@ -1393,9 +1393,9 @@ const SCENE_IMAGE_HEIGHT = 1080;
 const SCENE_ROUTES = [
  {name:'지붕 1',x:650,y:300,links:[14],jump:[14]},
  {name:'지붕 2',x:1250,y:200,links:[4],jump:[4]},
- {name:'별채',x:550,y:500,links:[5,14]},
- {name:'본채',x:1300,y:500,links:[2,5],jump:[2]},
- {name:'계단',x:1110,y:500,links:[3,4,10,14]},
+ {name:'별채',x:550,y:520,links:[5,14]},
+ {name:'본채',x:1300,y:520,links:[2,5],jump:[2]},
+ {name:'계단',x:1110,y:520,links:[3,4,10,14]},
  {name:'꽃밭',x:600,y:650,links:[8]},
  {name:'장독대',x:500,y:700,links:[8,9]},
  {name:'연못 1',x:700,y:740,links:[6,7,10]},
@@ -1404,7 +1404,7 @@ const SCENE_ROUTES = [
  {name:'마당 2',x:1450,y:750,links:[10,12,13]},
  {name:'밭',x:1400,y:900,links:[11]},
  {name:'풀숲',x:1550,y:700,links:[11]},
- {name:'마루',x:700,y:500,links:[1,3,5],jump:[1]}
+ {name:'마루',x:700,y:520,links:[1,3,5],jump:[1]}
 ];
 window.dowonPlaceNames=SCENE_ROUTES.map(p=>p.name);
 const routeClock={previous:performance.now()};
@@ -1650,6 +1650,8 @@ const PAIR_COOLDOWNS=new Map();
 const pairKey=(a,b)=>[a.residentIndex,b.residentIndex].sort((x,y)=>x-y).join(':');
 const pairState=(a,b)=>window.nakwonResidentPairs?.get(a.residentIndex,b.residentIndex)||{score:0,love:false,relation:'초면'};
 const EVENT_CHOICES={'혐오':['hate'],'사이 나쁨':['bad'],초면:['greet','awkward'],'아는 사이':['greet','awkward','rest'],친구:['greet','rest','walk'],'친한 친구':['greet','rest','walk','follow'],연인:['greet','rest','walk']};
+// 본채·별채·지붕에서는 반투명 실내/고지대 상태로 걸어 다니는 상호작용을 하지 않습니다.
+const NO_WALK_ENCOUNTER_NODES=new Set([1,2,3,4]);
 const EVENT_EMOJIS={greet:'👋',awkward:'😅',rest:'🙂',follow:'🤭'};
 const NEGATIVE_RELATION_EMOJIS={hate:['🤬','😡'],bad:['😑','😒','🤨']};
 const WALK_EMOJIS=['🐱','🌱','🐟','🎶'];
@@ -1730,7 +1732,15 @@ function updateEncounterEmoji(ev,now){
  if(meetingBubble.dataset.eventEmoji!==ev.emoji){meetingBubble.replaceChildren();meetingBubble.textContent=ev.emoji;meetingBubble.dataset.eventEmoji=ev.emoji;}
  meetingBubble.classList.add('meeting-bubble-event-emoji');
  meetingBubble.style.left=`${Math.max(10,Math.min(mainArea.clientWidth-10,point.x))}px`;
- meetingBubble.style.top=`${Math.max(25,point.y-125)}px`;
+ // 상호작용 대사 말풍선이 아직 보이는 경우, 공유 이모지는 그 말풍선 위로 올려 겹치지 않게 합니다.
+ const mainRect=mainArea.getBoundingClientRect();
+ const visibleSpeech=[ev.a,ev.b].map(person=>person.element?.querySelector('.resident-dialogue-bubble')).filter(bubble=>bubble&&!bubble.hidden&&getComputedStyle(bubble).display!=='none');
+ let emojiTop=Math.max(25,point.y-125);
+ if(visibleSpeech.length){
+  const speechTop=Math.min(...visibleSpeech.map(bubble=>bubble.getBoundingClientRect().top-mainRect.top));
+  emojiTop=Math.max(25,speechTop-10);
+ }
+ meetingBubble.style.top=`${emojiTop}px`;
  meetingBubble.hidden=false;meetingBubbleUntil=ev.until;
 }
 function startEncounter(a,b,now,manualPoint=null,forcedType=null){
@@ -1744,12 +1754,17 @@ function startEncounter(a,b,now,manualPoint=null,forcedType=null){
  // 가까워진 순간에만 30% 판정; 연인이 찾아간 경우는 약속된 동행으로 취급.
  if(!forcedType&&Math.random()>=.4){a.meetCooldown=b.meetCooldown=now+30000;return false;}
  const relation=relationOf(a,b);
- const types=EVENT_CHOICES[relation]||EVENT_CHOICES.초면;
- const type=forcedType||types[Math.floor(Math.random()*types.length)];
+ const baseTypes=EVENT_CHOICES[relation]||EVENT_CHOICES.초면;
+ const noWalkHere=a.routeNode===b.routeNode&&NO_WALK_ENCOUNTER_NODES.has(a.routeNode);
+ const types=noWalkHere?baseTypes.filter(eventType=>eventType!=='walk'&&eventType!=='follow'):baseTypes;
+ let type=forcedType;
+ if(!type||(noWalkHere&&(type==='walk'||type==='follow')))type=types[Math.floor(Math.random()*types.length)]||'greet';
  const point=manualPoint||{x:(a.routeX+b.routeX)/2,y:(a.routeY+b.routeY)/2};
  const walk=type==='walk'||type==='follow';
  const dialogueDuration=eventLineSlots(a,b,type,'opening').some(line=>residentDialogueOptions(line).length)?3800:0;
- const actionDuration=walk?4000+Math.random()*2000:3000;
+ // 연인의 함께 걷기는 행동 구간만 최소 7초 유지합니다. 다른 이동형 상호작용은 기존 4~6초입니다.
+ const loveWalk=type==='walk'&&pairState(a,b).love;
+ const actionDuration=walk?(loveWalk?7000+Math.random()*2000:4000+Math.random()*2000):3000;
  const duration=dialogueDuration+actionDuration;
  for(const person of [a,b]){person.routeTarget=0;person.routeJump=null;person.arrival=null;person.meetTarget=null;person.meetJourney=[];person.favoriteJourney=[];}
  const gap=Math.min(32,Math.max(18,mainArea.clientWidth*.03));
@@ -1777,14 +1792,12 @@ let activeFarmEvent=null;
 const FARM_EVENT_TIMEOUT=22000;
 window.addEventListener('dowon-crop-planted',()=>{
  if(activeFarmEvent||Math.random()>=.30)return;
- const candidates=characters.filter(c=>c.routeNode&&!c.napping&&!c.isBeingDragged&&!c.farmEventBusy&&residentDialogueOptions(c.farmOpening).length);
+ const candidates=characters.filter(c=>c.routeNode&&!c.napping&&!c.isBeingDragged&&!c.farmEventBusy&&!(activeEncounter&&(activeEncounter.a===c||activeEncounter.b===c))&&residentDialogueOptions(c.farmOpening).length);
  if(!candidates.length)return;
  const speaker=candidates[Math.floor(Math.random()*candidates.length)];
- const responders=characters.filter(c=>c!==speaker&&!c.napping&&!c.isBeingDragged&&String(c.farmRepliesByResident?.[String(speaker.residentIndex)]||'').trim());
+ const responders=characters.filter(c=>c!==speaker&&!c.napping&&!c.isBeingDragged&&!(activeEncounter&&(activeEncounter.a===c||activeEncounter.b===c))&&String(c.farmRepliesByResident?.[String(speaker.residentIndex)]||'').trim());
  const responder=responders.length?responders[Math.floor(Math.random()*responders.length)]:null;
  const now=performance.now();
- interruptEncounterFor(speaker,now);
- if(responder)interruptEncounterFor(responder,now);
  const startingNode=speaker.routeNode;
  const path=shortestRoute(startingNode,12);
  activeFarmEvent={speaker,responder,phase:'moving',deadline:now+FARM_EVENT_TIMEOUT};
