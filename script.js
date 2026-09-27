@@ -1845,6 +1845,10 @@ function moveCharacters(now=performance.now()){
  if(activeFarmEvent&&now>=activeFarmEvent.deadline)endFarmEvent(now);
  characters.forEach(character=>{
   const element=character.element;
+  // 별채(3)·본채(4)에 머무는 동안은 실내에 있는 것처럼 캐릭터만 어둡고 반투명하게 표시합니다.
+  // 말풍선은 흐리지 않으며, 드래그를 시작하거나 집 밖으로 이동하기 시작하면 즉시 원래 모습으로 돌아옵니다.
+  const isIndoorHouse=!character.isBeingDragged&&!character.routeTarget&&(character.routeNode===3||character.routeNode===4);
+  element.classList.toggle('resident-indoor-house',isIndoorHouse);
   if(!character.meetCooldown)character.meetCooldown=now+12000+Math.random()*15000;
   if(!character.routeNode){
    character.routeNode=Number.isInteger(Number(character.favoritePlace))&&Number(character.favoritePlace)>=1&&Number(character.favoritePlace)<=SCENE_ROUTES.length?Number(character.favoritePlace):8;character.routeTarget=0;

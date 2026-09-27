@@ -1467,7 +1467,7 @@ button, input, textarea, select, option { font-family: 'Paperozi', sans-serif; }
   background:linear-gradient(180deg,#181818f2,#0c0c0cf2);
   box-shadow:2px 0 18px #00000088;
 }
-#left-area.open { width:210px; }
+#left-area.open { width:150px; }
 #left-content {box-sizing:border-box;min-width:0;width:100%;height:100%;display:flex;flex-direction:column;gap:8px;padding:10px 6px 12px;overflow:hidden;}
 #left-content .rail-expand {order:-2; width:44px;height:42px;min-height:42px;display:flex;align-items:center;gap:11px; padding:0 10px;cursor:pointer;border:1px solid #e5e5e542;background:#ffffff13;color:inherit;font:inherit;white-space:nowrap;}
 #left-area.open #left-content .rail-expand {width:100%;}
@@ -1496,7 +1496,7 @@ body.light-mode #village-day,body.light-mode #village-period {color:#555555;}
 body.light-mode #left-area{background:#f8f4ec;}
 @media (max-width:700px){
  #left-area,#left-area.open{position:fixed;top:50px;bottom:0;left:0;height:auto;width:48px;max-width:none;z-index:710;}
- #left-area.open{width:min(210px,75vw);}
+ #left-area.open{width:min(150px,75vw);}
  #left-content{padding:8px 3px;}
  #left-content .sidebar-entry{width:42px;min-width:42px;}
  #left-content .rail-expand{width:42px;}
@@ -2857,4 +2857,29 @@ body.light-mode #left-content .sidebar-entry .menu-new-badge{color:#8a6117;text-
   #top-hud-stack{
     left:50%;
   }
+}
+
+
+/* 본채/별채 실내 표현: 조작은 그대로 두고 캐릭터와 이름표만 반투명·어둡게 표시 */
+#main-area .resident-avatar.resident-indoor-house .resident-avatar-image,
+#main-area .resident-avatar.resident-indoor-house .resident-avatar-face {
+  opacity: .65;
+  filter: brightness(.45) saturate(.7);
+  transition: opacity .22s ease, filter .22s ease;
+}
+#main-area .resident-avatar.resident-indoor-house .resident-avatar-name {
+  opacity: .65;
+  filter: brightness(.65) saturate(.75);
+  transition: opacity .22s ease, filter .22s ease;
+}
+#main-area .resident-avatar:not(.resident-indoor-house) .resident-avatar-image,
+#main-area .resident-avatar:not(.resident-indoor-house) .resident-avatar-face,
+#main-area .resident-avatar:not(.resident-indoor-house) .resident-avatar-name {
+  transition: opacity .22s ease, filter .22s ease;
+}
+
+/* 2026-09-27: left navigation — original vertical density, title hidden */
+#left-content .sidebar-title,
+#left-area.open #left-content .sidebar-title {
+  display: none !important;
 }

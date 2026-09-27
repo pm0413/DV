@@ -25,7 +25,7 @@
   aspect-ratio: 1 / 1;
 }
 #main-area #farm-area .farm-section-label { grid-column: 1 / -1; }
-#left-area.open ~ #main-area #farm-area { left: 218px !important; }
+#left-area.open ~ #main-area #farm-area { left: 158px !important; }
 /* Keep the seed chooser clear of the menu as well. */
 #main-area #crop-palette {
   box-sizing: border-box;
@@ -34,12 +34,12 @@
   max-width: calc(100% - 74px) !important;
 }
 #left-area.open ~ #main-area #crop-palette {
-  left: max(218px, 50%) !important;
-  max-width: calc(100% - 226px) !important;
+  left: max(158px, 50%) !important;
+  max-width: calc(100% - 166px) !important;
 }
 @media (max-width: 700px) {
   #main-area #farm-area { left: 54px !important; right: 6px !important; gap: 3px !important; }
-  #left-area.open ~ #main-area #farm-area { left: min(216px, 75vw) !important; }
+  #left-area.open ~ #main-area #farm-area { left: min(156px, 75vw) !important; }
   #main-area #farm-area > .farm { flex-basis: 92px !important; padding: 2px; }
 }
 
