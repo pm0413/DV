@@ -55,7 +55,7 @@
 }
 
 @media (max-width:700px) {
-  /* 모바일 가공소: 접힘은 헤더만, 펼침도 기존 모바일 높이(약 44%)의 30% = 13.2dvh */
+  /* 모바일 가공소: 접힘은 헤더만, 펼침은 화면 높이의 38%로 확보 */
   #game-area {display:flex !important;flex-direction:column !important;}
   #main-area {
     flex:1 1 auto !important;
@@ -63,10 +63,10 @@
     min-height:0 !important;
   }
   #right-area {
-    flex:0 0 13.2dvh !important;
-    height:13.2dvh !important;
+    flex:0 0 38dvh !important;
+    height:38dvh !important;
     min-height:86px !important;
-    max-height:13.2dvh !important;
+    max-height:38dvh !important;
     transition:flex-basis .2s ease,height .2s ease,max-height .2s ease;
   }
   #right-area.mobile-workshop-collapsed {
