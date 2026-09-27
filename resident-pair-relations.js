@@ -21,5 +21,17 @@
  function change(a,b,patch){if(a===b)return;const k=pair(a,b),before=current(a,b);if(!(k in data.starts))data.starts[k]=label(before);const nextLove=patch.love===undefined?!!before.love:!!patch.love;const requestedPlace=patch.morningPlace===undefined?(before.morningPlace||null):(patch.morningPlace==='annex'||patch.morningPlace==='main'?patch.morningPlace:null);const next={score:patch.score===undefined?before.score:clamp(patch.score),love:nextLove,forcedRelation:patch.forcedRelation===undefined?(before.forcedRelation||null):(patch.forcedRelation==='hate'||patch.forcedRelation==='bad'?patch.forcedRelation:null),morningPlace:nextLove?requestedPlace:null};data.pairs[k]=next;persist();document.dispatchEvent(new CustomEvent('nakwon:resident-pair-change',{detail:{a:Number(a),b:Number(b),...next,relation:label(next)}}));}
  function rollDay(day,names){if(day<=data.day)return [];const results=[];for(const [k,start] of Object.entries(data.starts)){const end=label(data.pairs[k]||{score:0});if(start!==end){const [a,b]=k.split(':').map(Number),first=names?.[a]||`주민 ${a+1}`,second=names?.[b]||`주민 ${b+1}`;results.push(`🤝 ${first}와 ${second}의 관계가 '${end}'(으)로 바뀌었습니다.`);}}data.day=day;data.starts={};persist();return results;}
  function encounter(a,b){if(a===b)return;const old=current(a,b);if(old.forcedRelation==='hate'||old.forcedRelation==='bad')return;const roll=Math.random();change(a,b,{score:old.score+(roll<.6?(Math.random()<.5?1:2):roll<.75?-1:0)});}
- window.nakwonResidentPairs={get:(a,b)=>({...current(a,b),relation:label(current(a,b))}),set:change,encounter,rollDay};
+ function resetResident(index){
+  const target=Number(index);if(!Number.isInteger(target)||target<0)return false;
+  let changed=false;
+  for(const bucket of [data.pairs,data.starts]){
+   for(const k of Object.keys(bucket||{})){
+    const [a,b]=k.split(':').map(Number);
+    if(a===target||b===target){delete bucket[k];changed=true;}
+   }
+  }
+  if(changed)persist();
+  return changed;
+ }
+ window.nakwonResidentPairs={get:(a,b)=>({...current(a,b),relation:label(current(a,b))}),set:change,encounter,rollDay,resetResident};
 })();

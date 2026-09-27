@@ -373,7 +373,18 @@
 
    const actions=document.createElement('div');actions.className='resident-buttons resident-form-actions';
    const save=document.createElement('button');save.type='submit';save.textContent=r?'변경 사항 저장':'주민 추가';actions.append(save);
-   if(r){actions.append(button('주민 삭제','resident-delete',()=>{if(!confirm(`${r.name} 주민을 삭제할까요?`))return;const next=residents.map(person=>person?{...person,interactionByResident:{...(person.interactionByResident||{})},relationships:{...(person.relationships||{})}}:null);next[i]=null;next.forEach(person=>{if(person){delete person.interactionByResident[String(i)];delete person.relationships[String(i)];}});if(!stored(next)){notice.textContent='삭제 정보를 저장하지 못했어요.';return;}residents=next;window.dowonAffinity?.resetMpc(i);renderCharacters();gallery();}));}
+   if(r){actions.append(button('주민 삭제','resident-delete',()=>{if(!confirm(`${r.name} 주민을 삭제할까요?`))return;
+    const keyedFields=['interactionByResident','interactionRepliesByResident','interactionDisabledByResident','relationships','farmRepliesByResident'];
+    const next=residents.map(person=>{if(!person)return null;const copy={...person};for(const field of keyedFields)copy[field]={...(person[field]||{})};return copy;});
+    next[i]=null;
+    next.forEach(person=>{if(!person)return;for(const field of keyedFields)delete person[field][String(i)];});
+    if(!stored(next)){notice.textContent='삭제 정보를 저장하지 못했어요.';return;}
+    residents=next;
+    window.dowonAffinity?.resetMpc(i);
+    window.nakwonResidentPairs?.resetResident?.(i);
+    try{const key='dangcheong-dowon-village-resident-position-v1',positions=JSON.parse(localStorage.getItem(key)||'{}');if(positions&&typeof positions==='object'&&!Array.isArray(positions)){delete positions[String(i)];localStorage.setItem(key,JSON.stringify(positions));}}catch(e){console.warn('삭제 주민 위치 초기화 실패',e);}
+    document.dispatchEvent(new CustomEvent('dowon:resident-slot-reset',{detail:{residentIndex:i}}));
+    renderCharacters();gallery();}));}
    form.append(actions,notice);
 
    imageInput.addEventListener('change',()=>{const file=imageInput.files?.[0];if(!file)return;if(!['image/png','image/jpeg','image/webp','image/gif'].includes(file.type)||file.size>2*1024*1024){notice.textContent='PNG, JPG, WEBP, GIF 이미지를 2MB 이하로 선택해 주세요.';imageInput.value='';return;}const reader=new FileReader();reader.onload=()=>{uploadedImage=String(reader.result);preview.src=uploadedImage;preview.hidden=false;notice.textContent='이미지가 선택됐어요. 저장하면 적용됩니다.';};reader.onerror=()=>{notice.textContent='이미지를 읽을 수 없습니다.';};reader.readAsDataURL(file);});
