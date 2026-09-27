@@ -2705,14 +2705,16 @@ body.light-mode #main-area .resident-request-reminder-detail{color:#6f665a;}
   content:"";
   position:absolute;
   inset:0;
-  z-index:-1;
+  /* 현재 배경을 위 레이어로 남겨 두고 아래의 다음 배경이 드러나게 한다.
+     -1이면 요소의 본 배경 뒤로 숨어 페이드가 보이지 않는다. */
+  z-index:1;
   pointer-events:none;
   background-image:var(--scene-crossfade-image, none);
   background-position:center;
   background-size:cover;
   background-repeat:no-repeat;
   opacity:var(--scene-crossfade-opacity, 0);
-  transition:opacity 5s ease-in-out;
+  transition:none; /* 게임 시각으로 opacity를 직접 계산 */
 }
 @media (prefers-reduced-motion: reduce) {
   #main-area::after { transition:none; }
@@ -2761,3 +2763,18 @@ body.light-mode #main-area .resident-request-reminder-detail{color:#6f665a;}
  #main-area .scene-coordinate-marker{animation:none;opacity:.3;}
 }
 
+
+/* 사이드바 갱신 알림 */
+#left-content .sidebar-entry{position:relative}
+#left-content .sidebar-entry .menu-new-badge{position:absolute;top:2px;right:2px;z-index:20;font-size:9px;font-weight:900;line-height:1;letter-spacing:-.02em;color:#d8b84f;pointer-events:none;text-shadow:0 1px 2px rgba(0,0,0,.72)}
+#left-content .sidebar-entry .menu-new-badge[hidden]{display:none}
+#left-area.open #left-content .sidebar-entry .menu-new-badge{top:4px;right:7px;font-size:9px}
+body.light-mode #left-content .sidebar-entry .menu-new-badge{color:#8a6117;text-shadow:none}
+
+/* 이벤트 상대별 대사: 1~4번을 한 줄에 배치하고 같은 번호끼리 한 세트로 사용 */
+.resident-dialog .resident-event-pair-block{margin:10px 0 16px;padding-top:8px;border-top:1px solid #ffffff18}
+.resident-dialog .resident-event-pair-block h5{margin:0 0 8px;font-size:13px;font-weight:700}
+.resident-dialog .resident-event-four-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.resident-dialog .resident-event-four-grid label{min-width:0;margin-bottom:10px}
+.resident-dialog .resident-event-four-grid textarea{width:100%;box-sizing:border-box}
+@media(max-width:700px){.resident-dialog .resident-event-four-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}

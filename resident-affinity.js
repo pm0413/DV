@@ -88,6 +88,7 @@
         tip.className = 'dowon-affinity-tooltip';
         tip.textContent = tooltipText;
         el.setAttribute('aria-label', tooltipText);
+        el.setAttribute('title', tooltipText);
         el.tabIndex = 0;
         el.append(line, tip);
         return el;

@@ -6,9 +6,9 @@
  const DEFAULT_LIKES={
    0:{likes:['egg','eggPancake'],dislike:'chickenFeed'},
    1:{likes:['sugar','food_Twisted_Doughnut'],dislike:'chickenFeed'},
-   2:{likes:['bean','friedTofu'],dislike:'chickenFeed'},
-   3:{likes:['egg','paddy'],dislike:'chickenFeed'},
-   4:{likes:['cabbage','pickledVegetables'],dislike:'chickenFeed'}
+   2:{likes:['tofu','friedTofu'],dislike:'chickenFeed'},
+   3:{likes:['egg','saltedEgg'],dislike:'chickenFeed'},
+   4:{likes:['ricePowder','pickledVegetables'],dislike:'chickenFeed'}
  };
  window.dowonGiftPreferences=DEFAULT_LIKES;
  let records={};
@@ -19,9 +19,25 @@
    try{const saved=JSON.parse(localStorage.getItem('dangcheong-dowon-village-clock-v2')||'null');return Number.isSafeInteger(saved?.day)&&saved.day>0?saved.day:1;}catch(_){return 1;}
  };
  const seasonIndex=()=>Math.floor((getDay()-1)/7);
- const itemKeys=()=>[...new Set([...Object.keys(window.dowonItemDescriptions||{}),...(window.DOWON_COOKING_RECIPES||[]).map(r=>r.output).filter(Boolean)])];
+ const CROP_KEYS=new Set(['rice','bean','sugarcane','paddy','cabbage','pepper','potato','ramie','cotton','pumpkin','sweetPotato']);
+ const SHOP_GIFT_EXCLUDED=new Set(['catFishFeed','catDuckFeed','catChickenFeed','bait','chickenMeat','pork','bitterMelon','shepherdsPurse']);
+ const GIFT_EXCLUDED=new Set([...CROP_KEYS,...SHOP_GIFT_EXCLUDED]);
+ const PROCESSED=new Set(['chickenFeed','egg','sugar','tofu','flour','saltedEgg','ricePowder','eggPancake','pickledVegetables','friedTofu','sheepFeed','brownSugar','wool','stickyRiceCake','eggBread','pumpkinSeed','roastedSweetPotato','hempCloth','yarn','cottonFabric','clothDoll','sachet','roastedPotato','grilledTofu','potatoStarch','sweetPotatoStarch','soyMilk','blackBeanPaste','maltSyrup','hotteok','vegetablePancake','potatoPancake','pickledPotato','tofuStick','fermentedTofu','tofuSkin','steamedRiceCake','pumpkinRiceCake','glassNoodles','driedBlackBeanPaste']);
+ const MATERIAL=new Set(['fish','bait']);
+ const itemKeys=()=>[...new Set([...Object.keys(window.dowonItemDescriptions||{}),...(window.DOWON_COOKING_RECIPES||[]).map(r=>r.output).filter(Boolean)])].filter(k=>!GIFT_EXCLUDED.has(k));
  const nameOf=k=>(window.DOWON_COOKING_RECIPES||[]).find(r=>r.output===k)?.name||window.dowonItemDescriptions?.[k]?.name||k;
- const get=i=>{const record=records[i];return record&&Array.isArray(record.items)?record.items.filter(k=>typeof k==='string'):[];};
+ const imageOf=k=>{
+   const recipe=(window.DOWON_COOKING_RECIPES||[]).find(r=>r.output===k);
+   if(recipe)return recipe.icon||`item/요리/${recipe.name}.png`;
+   if(PROCESSED.has(k))return `item/가공품/${nameOf(k)}.png`;
+   if(MATERIAL.has(k))return `item/재료/${nameOf(k)}.png`;
+   if(k==='catFishFeed')return 'item/장식/고양이 가구/생선 밥그릇.png';
+   if(k==='catDuckFeed')return 'item/장식/고양이 가구/오리고기 밥그릇.png';
+   if(k==='catChickenFeed')return 'item/장식/고양이 가구/닭고기 밥그릇.png';
+   return `item/작물/${nameOf(k)}.png`;
+ };
+ window.dowonGiftItems={itemKeys,nameOf,imageOf,isExcluded:k=>GIFT_EXCLUDED.has(k)};
+ const get=i=>{const record=records[i];const valid=new Set(itemKeys());return record&&Array.isArray(record.items)?record.items.filter(k=>typeof k==='string'&&valid.has(k)):[];};
  const canEdit=i=>Number.isInteger(i)&&i>=0&&i<5&&(!records[i]||records[i].season!==seasonIndex());
  function choose(i,items){
    if(!canEdit(i)||!Array.isArray(items)||items.length<1||items.length>5||new Set(items).size!==items.length)return false;
@@ -50,7 +66,7 @@
    const refresh=()=>{count.textContent=`선택 ${selection.size}/5`;for(const card of cards){const active=selection.has(card.key);card.button.classList.toggle('is-selected',active);card.button.setAttribute('aria-pressed',String(active));card.button.disabled=!active&&selection.size>=5;}};
    for(const key of itemKeys()) {
      const card=create('button','vf-gift-choice-item');card.type='button';card.key=key;
-     const img=create('img');img.src=(window.DOWON_COOKING_RECIPES||[]).find(r=>r.output===key)?.icon||`item/${["eggPancake","egg","chickenFeed","tofu","ricePowder","flour","sugar","saltedEgg","friedTofu","pickledVegetables"].includes(key)?"가공품":"작물"}/${nameOf(key)}.png`;img.alt='';img.loading='lazy';img.onerror=()=>{img.style.display='none';};
+     const img=create('img');img.src=imageOf(key);img.alt='';img.loading='lazy';img.onerror=()=>{img.style.display='none';};
      card.append(img,create('span','',nameOf(key)));card.addEventListener('click',()=>{if(selection.has(key))selection.delete(key);else if(selection.size<5)selection.add(key);refresh();});
      grid.append(card);cards.push({key,button:card});
    }

@@ -20,7 +20,7 @@
  const residents=()=>{try{const a=JSON.parse(localStorage.getItem('dangcheong-dowon-player-residents-v1')||'[]');return Array.from({length:5},(_,i)=>a[i]?.name?{...a[i],index:i}:null);}catch(_){return Array(5).fill(null);}};
  const labels=()=>window.dowonItemDescriptions||{};
  const nameOf=k=>recipes().find(r=>r.output===k)?.name||labels()[k]?.name||k;
- const imageOf=k=>{const r=recipes().find(r=>r.output===k);return r?.icon||`item/${["eggPancake","egg","chickenFeed","tofu","ricePowder","flour","sugar","saltedEgg","friedTofu","pickledVegetables"].includes(k)?"가공품":"작물"}/${nameOf(k)}.png`;};
+ const imageOf=k=>window.dowonGiftItems?.imageOf?.(k)||(recipes().find(r=>r.output===k)?.icon||`item/작물/${nameOf(k)}.png`);
  const defaults=()=>({gifts:{},giftTastes:{},collection:{},stats:{harvest:0,processed:0,cooked:0,gifts:0},claimed:{},extra:{totals:{},byItem:{},orderByResident:{},catByResident:{},catGiftsByCat:{},daily:{},flags:{},seasons:{},feedPurchased:{}}});
  let state=defaults();
  try{const saved=JSON.parse(localStorage.getItem(KEY)||'null');if(saved&&typeof saved==='object'){
@@ -32,7 +32,7 @@
  const emit=(type,detail={})=>document.dispatchEvent(new CustomEvent('dowon:activity',{detail:{type,...detail}}));
  const node=(tag,cls,text)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el;};
  const button=(text,run,cls='')=>{const b=node('button',cls,text);b.type='button';b.addEventListener('click',run);return b;};
- const available=()=>Object.keys(labels()).filter(k=>inv()?.get(k)>0);
+ const available=()=>Object.keys(labels()).filter(k=>inv()?.get(k)>0&&!window.dowonGiftItems?.isExcluded?.(k));
  const storedKeys=()=>Object.keys(labels());
  const hasGift=i=>state.gifts[i]===day();
  function preferencesFor(i){const choices=storedKeys();const picks=['eggPancake','egg','tofu','food_Egg_noodles','flour','sugar','rice','bean','cabbage','sugarcane'].filter(k=>choices.includes(k));const preferred=picks.length?picks:['rice','bean'];return {favorite:preferred[i%preferred.length],likes:[preferred[(i+1)%preferred.length],preferred[(i+2)%preferred.length]].filter(Boolean),dislike:preferred[(i+5)%preferred.length]};}
@@ -264,6 +264,14 @@
  add('relation-lovewalk','너와 함께라면','주민','연인 간 함께 걷기 누적 10회',()=>n('resident-pair-lovewalk'),10);
  add('relation-love10','변함없는 사이','주민','직접 지정한 연인 관계로 게임 내 10일 함께 보내기',()=>Math.max(0,...Object.values(relationCounts()).map(Number)),10);
  achievementDefs.push(...extraDefs);
+ // 업적 알림은 '달성했지만 아직 보상을 받지 않은 업적'을 기준으로 유지합니다.
+ function pendingAchievementDefs(){return achievementDefs.filter(a=>a[4](state)>=a[5]&&!state.claimed[a[0]]);}
+ function pendingAchievementCategories(){return new Set(pendingAchievementDefs().map(a=>a[2]));}
+ function syncAchievementAlerts(){
+  const pending=pendingAchievementDefs();
+  if(window.dowonMenuNew){if(pending.length)window.dowonMenuNew.mark('achievements');else window.dowonMenuNew.read('achievements');}
+ }
+ function checkAchievementUpdates(){syncAchievementAlerts();}
  const achievementCategories=[
   {name:'농사',icon:'wheat'},
   {name:'생산',icon:'box'},
@@ -280,8 +288,9 @@
   const results=node('section','vf-achievement-results');results.setAttribute('aria-label',`${activeAchievementCategory} 업적`);
   for(const group of achievementCategories){
    const selected=group.name===activeAchievementCategory;
-   const tab=button('',()=>{if(activeAchievementCategory===group.name)return;activeAchievementCategory=group.name;renderModal();},'vf-achievement-tab');
+   const tab=button('',()=>{if(activeAchievementCategory===group.name){renderModal();return;}activeAchievementCategory=group.name;renderModal();},'vf-achievement-tab');
    tab.setAttribute('aria-label',`${group.name} 업적`);tab.title=group.name;
+   if(pendingAchievementCategories().has(group.name)){const dot=node('span','vf-new-dot','');dot.setAttribute('aria-hidden','true');tab.append(dot);}
    tab.setAttribute('aria-current',selected?'page':'false');tab.classList.toggle('is-active',selected);
    const glyph=node('span','material-symbols-outlined',group.icon);glyph.setAttribute('aria-hidden','true');
    tab.append(glyph);sidebar.append(tab);
@@ -290,9 +299,9 @@
   for(const [id,title,category,description,progress,target,reward] of achievementDefs){
    if(category!==activeAchievementCategory)continue;
    const n=progress(state),done=n>=target,claimed=!!state.claimed[id],card=node('article','vf-card'),head=node('div','vf-card-head');
-   head.append(node('strong','',title),node('span','vf-chip',claimed?'보상 수령 완료':done?'달성!':'진행 중'));card.append(head,node('p','',description),node('div','vf-note',`${Math.min(n,target)} / ${target} · 보상 ◈ ${reward} · 쾌적도 +${achievementComfort(title)}`));
+   head.append(node('strong','',title),node('span','vf-chip',claimed?'보상 수령 완료':done?'달성!':'진행 중'));if(done&&!claimed){card.classList.add('vf-has-new');const dot=node('span','vf-achievement-new-dot','');dot.setAttribute('aria-hidden','true');card.append(dot);}card.append(head,node('p','',description),node('div','vf-note',`${Math.min(n,target)} / ${target} · 보상 ◈ ${reward} · 쾌적도 +${achievementComfort(title)}`));
    const bar=node('div','vf-progress'),fill=node('span');fill.style.width=`${Math.min(100,Math.max(0,n/target*100))}%`;bar.append(fill);card.append(bar);
-   if(done&&!claimed)card.append(button('보상 받기',()=>{if(state.claimed[id]||progress(state)<target||!wallet()?.refund)return;state.claimed[id]=true;save();emit('achievement-complete',{id,name:title});wallet().refund(reward);const comfort=achievementComfort(title);grantComfort(comfort);renderModal();message(`${title} 업적 보상으로 쾌적도 +${comfort}를 받았습니다.`);},'vf-primary'));
+   if(done&&!claimed)card.append(button('보상 받기',()=>{if(state.claimed[id]||progress(state)<target||!wallet()?.refund)return;state.claimed[id]=true;save();syncAchievementAlerts();emit('achievement-complete',{id,name:title});wallet().refund(reward);const comfort=achievementComfort(title);grantComfort(comfort);renderModal();message(`${title} 업적 보상으로 쾌적도 +${comfort}를 받았습니다.`);},'vf-primary'));
    results.append(card);
   }
   layout.append(sidebar,results);root().append(layout);
@@ -317,7 +326,7 @@
   $('kitchen-collection-toggle').addEventListener('click',showCollection);
   $('kitchen-close').addEventListener('click',()=>{const content=$('kitchen-collection');if(!content.hidden){content.hidden=true;$('kitchen-content').hidden=false;$('kitchen-progress').hidden=false;$('kitchen-collection-toggle').textContent='요리 도감';}});
  }
- document.addEventListener('dowon:activity',event=>{const {type,...detail}=event.detail||{};if(type){record(type,detail);onExtraEvent(type,detail);}});
+ document.addEventListener('dowon:activity',event=>{const {type,...detail}=event.detail||{};if(type){record(type,detail);onExtraEvent(type,detail);setTimeout(checkAchievementUpdates,0);}});
 
  function onExtraEvent(type,d){
   if(type==='achievement-complete')return;
@@ -336,9 +345,9 @@
   increment(type);
   save();
  }
- document.addEventListener('dowon:weatherchange',event=>{const kind=event.detail?.kind;if(kind==='snow'||kind==='rain'||kind==='drizzle'){if(!ex().flags['weather-'+kind]){ex().flags['weather-'+kind]=true;increment(kind==='snow'?'snow':'rain');save();}}});
+ document.addEventListener('dowon:weatherchange',event=>{const kind=event.detail?.kind;if(kind==='snow'||kind==='rain'||kind==='drizzle'){if(!ex().flags['weather-'+kind]){ex().flags['weather-'+kind]=true;increment(kind==='snow'?'snow':'rain');save();}}setTimeout(checkAchievementUpdates,0);});
  document.addEventListener('click',event=>{const button=event.target?.closest?.('button[id$="-start"]');if(!button)return;setTimeout(()=>{for(let i=0;i<localStorage.length;i++){const key=localStorage.key(i);if(!/^dangcheong-dowon-village-(?:mill|chopper|coop|sugar-workshop|tofu-workshop|pancake-workshop|salter|tofu-processing)/.test(key))continue;try{const slots=JSON.parse(localStorage.getItem(key)||'null');if(Array.isArray(slots)&&slots.length>=6&&slots.every(Boolean)){increment('sixslots');save();break;}}catch(_){}}},0);},true);
- document.addEventListener('dowon:seasonchange',event=>{if(event.detail?.preview)return;const season=String(event.detail?.season||'');if(season){ex().seasonsSeen[season]=1;save();}});
+ document.addEventListener('dowon:seasonchange',event=>{if(event.detail?.preview)return;const season=String(event.detail?.season||'');if(season){ex().seasonsSeen[season]=1;save();}setTimeout(checkAchievementUpdates,0);});
  function refreshLoveDay(){const stats=relationCounts(),currentDay=day(),active=new Set(residentPairs().filter(p=>p.love).map(p=>[p.a,p.b].join(':')));const last=Number(relationFlags().lastLoveDay)||0;
   if(last===currentDay)return;
   if(last>0&&currentDay===last+1){for(const id of active)stats[id]=(Number(stats[id])||0)+1;}
@@ -346,15 +355,16 @@
   for(const id of Object.keys(stats))if(!active.has(id))delete stats[id];
   relationFlags().lastLoveDay=currentDay;save();
  }
- document.addEventListener('nakwon:resident-pair-change',()=>{refreshLoveDay();if(current==='achievements')renderModal();});
- document.addEventListener('dowon:timechange',refreshLoveDay);
+ document.addEventListener('nakwon:resident-pair-change',()=>{refreshLoveDay();if(current==='achievements')renderModal();setTimeout(checkAchievementUpdates,0);});
+ document.addEventListener('dowon:timechange',event=>{refreshLoveDay(event);setTimeout(checkAchievementUpdates,0);});
  refreshLoveDay();
  document.addEventListener('dowon:timechange',()=>{const newDay=day();if(ex().daily.day!==newDay){ex().daily={day:newDay,quest:0,request:0,order:0};ex().seasonsSeen=ex().seasonsSeen||{};const season=String(window.dowonSeasons?.get?.()?.season||'');if(season)ex().seasonsSeen[season]=1;save();}});
- window.dowonFeatures={openPanel:(kind)=>{if(kind==='achievements')open('마을 업적',kind);},openGift:i=>{if(!residents()[i])return;open(`${residents()[i].name}에게 선물하기`,`gift-${i}`);},refresh:()=>{if(current)renderModal();},get:()=>JSON.parse(JSON.stringify(state))};
+ syncAchievementAlerts();
+ window.dowonFeatures={openPanel:(kind)=>{if(kind==='achievements'){syncAchievementAlerts();open('마을 업적',kind);}},openGift:i=>{if(!residents()[i])return;open(`${residents()[i].name}에게 선물하기`,`gift-${i}`);},refresh:()=>{if(current)renderModal();},get:()=>JSON.parse(JSON.stringify(state))};
  // 사이드바 버튼은 다른 메뉴의 초기화 오류와 무관하게 독립적으로 연결합니다.
  for(const [id,title,kind] of [['menu-achievements','마을 업적','achievements']]){
    const control=$(id);
-   if(control)control.addEventListener('click',()=>open(title,kind));
+   if(control)control.addEventListener('click',()=>{if(kind==='achievements')syncAchievementAlerts();open(title,kind);});
  }
  mount();
 })();

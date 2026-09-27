@@ -36,8 +36,9 @@
   list.parentNode.insertBefore(roster, list);
   const unlocked = () => requestItems.availableKeys();
 
-  // 주민 주문판만 작물 5~20개를 요구합니다. 다른 부탁 시스템의 수량 설정은 유지합니다.
-  const orderQtyRange = key => CATALOG[key]?.kind === 'crop' ? [5,20] : requestItems.qtyRange(key);
+  // 주민 주문판: 작물만 5~20개, 그 외 가공품·요리는 항상 1개만 요구합니다.
+  // 다른 주민 부탁 시스템의 수량 규칙은 건드리지 않습니다.
+  const orderQtyRange = key => CATALOG[key]?.kind === 'crop' ? [5,20] : [1,1];
   function validOrderQty(key, qty) {
     if (!requestItems.has(key) || !Number.isInteger(qty)) return false;
     const [min,max] = orderQtyRange(key);

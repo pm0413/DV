@@ -1550,20 +1550,23 @@ document.addEventListener('dowon:activity',event=>{
  const character=characters.find(c=>c.residentIndex===Number(detail.resident));
  if(!character)return;
  const catState=window.dowonCats?.get?.();
- const isAdopted=Array.isArray(catState?.adoptedCats)&&catState.adoptedCats.some(cat=>cat?.id===detail.catId);
- const source=isAdopted?character.catAdoptedLines:character.catStrayLines;
+ const adoptedList=Array.isArray(catState?.adoptedCats)?catState.adoptedCats:[];
+ const adoptedIndex=adoptedList.findIndex(cat=>cat?.id===detail.catId);
+ const isAdopted=adoptedIndex>=0;
+ const source=isAdopted?(character.catAdoptedLinesBySlot?.[String(adoptedIndex)]??(adoptedIndex===0?character.catAdoptedLines:'')):character.catStrayLines;
  if(!residentDialogueOptions(source).length)return;
  const now=performance.now();
  if(showResidentDialogue(character,source,now)){
   character.nextDialogueAt=character.dialogueUntil+2500;
  }
 });
-// From the village clock: 06:00–17:59 is day, 18:00 onwards is night.
-// Existing day-only saved dialogue remains available if a night field is empty.
-function residentTimedLines(dayLines,nightLines){
+// 주민 시간대 대사: 06:00~15:59 낮, 16:00~17:59 노을, 18:00 이후 밤.
+// 노을/밤 칸이 비어 있으면 기존 낮 대사로 자연스럽게 대체합니다.
+function residentTimedLines(dayLines,afternoonLines,nightLines){
  const minute=window.dowonClock?.get?.()?.minute;
- const night=Number.isFinite(minute)&&minute>=18*60;
- return night && residentDialogueOptions(nightLines).length ? nightLines : dayLines;
+ if(Number.isFinite(minute)&&minute>=18*60&&residentDialogueOptions(nightLines).length)return nightLines;
+ if(Number.isFinite(minute)&&minute>=16*60&&residentDialogueOptions(afternoonLines).length)return afternoonLines;
+ return dayLines;
 }
 window.dowonShowRainDialogue = function(){
  const now=performance.now();
@@ -1572,8 +1575,8 @@ window.dowonShowRainDialogue = function(){
   const moving=Boolean(c.routeTarget)&&c.routePause<=0;
   const key=String(c.routeNode);
   return moving
-   ?residentTimedLines(c.rainLines,c.rainNightLines)
-   :residentTimedLines(c.rainPlaceLines?.[key],c.rainPlaceNightLines?.[key]);
+   ?residentTimedLines(c.rainLines,c.rainAfternoonLines,c.rainNightLines)
+   :residentTimedLines(c.rainPlaceLines?.[key],c.rainPlaceAfternoonLines?.[key],c.rainPlaceNightLines?.[key]);
  };
  const eligible=characters.filter(c=>c.element?.isConnected && residentDialogueOptions(rainySource(c)).length && !c.napping && !c.farmEventBusy && !c.isBeingDragged && !(c.meetingUntil>now) && !(c.dialogueUntil>now));
  if(!eligible.length)return false;
@@ -1597,8 +1600,8 @@ function updateResidentDialogue(character,now){
  const moving=Boolean(character.routeTarget)&&character.routePause<=0;
  const key=String(character.routeNode);
  const source=moving
-  ?residentTimedLines(character.generalLines,character.generalNightLines)
-  :residentTimedLines(character.placeLines?.[key],character.placeNightLines?.[key]);
+  ?residentTimedLines(character.generalLines,character.generalAfternoonLines,character.generalNightLines)
+  :residentTimedLines(character.placeLines?.[key],character.placeAfternoonLines?.[key],character.placeNightLines?.[key]);
  const hasLines=showResidentDialogue(character,source,now);
  // 대사 없는 장소에서도 프레임마다 재시도하지 않습니다.
  character.nextDialogueAt=now+(hasLines?8000+Math.random()*7000:4000);
@@ -1648,12 +1651,22 @@ const EVENT_CHOICES={초면:['greet','awkward'],'아는 사이':['greet','awkwar
 const EVENT_EMOJIS={greet:'👋',awkward:'😅',rest:'🙂',follow:'🤭'};
 const WALK_EMOJIS=['🐱','🌱','🐟','🎶'];
 function pickEventEmoji(type){return type==='walk'?WALK_EMOJIS[Math.floor(Math.random()*WALK_EMOJIS.length)]:(EVENT_EMOJIS[type]||'💬');}
-function eventLine(person,other,event,role){const data=person.eventLines?.[event]||{};const override=data.overrides?.[String(other.residentIndex)]?.[role];return typeof override==='string'&&override.trim()?override:data[role]||'';}
+function eventLineSlots(person,other,event,role){
+ const data=person.eventLines?.[event]||{};const override=data.overrides?.[String(other.residentIndex)]||{};
+ const slots=override[`${role}Slots`];
+ if(Array.isArray(slots)&&slots.some(line=>typeof line==='string'&&line.trim()))return Array.from({length:4},(_,i)=>typeof slots[i]==='string'?slots[i]:'');
+ const legacy=override[role];
+ if(typeof legacy==='string'&&legacy.trim())return [legacy,'','',''];
+ return [data[role]||'','',''];
+}
 function eventDialogue(a,b,type,now,duration){
- const opening=eventLine(a,b,type,'opening');
- const reply=eventLine(b,a,type,'reply');
- if(residentDialogueOptions(opening).length){showResidentDialogue(a,opening,now);a.dialogueUntil=now+duration;}
- if(residentDialogueOptions(opening).length&&residentDialogueOptions(reply).length){showResidentDialogue(b,reply,now);b.dialogueUntil=now+duration;}
+ const openings=eventLineSlots(a,b,type,'opening');
+ const replies=eventLineSlots(b,a,type,'reply');
+ const usable=[];for(let i=0;i<4;i++)if(residentDialogueOptions(openings[i]).length)usable.push(i);
+ if(!usable.length)return;
+ const slot=usable[Math.floor(Math.random()*usable.length)];const opening=openings[slot];const reply=replies[slot]||'';
+ showResidentDialogue(a,opening,now);a.dialogueUntil=now+duration;
+ if(residentDialogueOptions(reply).length){showResidentDialogue(b,reply,now);b.dialogueUntil=now+duration;}
 }
 const meetingBubble=document.createElement('span');
 meetingBubble.className='resident-meeting-bubble';meetingBubble.hidden=true;

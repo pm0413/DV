@@ -38,7 +38,8 @@
     <link rel="stylesheet" href="kitchen.css"> 
     <link rel="stylesheet" href="menu-dialog-unified.css">
     <link rel="stylesheet" href="collection.css?v=20260926-sgrade"> 
-    <link rel="stylesheet" href="material-menu-icons.css"> 
+    <link rel="stylesheet" href="material-menu-icons.css">
+    <link rel="stylesheet" href="todo-timer.css"> 
     <link rel="stylesheet" href="workshop-fold.css"> 
     <link rel="stylesheet" href="village-features.css"> 
     <link rel="stylesheet" href="village-cats.css"> 
@@ -97,7 +98,7 @@
 
             <aside id="left-area">
 
-                <div id="left-content"><button id="left-toggle" class="rail-expand" type="button" aria-label="메뉴 크게 보기" aria-expanded="false" title="메뉴 펼치기"><span class="menu-toggle-symbol material-symbols-outlined" aria-hidden="true">menu</span></button><div class="sidebar-title">MENU <span>01 / 09</span></div><button type="button" class="sidebar-entry selected" id="menu-residents"><span class="sidebar-glyph material-symbols-outlined">person</span><span class="sidebar-label">주민</span></button><button type="button" class="sidebar-entry" id="menu-warehouse" aria-controls="warehouse" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">box</span><span class="sidebar-label">창고</span></button><button type="button" class="sidebar-entry" id="menu-kitchen" aria-controls="kitchen-dialog" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">chef_hat</span><span class="sidebar-label">부엌</span></button><button type="button" class="sidebar-entry" id="menu-shop" aria-controls="shop-dialog" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined">local_convenience_store</span><span class="sidebar-label">상점</span></button><button type="button" class="sidebar-entry" id="menu-orders" aria-controls="order-board" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined">list_alt</span><span class="sidebar-label">주민 주문판</span></button><button type="button" class="sidebar-entry" id="menu-cats"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">pets</span><span class="sidebar-label">반려동물</span></button><button type="button" class="sidebar-entry" id="menu-achievements"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">editor_choice</span><span class="sidebar-label">마을 업적</span></button><button type="button" class="sidebar-entry" id="menu-collection" aria-controls="collection-dialog" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">developer_guide</span><span class="sidebar-label">도감</span></button><button type="button" class="sidebar-entry" id="menu-news"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">notification_sound</span><span class="sidebar-label">마을 기록</span></button></div>
+                <div id="left-content"><button id="left-toggle" class="rail-expand" type="button" aria-label="메뉴 크게 보기" aria-expanded="false" title="메뉴 펼치기"><span class="menu-toggle-symbol material-symbols-outlined" aria-hidden="true">menu</span></button><div class="sidebar-title">MENU <span>01 / 10</span></div><button type="button" class="sidebar-entry selected" id="menu-residents"><span class="sidebar-glyph material-symbols-outlined">person</span><span class="sidebar-label">주민</span></button><button type="button" class="sidebar-entry" id="menu-warehouse" aria-controls="warehouse" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">box</span><span class="sidebar-label">창고</span></button><button type="button" class="sidebar-entry" id="menu-kitchen" aria-controls="kitchen-dialog" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">chef_hat</span><span class="sidebar-label">부엌</span></button><button type="button" class="sidebar-entry" id="menu-shop" aria-controls="shop-dialog" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined">local_convenience_store</span><span class="sidebar-label">상점</span></button><button type="button" class="sidebar-entry" id="menu-orders" aria-controls="order-board" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined">list_alt</span><span class="sidebar-label">주민 주문판</span></button><button type="button" class="sidebar-entry" id="menu-cats"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">pets</span><span class="sidebar-label">반려동물</span></button><button type="button" class="sidebar-entry" id="menu-achievements"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">editor_choice</span><span class="sidebar-label">마을 업적</span></button><button type="button" class="sidebar-entry" id="menu-collection" aria-controls="collection-dialog" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">developer_guide</span><span class="sidebar-label">도감</span></button><button type="button" class="sidebar-entry" id="menu-news"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">notification_sound</span><span class="sidebar-label">마을 기록</span></button><button type="button" class="sidebar-entry" id="menu-todo" aria-controls="todo-timer-dialog" aria-expanded="false"><span class="sidebar-glyph material-symbols-outlined" aria-hidden="true">timer</span><span class="sidebar-label">할 일</span></button></div>
 
             </aside>
 
@@ -108,7 +109,7 @@
 
             <main id="main-area">
     <button id="village-news-notice" type="button" hidden aria-live="polite"></button>
-<div id="village-status" class="village-status" aria-label="마을 시간과 쾌적도"><div class="village-time-row"><span id="village-time-icon" aria-hidden="true">☀</span><div><span class="village-date-label"><span id="village-day">1일째</span><span class="village-date-separator" aria-hidden="true">·</span><span id="village-season">여름</span></span><strong id="village-clock">06:00</strong></div><span id="village-period">아침</span></div><div class="village-comfort-row"><span>쾌적도</span><strong id="village-comfort">0</strong></div></div><div class="cat-bowls"><button type="button" class="cat-bowl" id="stray-cat-bowl" title="길냥이 밥그릇"><img alt="길냥이 밥그릇"><span>길냥이</span></button><button type="button" class="cat-bowl" id="home-cat-bowl" title="집냥이 밥그릇" hidden><img alt="집냥이 밥그릇"><span>집냥이</span></button></div><button id="village-sleep" class="village-sleep-bubble" type="button" hidden disabled title="22:00 이후 잠자리에 들 수 있습니다" aria-label="자러가기">자러가기</button>
+<div id="village-status" class="village-status" aria-label="마을 시간과 쾌적도"><div class="village-time-row"><span id="village-time-icon" aria-hidden="true">☀</span><div><span class="village-date-label"><span id="village-day">1일째</span><span class="village-date-separator" aria-hidden="true">·</span><span id="village-season">여름</span></span><strong id="village-clock">06:00</strong></div><span id="village-period">낮</span></div><div class="village-comfort-row"><span>쾌적도</span><strong id="village-comfort">0</strong></div></div><div class="cat-bowls"><button type="button" class="cat-bowl" id="stray-cat-bowl" title="길냥이 밥그릇"><img alt="길냥이 밥그릇"><span>길냥이</span></button><button type="button" class="cat-bowl" id="home-cat-bowl" title="집냥이 밥그릇" hidden><img alt="집냥이 밥그릇"><span>집냥이</span></button></div><button id="village-sleep" class="village-sleep-bubble" type="button" hidden disabled title="22:00 이후 잠자리에 들 수 있습니다" aria-label="자러가기">자러가기</button>
 <button id="fishing-marker" class="fishing-marker" type="button" aria-label="낚시" title="낚시"><span class="fishing-pin-shape" aria-hidden="true"><span class="material-symbols-outlined fishing-pin-icon">phishing</span></span></button>
 <div id="fishing-marker-status" class="fishing-marker-status" role="status" aria-live="polite" hidden></div>
 
@@ -552,9 +553,12 @@
         <p id="save-transfer-status" role="status" aria-live="polite"></p>
       </div>
     </section>
+
+    <section id="todo-timer-dialog" role="dialog" aria-modal="true" aria-labelledby="todo-timer-title" hidden><div class="todo-timer-panel"><header class="todo-timer-head"><div><small>COZY FOCUS</small><strong id="todo-timer-title">할 일 목록</strong></div><button id="todo-timer-close" class="todo-timer-close" type="button" aria-label="닫기">×</button></header><div class="todo-timer-body"><div id="todo-progress" class="todo-progress">완료된 할 일 : 0/0</div><div id="todo-list" class="todo-list"></div><form id="todo-add-form" class="todo-add"><input id="todo-new-input" type="text" maxlength="80" autocomplete="off" placeholder="할 일을 입력하세요"><button type="submit">+ 신규 할 일</button></form><section class="todo-standalone"><h3>집중 타이머</h3><div class="todo-presets"><button type="button" data-todo-min="5">5분</button><button type="button" data-todo-min="10">10분</button><button type="button" data-todo-min="25">25분</button><button type="button" data-todo-min="30">30분</button><button type="button" data-todo-min="60">60분</button></div><div class="todo-custom"><input id="todo-custom-minutes" class="todo-custom-minutes" type="number" min="1" max="1440" value="25" aria-label="직접 입력 분"><button id="todo-custom-start" type="button">시작</button></div><div id="todo-active" class="todo-active" hidden><div id="todo-active-name" class="todo-active-name">타이머</div><div id="todo-active-time" class="todo-active-time">00:00</div><div class="todo-timer-actions"><button id="todo-stop" type="button">종료</button></div></div><p class="todo-alarm-note">타이머는 현실 시간 기준이며 새로고침 후에도 이어집니다.</p></section></div></div></section><div id="todo-alarm-toast" class="todo-alarm-toast" role="status" aria-live="assertive" hidden></div><audio id="todo-alert-audio" src="bgm/TimeAlert.mp3" preload="auto"></audio>
     <div id="youtube-bgm-player" aria-hidden="true"></div>
     <div id="youtube-ambient-player" aria-hidden="true"></div>
     <div id="sleep-transition" aria-hidden="true"></div>
+    <script src="todo-timer.js?v=20260927-1"></script>
     <script src="save-version.js?v=20260925-2305"></script>
     <script src="data-reset.js?v=20260925-2335"></script>
     <script src="cooking-recipes.js?v=20260925-2305"></script>
@@ -563,7 +567,7 @@
     <script src="village-request-items.js?v=20260925-2305"></script>
     <script src="resident-request-rewards.js?v=20260925-2305"></script>
     <script src="script.js?v=20260925-2305"></script>
-    <script src="resident-gifts.js?v=20260925-2305"></script>
+    <script src="resident-gifts.js?v=20260926-giftfix2"></script>
     <script src="default-residents.js?v=20260925-2305"></script>
     <script src="resident-pair-relations.js?v=20260925-2305"></script>
     <script src="residents.js?v=20260925-2305"></script>
@@ -584,7 +588,8 @@
     <script src="village-youtube-api.js?v=20260925-2305"></script>
     <script src="village-music.js?v=20260925-2305"></script>
     <script src="village-ambient.js?v=20260925-2305"></script>
-    <script src="village-features.js?v=20260925-2305"></script>
+    <script src="menu-new.js?v=20260926-new"></script>
+    <script src="village-features.js?v=20260926-giftfix2"></script>
     <script src="village-cat-config.js?v=20260925-2305"></script>
     <script src="village-cat-gifts.js?v=20260925-2305"></script>
     <script src="village-cats.js?v=20260925-2305"></script>

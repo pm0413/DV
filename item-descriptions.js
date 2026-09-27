@@ -12,22 +12,22 @@ window.dowonItemDescriptions = {
   paddy: {
     name: '벼',
     description: '논에서 수확한 벼. 맷돌에 넣어 빻으면 떡가루를 얻을 수 있다.',
-    price: 4
+    price: 9
   },
   cabbage: {
     name: '배추',
     description: '잎이 겹겹이 자란 싱싱한 배추. 절임통에 넣으면 아삭한 절임채소가 된다.',
-    price: 5
+    price: 12
   },
   pepper: {
     name: '고추',
     description: '붉게 익은 고추. 수확하여 창고에 보관할 수 있다.',
-    price: 6
+    price: 15
   },
   potato: {
     name: '감자',
     description: '땅속에서 자란 감자. 수확하여 창고에 보관할 수 있다.',
-    price: 8
+    price: 20
   },
   bean: {
     name: '콩',
@@ -37,7 +37,7 @@ window.dowonItemDescriptions = {
   sugarcane: {
     name: '사탕수수',
     description: '줄기에 달콤한 즙이 가득한 작물. 설탕공방에서 설탕으로 가공할 수 있다.',
-    price: 3
+    price: 4
   },
   chickenFeed: {
     name: '닭 사료',
@@ -70,12 +70,12 @@ window.dowonItemDescriptions = {
   saltedEgg: {
     name: '소금달걀',
     description: '달걀을 소금에 절여 만든 저장 식품. 짭조름한 맛이 특징이다.',
-    price: 30
+    price: 35
   },
   ricePowder: {
     name: '떡가루',
     description: '벼를 빻아 만든 고운 가루. 쫀득한 떡을 만드는 데 사용한다.',
-    price: 12
+    price: 25
   },
   eggPancake: {
     name: '계란전',
@@ -85,7 +85,7 @@ window.dowonItemDescriptions = {
   pickledVegetables: {
     name: '절임채소',
     description: '배추를 절여 아삭한 식감을 살린 반찬. 여러 음식에 곁들여 먹기 좋다.',
-    price: 22
+    price: 50
   },
   friedTofu: {
     name: '유부',
@@ -111,38 +111,38 @@ for (const recipe of (window.DOWON_COOKING_RECIPES || [])) {
 
 /* 신규 품목: 판매가가 확정되면 price를 수정하세요. */
 Object.assign(window.dowonItemDescriptions,{
-  ramie:{name:"모시풀",description:"모시풀 · 신규 작물 또는 가공품입니다.",price:10},
-  cotton:{name:"솜",description:"솜 · 신규 작물 또는 가공품입니다.",price:12},
-  pumpkin:{name:"호박",description:"호박 · 신규 작물 또는 가공품입니다.",price:15},
-  sweetPotato:{name:"고구마",description:"고구마 · 신규 작물 또는 가공품입니다.",price:18},
-  sheepFeed:{name:"양 사료",description:"양 사료 · 신규 작물 또는 가공품입니다.",price:9},
+  ramie:{name:"모시풀",description:"모시풀 · 신규 작물 또는 가공품입니다.",price:26},
+  cotton:{name:"솜",description:"솜 · 신규 작물 또는 가공품입니다.",price:32},
+  pumpkin:{name:"호박",description:"호박 · 신규 작물 또는 가공품입니다.",price:44},
+  sweetPotato:{name:"고구마",description:"고구마 · 신규 작물 또는 가공품입니다.",price:58},
+  sheepFeed:{name:"양 사료",description:"양 사료 · 신규 작물 또는 가공품입니다.",price:10},
   brownSugar:{name:"흑설탕",description:"흑설탕 · 신규 작물 또는 가공품입니다.",price:16},
   wool:{name:"양털",description:"양털 · 신규 작물 또는 가공품입니다.",price:16},
-  stickyRiceCake:{name:"찹쌀떡",description:"찹쌀떡 · 신규 작물 또는 가공품입니다.",price:30},
-  eggBread:{name:"계란빵",description:"계란빵 · 신규 작물 또는 가공품입니다.",price:80},
-  pumpkinSeed:{name:"호박씨",description:"호박씨 · 신규 작물 또는 가공품입니다.",price:55},
-  roastedSweetPotato:{name:"군고구마",description:"군고구마 · 신규 작물 또는 가공품입니다.",price:65},
-  hempCloth:{name:"삼베",description:"삼베 · 신규 작물 또는 가공품입니다.",price:50},
-  yarn:{name:"털실",description:"털실 · 신규 작물 또는 가공품입니다.",price:80},
-  cottonFabric:{name:"면직물",description:"면직물 · 신규 작물 또는 가공품입니다.",price:60},
-  clothDoll:{name:"수국",description:"수국 · 신규 작물 또는 가공품입니다.",price:150},
-  sachet:{name:"향주머니",description:"향주머니 · 신규 작물 또는 가공품입니다.",price:130},
-  roastedPotato:{name:"구운감자",description:"구운감자 · 가공소에서 제작한 생산품입니다.",price:45},
-  grilledTofu:{name:"구운두부",description:"구운두부 · 가공소에서 제작한 생산품입니다.",price:35},
-  potatoStarch:{name:"감자전분",description:"감자전분 · 가공소에서 제작한 생산품입니다.",price:30},
-  sweetPotatoStarch:{name:"고구마 전분",description:"고구마 전분 · 가공소에서 제작한 생산품입니다.",price:65},
+  stickyRiceCake:{name:"찹쌀떡",description:"찹쌀떡 · 신규 작물 또는 가공품입니다.",price:50},
+  eggBread:{name:"계란빵",description:"계란빵 · 신규 작물 또는 가공품입니다.",price:105},
+  pumpkinSeed:{name:"호박씨",description:"호박씨 · 신규 작물 또는 가공품입니다.",price:165},
+  roastedSweetPotato:{name:"군고구마",description:"군고구마 · 신규 작물 또는 가공품입니다.",price:230},
+  hempCloth:{name:"삼베",description:"삼베 · 신규 작물 또는 가공품입니다.",price:140},
+  yarn:{name:"털실",description:"털실 · 신규 작물 또는 가공품입니다.",price:85},
+  cottonFabric:{name:"면직물",description:"면직물 · 신규 작물 또는 가공품입니다.",price:170},
+  clothDoll:{name:"수국",description:"수국 · 신규 작물 또는 가공품입니다.",price:305},
+  sachet:{name:"향주머니",description:"향주머니 · 신규 작물 또는 가공품입니다.",price:435},
+  roastedPotato:{name:"구운감자",description:"구운감자 · 가공소에서 제작한 생산품입니다.",price:120},
+  grilledTofu:{name:"구운두부",description:"구운두부 · 가공소에서 제작한 생산품입니다.",price:65},
+  potatoStarch:{name:"감자전분",description:"감자전분 · 가공소에서 제작한 생산품입니다.",price:75},
+  sweetPotatoStarch:{name:"고구마 전분",description:"고구마 전분 · 가공소에서 제작한 생산품입니다.",price:220},
   soyMilk:{name:"두유",description:"두유 · 가공소에서 제작한 생산품입니다.",price:10},
-  blackBeanPaste:{name:"검은콩장",description:"검은콩장 · 가공소에서 제작한 생산품입니다.",price:30},
-  maltSyrup:{name:"엿",description:"엿 · 가공소에서 제작한 생산품입니다.",price:18},
+  blackBeanPaste:{name:"검은콩장",description:"검은콩장 · 가공소에서 제작한 생산품입니다.",price:70},
+  maltSyrup:{name:"엿",description:"엿 · 가공소에서 제작한 생산품입니다.",price:20},
   hotteok:{name:"호떡",description:"호떡 · 가공소에서 제작한 생산품입니다.",price:30},
-  vegetablePancake:{name:"채소전",description:"채소전 · 가공소에서 제작한 생산품입니다.",price:75},
-  potatoPancake:{name:"감자전",description:"감자전 · 가공소에서 제작한 생산품입니다.",price:100},
-  pickledPotato:{name:"절임감자",description:"절임감자 · 가공소에서 제작한 생산품입니다.",price:55},
-  tofuStick:{name:"푸주",description:"푸주 · 가공소에서 제작한 생산품입니다.",price:28},
-  fermentedTofu:{name:"두부유",description:"두부유 · 가공소에서 제작한 생산품입니다.",price:38},
-  tofuSkin:{name:"두부피",description:"두부피 · 가공소에서 제작한 생산품입니다.",price:36},
-  steamedRiceCake:{name:"증편",description:"증편 · 가공소에서 제작한 생산품입니다.",price:85},
-  pumpkinRiceCake:{name:"호박떡",description:"호박떡 · 가공소에서 제작한 생산품입니다.",price:90},
-  glassNoodles:{name:"당면",description:"당면 · 가공소에서 제작한 생산품입니다.",price:40},
-  driedBlackBeanPaste:{name:"말린검은콩장",description:"말린검은콩장 · 가공소에서 제작한 생산품입니다.",price:42},
+  vegetablePancake:{name:"채소전",description:"채소전 · 가공소에서 제작한 생산품입니다.",price:115},
+  potatoPancake:{name:"감자전",description:"감자전 · 가공소에서 제작한 생산품입니다.",price:175},
+  pickledPotato:{name:"절임감자",description:"절임감자 · 가공소에서 제작한 생산품입니다.",price:145},
+  tofuStick:{name:"푸주",description:"푸주 · 가공소에서 제작한 생산품입니다.",price:30},
+  fermentedTofu:{name:"두부유",description:"두부유 · 가공소에서 제작한 생산품입니다.",price:65},
+  tofuSkin:{name:"두부피",description:"두부피 · 가공소에서 제작한 생산품입니다.",price:40},
+  steamedRiceCake:{name:"증편",description:"증편 · 가공소에서 제작한 생산품입니다.",price:115},
+  pumpkinRiceCake:{name:"호박떡",description:"호박떡 · 가공소에서 제작한 생산품입니다.",price:235},
+  glassNoodles:{name:"당면",description:"당면 · 가공소에서 제작한 생산품입니다.",price:100},
+  driedBlackBeanPaste:{name:"말린검은콩장",description:"말린검은콩장 · 가공소에서 제작한 생산품입니다.",price:95},
 });

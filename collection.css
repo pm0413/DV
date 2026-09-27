@@ -9,3 +9,5 @@
 .collection-detail-silhouette{width:104px;height:104px;object-fit:contain}
 body.light-mode .collection-fish-silhouette,body.light-mode .collection-item-silhouette,body.light-mode .collection-detail-silhouette{filter:brightness(0)!important;opacity:.78}
 @media(max-width:720px){.collection-dialog{padding:16px;height:min(690px,calc(100vh - 12px));width:calc(100vw - 12px)}.collection-body{grid-template-columns:1fr}.collection-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.collection-detail{display:none}}@media(max-width:460px){.collection-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.collection-card{padding:6px}}
+
+.collection-tabs button{position:relative}.collection-new-dot,.collection-item-new-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:#d8b84f;pointer-events:none}.collection-new-dot{top:3px;right:3px}.collection-card{position:relative}.collection-item-new-dot{top:6px;right:6px;box-shadow:0 0 0 1px rgba(0,0,0,.28)}body.light-mode .collection-new-dot,body.light-mode .collection-item-new-dot{background:#8a6117}

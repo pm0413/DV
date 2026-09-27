@@ -51,7 +51,7 @@
      if(r.image){face.src=r.image;face.alt=r.name+' 캐릭터';face.draggable=false;}else face.textContent=r.name.trim().charAt(0);
      const name=document.createElement('span');name.className='resident-avatar-name';name.textContent=r.name;
      el.append(face,name);scene.append(el);
-     characters.push({element:el,x:90+i*47,y:Math.max(90,scene.clientHeight*(.42+(i%3)*.06)),speed:.14+i*.008,direction:i%2? -1:1,favoritePlace:Number(r.favoritePlace)||0,residentIndex:i,clickLines:r.clickLines||'',repeatClickLines:r.repeatClickLines||'',tenClickLines:r.tenClickLines||'',sleepClickLines:r.sleepClickLines||'',generalLines:r.generalLines||'',placeLines:r.placeLines||{},interactionLines:r.interactionLines||'',catStrayLines:r.catStrayLines||'',catAdoptedLines:r.catAdoptedLines||'',interactionByResident:r.interactionByResident||{},interactionRepliesByResident:r.interactionRepliesByResident||{},interactionDisabledByResident:r.interactionDisabledByResident||{},morningLines:r.morningLines||'',generalNightLines:r.generalNightLines||'',placeNightLines:r.placeNightLines||{},rainLines:r.rainLines||'',rainNightLines:r.rainNightLines||'',rainPlaceLines:r.rainPlaceLines||{},rainPlaceNightLines:r.rainPlaceNightLines||{},farmOpening:r.farmOpening||'',farmArrival:r.farmArrival||'',farmRepliesByResident:r.farmRepliesByResident||{},relationships:r.relationships||{},eventLines:r.eventLines||{}});
+     characters.push({element:el,x:90+i*47,y:Math.max(90,scene.clientHeight*(.42+(i%3)*.06)),speed:.14+i*.008,direction:i%2? -1:1,favoritePlace:Number(r.favoritePlace)||0,residentIndex:i,clickLines:r.clickLines||'',repeatClickLines:r.repeatClickLines||'',tenClickLines:r.tenClickLines||'',sleepClickLines:r.sleepClickLines||'',generalLines:r.generalLines||'',placeLines:r.placeLines||{},interactionLines:r.interactionLines||'',catStrayLines:r.catStrayLines||'',catAdoptedLines:r.catAdoptedLines||'',catAdoptedLinesBySlot:r.catAdoptedLinesBySlot||{},interactionByResident:r.interactionByResident||{},interactionRepliesByResident:r.interactionRepliesByResident||{},interactionDisabledByResident:r.interactionDisabledByResident||{},morningLines:r.morningLines||'',generalAfternoonLines:r.generalAfternoonLines||'',generalNightLines:r.generalNightLines||'',placeAfternoonLines:r.placeAfternoonLines||{},placeNightLines:r.placeNightLines||{},rainLines:r.rainLines||'',rainAfternoonLines:r.rainAfternoonLines||'',rainNightLines:r.rainNightLines||'',rainPlaceLines:r.rainPlaceLines||{},rainPlaceAfternoonLines:r.rainPlaceAfternoonLines||{},rainPlaceNightLines:r.rainPlaceNightLines||{},farmOpening:r.farmOpening||'',farmArrival:r.farmArrival||'',farmRepliesByResident:r.farmRepliesByResident||{},relationships:r.relationships||{},eventLines:r.eventLines||{}});
    });
  }
  const select=(options,value,aria)=>{const s=document.createElement('select');s.setAttribute('aria-label',aria);for(const [v,label] of options){const o=document.createElement('option');o.value=v;o.textContent=label;s.append(o);}s.value=String(value??'');return s;};
@@ -124,10 +124,13 @@
    const day=select([['','일 선택'],...Array.from({length:31},(_,k)=>[String(k+1),`${k+1}일`])],r?.day||'','생일 일');month.required=day.required=true;birth.append(month,day);
    const place=select([['','좋아하는 장소 선택'],...((window.dowonPlaceNames||[]).map((label,k)=>[String(k+1),label]))],r?.favoritePlace||'','좋아하는 장소');place.required=true;
    const generalLines=document.createElement('textarea');generalLines.rows=4;generalLines.maxLength=5000;generalLines.placeholder='안녕! | 오늘 날씨 좋다 | 산책하고 싶어';generalLines.value=r?.generalLines||'';
+   const generalAfternoonLines=document.createElement('textarea');generalAfternoonLines.rows=4;generalAfternoonLines.maxLength=5000;generalAfternoonLines.placeholder='노을 시간에 할 말 | 다른 대사';generalAfternoonLines.value=r?.generalAfternoonLines||'';
    const generalNightLines=document.createElement('textarea');generalNightLines.rows=4;generalNightLines.maxLength=5000;generalNightLines.placeholder='별이 떴네. | 이제 밤이구나.';generalNightLines.value=r?.generalNightLines||'';
    const placeLines={};
+   const placeAfternoonLines={};
    const placeNightLines={};
    const rainPlaceLines={};
+   const rainPlaceAfternoonLines={};
    const rainPlaceNightLines={};
    // A separate, per-resident response bank; one entry per line (legacy | accepted).
    const clickLines=document.createElement('textarea');clickLines.rows=4;clickLines.maxLength=5000;
@@ -169,7 +172,7 @@
    }
 
 
-   const dialoguePanel=makePanel('dialogue','대사','날씨별로 왼쪽은 낮(06:00~17:59), 오른쪽은 밤(18:00~24:00) 대사입니다. 여러 대사는 | 로 구분하세요. 밤 칸이 비어 있으면 기존 낮 대사를 사용합니다.');
+   const dialoguePanel=makePanel('dialogue','대사','날씨별로 낮(06:00~15:59) → 노을(16:00~17:59) → 밤(18:00~24:00) 순서입니다. 여러 대사는 | 로 구분하세요. 노을/밤 칸이 비어 있으면 낮 대사를 사용합니다.');
    const weatherTabs=document.createElement('div');weatherTabs.className='resident-weather-tabs';weatherTabs.setAttribute('role','tablist');weatherTabs.setAttribute('aria-label','대사 날씨 선택');
    const weatherViews={};const weatherButtons={};
    for(const [key,label] of [['clear','☀ 맑은 날'],['rain','☂ 비 오는 날']]){
@@ -184,37 +187,39 @@
      });
      btn.classList.toggle('active',key==='clear');weatherTabs.append(btn);weatherButtons[key]=btn;weatherViews[key]=panel;
    }
-   // Every walking/place row has a stable two-column day / night pair.
-   // The original dialogue fields remain the day fields to preserve existing save data.
-   const makeTimeRow=(dayTitle,dayInput,nightTitle,nightInput)=>{
+   // 기존 저장 필드명은 호환을 위해 유지하고, 화면에서는 낮 → 노을 → 밤으로 표시합니다.
+   const makeTimeRow=(dayTitle,dayInput,afternoonTitle,afternoonInput,nightTitle,nightInput)=>{
      const row=document.createElement('div');row.className='resident-dialogue-time-row';
-     row.append(makeLabel(dayTitle,dayInput),makeLabel(nightTitle,nightInput));
+     row.append(makeLabel(dayTitle,dayInput),makeLabel(afternoonTitle,afternoonInput),makeLabel(nightTitle,nightInput));
      return row;
    };
    const generalGrid=document.createElement('div');generalGrid.className='resident-dialogue-grid resident-dialogue-times';
-   generalGrid.append(makeTimeRow('낮 · 이동 중 대사',generalLines,'밤 · 이동 중 대사',generalNightLines));
+   generalGrid.append(makeTimeRow('낮 · 이동 중 대사',generalLines,'노을 · 이동 중 대사',generalAfternoonLines,'밤 · 이동 중 대사',generalNightLines));
    weatherViews.clear.append(generalGrid);
    const rainLines=document.createElement('textarea');rainLines.rows=3;rainLines.maxLength=2000;rainLines.placeholder='비가 부슬부슬 오네요. | 우산을 챙겨야겠어요.';rainLines.value=r?.rainLines||'';
+   const rainAfternoonLines=document.createElement('textarea');rainAfternoonLines.rows=3;rainAfternoonLines.maxLength=2000;rainAfternoonLines.placeholder='비 오는 노을 시간에 할 말 | 다른 대사';rainAfternoonLines.value=r?.rainAfternoonLines||'';
    const rainNightLines=document.createElement('textarea');rainNightLines.rows=3;rainNightLines.maxLength=2000;rainNightLines.placeholder='밤에도 비가 내리네. | 빗소리가 좋다.';rainNightLines.value=r?.rainNightLines||'';
    const rainGrid=document.createElement('div');rainGrid.className='resident-dialogue-grid resident-dialogue-times';
-   rainGrid.append(makeTimeRow('낮 · 이동 중 대사',rainLines,'밤 · 이동 중 대사',rainNightLines));
+   rainGrid.append(makeTimeRow('낮 · 이동 중 대사',rainLines,'노을 · 이동 중 대사',rainAfternoonLines,'밤 · 이동 중 대사',rainNightLines));
    weatherViews.rain.append(rainGrid);
    const placeGrid=document.createElement('div');placeGrid.className='resident-dialogue-places-grid resident-dialogue-times full';
    const rainPlaceGrid=document.createElement('div');rainPlaceGrid.className='resident-dialogue-places-grid resident-dialogue-times full';
    (window.dowonPlaceNames||[]).forEach((placeName,index)=>{
      const key=String(index+1);
      const entry=document.createElement('textarea');entry.rows=3;entry.maxLength=2000;entry.placeholder=`맑은 낮 ${placeName}에서 할 말 | 다른 대사`;entry.value=r?.placeLines?.[key]||'';placeLines[key]=entry;
+     const afternoonEntry=document.createElement('textarea');afternoonEntry.rows=3;afternoonEntry.maxLength=2000;afternoonEntry.placeholder=`맑은 노을 ${placeName}에서 할 말 | 다른 대사`;afternoonEntry.value=r?.placeAfternoonLines?.[key]||'';placeAfternoonLines[key]=afternoonEntry;
      const nightEntry=document.createElement('textarea');nightEntry.rows=3;nightEntry.maxLength=2000;nightEntry.placeholder=`맑은 밤 ${placeName}에서 할 말 | 다른 대사`;nightEntry.value=r?.placeNightLines?.[key]||'';placeNightLines[key]=nightEntry;
-     placeGrid.append(makeTimeRow(`${placeName} · 낮`,entry,`${placeName} · 밤`,nightEntry));
+     placeGrid.append(makeTimeRow(`${placeName} · 낮`,entry,`${placeName} · 노을`,afternoonEntry,`${placeName} · 밤`,nightEntry));
      const rainEntry=document.createElement('textarea');rainEntry.rows=3;rainEntry.maxLength=2000;rainEntry.placeholder=`비 오는 낮 ${placeName}에서 할 말 | 다른 대사`;rainEntry.value=r?.rainPlaceLines?.[key]||'';rainPlaceLines[key]=rainEntry;
+     const rainAfternoonEntry=document.createElement('textarea');rainAfternoonEntry.rows=3;rainAfternoonEntry.maxLength=2000;rainAfternoonEntry.placeholder=`비 오는 노을 ${placeName}에서 할 말 | 다른 대사`;rainAfternoonEntry.value=r?.rainPlaceAfternoonLines?.[key]||'';rainPlaceAfternoonLines[key]=rainAfternoonEntry;
      const rainNightEntry=document.createElement('textarea');rainNightEntry.rows=3;rainNightEntry.maxLength=2000;rainNightEntry.placeholder=`비 오는 밤 ${placeName}에서 할 말 | 다른 대사`;rainNightEntry.value=r?.rainPlaceNightLines?.[key]||'';rainPlaceNightLines[key]=rainNightEntry;
-     rainPlaceGrid.append(makeTimeRow(`${placeName} · 낮`,rainEntry,`${placeName} · 밤`,rainNightEntry));
+     rainPlaceGrid.append(makeTimeRow(`${placeName} · 낮`,rainEntry,`${placeName} · 노을`,rainAfternoonEntry,`${placeName} · 밤`,rainNightEntry));
    });
    weatherViews.rain.append(rainPlaceGrid);
    const morningLines=document.createElement('textarea');morningLines.rows=3;morningLines.maxLength=2000;morningLines.placeholder='좋은 아침이에요! | 오늘도 좋은 하루 보내세요';morningLines.value=r?.morningLines||'';
    const morningGrid=document.createElement('div');morningGrid.className='resident-dialogue-grid resident-morning-lines';
    morningGrid.append(makeLabel('아침 대사 · 로딩 및 다음 날 아침에 표시 ( | 로 구분)',morningLines,'full'));
-   // 아침 대사를 맑은 날 대사 섹션의 첫 번째 입력칸으로 배치합니다.
+   // 아침 인사는 별도 1회 대사입니다. 시간대 대사는 낮 → 노을 → 밤 칸에서 설정합니다.
    weatherViews.clear.prepend(morningGrid);
    weatherViews.clear.append(placeGrid);
    dialoguePanel.append(weatherTabs,weatherViews.clear,weatherViews.rain);
@@ -278,12 +283,23 @@
    matrixActions.append(addRow,removeRow);interactionPanel.append(matrixActions);
 
    // 고양이와 주민이 가까이에서 상호작용했을 때 사용할 주민 반응 대사입니다.
-   // 고양이 개체별로 나누지 않고 입양 여부만 구분하며, | 로 여러 대사를 입력할 수 있습니다.
+   // 입양냥은 실제 입양 순서대로 최대 4칸까지 표시합니다. 입양 전에도 1번 칸은 기본으로 보입니다.
    const catInteractionSection=document.createElement('div');catInteractionSection.className='resident-event-section';
    const catInteractionHeading=document.createElement('h4');catInteractionHeading.textContent='고양이 반응';catInteractionSection.append(catInteractionHeading);
    const catStrayLines=document.createElement('textarea');catStrayLines.rows=2;catStrayLines.maxLength=3000;catStrayLines.value=r?.catStrayLines||'';catStrayLines.placeholder='길냥이와 상호작용할 때 할 말 | 다른 대사';
-   const catAdoptedLines=document.createElement('textarea');catAdoptedLines.rows=2;catAdoptedLines.maxLength=3000;catAdoptedLines.value=r?.catAdoptedLines||'';catAdoptedLines.placeholder='입양냥과 상호작용할 때 할 말 | 다른 대사';
-   catInteractionSection.append(makeLabel('길냥이 반응 (| 로 여러 개 구분)',catStrayLines,'full'),makeLabel('입양냥 반응 (| 로 여러 개 구분)',catAdoptedLines,'full'));
+   catInteractionSection.append(makeLabel('길냥이 반응 (| 로 여러 개 구분)',catStrayLines,'full'));
+   let adoptedForDialogue=[];
+   try{adoptedForDialogue=window.dowonCats?.get?.()?.adoptedCats||[];}catch(_){adoptedForDialogue=[];}
+   const adoptedDialogueCount=Math.min(4,Math.max(1,adoptedForDialogue.length));
+   const catAdoptedLineInputs=[];
+   for(let slot=0;slot<adoptedDialogueCount;slot++){
+     const input=document.createElement('textarea');input.rows=2;input.maxLength=3000;
+     input.value=r?.catAdoptedLinesBySlot?.[String(slot)]??(slot===0?(r?.catAdoptedLines||''):'');
+     input.placeholder=`${slot+1}번째 입양냥과 상호작용할 때 할 말 | 다른 대사`;
+     const catName=adoptedForDialogue[slot]?.name;
+     const label=catName?`입양냥 ${slot+1} · ${catName} 반응 (| 로 여러 개 구분)`:`입양냥 ${slot+1} 반응 (| 로 여러 개 구분)`;
+     catAdoptedLineInputs.push(input);catInteractionSection.append(makeLabel(label,input,'full'));
+   }
    interactionPanel.append(catInteractionSection);
 
    const EVENT_TYPES=[['greet','마주 보고 인사'],['awkward','어색하게 엇갈리기'],['rest','나란히 쉬기'],['walk','함께 걷기'],['follow','장난스럽게 따라가기'],['visit','연인 찾아가기'],['wait','연인 기다리기']];
@@ -300,10 +316,26 @@
        const toggle=button('상대 주민별 전용 대사 ▾','resident-event-toggle',()=>{overrideWrap.hidden=!overrideWrap.hidden;});section.append(toggle);
        const overrideWrap=document.createElement('div');overrideWrap.className='resident-event-overrides';overrideWrap.hidden=true;
        partners.forEach(({person,index})=>{
-         const entries={};const pair=saved.overrides?.[String(index)]||{};
-         for(const [field,label] of [['opening',`${person.name}에게 먼저 말하기`],['reply',`${person.name}에게 답하기`]]){
-           const input=document.createElement('textarea');input.rows=2;input.maxLength=3000;input.value=pair[field]||'';overrideWrap.append(makeLabel(label,input,'full'));entries[field]=input;
-         }inputs.overrides[String(index)]=entries;
+         const pair=saved.overrides?.[String(index)]||{};
+         const legacyOpening=typeof pair.opening==='string'?pair.opening:'';
+         const legacyReply=typeof pair.reply==='string'?pair.reply:'';
+         const openingSlots=Array.isArray(pair.openingSlots)?pair.openingSlots.slice(0,4):[legacyOpening];
+         const replySlots=Array.isArray(pair.replySlots)?pair.replySlots.slice(0,4):[legacyReply];
+         while(openingSlots.length<4)openingSlots.push('');
+         while(replySlots.length<4)replySlots.push('');
+         const entries={openingSlots:[],replySlots:[]};
+         const pairBlock=document.createElement('div');pairBlock.className='resident-event-pair-block';
+         const pairTitle=document.createElement('h5');pairTitle.textContent=person.name;pairBlock.append(pairTitle);
+         const openingRow=document.createElement('div');openingRow.className='resident-event-four-grid';
+         const replyRow=document.createElement('div');replyRow.className='resident-event-four-grid';
+         for(let slot=0;slot<4;slot++){
+           const opening=document.createElement('textarea');opening.rows=2;opening.maxLength=3000;opening.value=openingSlots[slot]||'';opening.placeholder='대사가 없으면 비워두세요';
+           const reply=document.createElement('textarea');reply.rows=2;reply.maxLength=3000;reply.value=replySlots[slot]||'';reply.placeholder='대사가 없으면 비워두세요';
+           openingRow.append(makeLabel(`${person.name}에게 먼저 말하기 ${slot+1}`,opening));
+           replyRow.append(makeLabel(`${person.name}에게 답하기 ${slot+1}`,reply));
+           entries.openingSlots.push(opening);entries.replySlots.push(reply);
+         }
+         pairBlock.append(openingRow,replyRow);overrideWrap.append(pairBlock);inputs.overrides[String(index)]=entries;
        });section.append(overrideWrap);
      }
      eventPanel.append(section);eventInputs[key]=inputs;
@@ -344,7 +376,7 @@
      if(!name.value.trim()||!gender.value||age.value===''||!Number.isInteger(a)||a<0||a>150||!m||!d||d>monthDays(m)||!place.value){notice.textContent='이름, 성별, 나이, 생일, 좋아하는 장소를 확인해 주세요.';return;}
      const next=residents.map(person=>person?{...person,relationships:{...(person.relationships||{})}}:null);
      const relationships={...(r?.relationships||{})};
-     const eventLines=Object.fromEntries(Object.entries(eventInputs).map(([key,inputs])=>[key,{opening:inputs.opening.value,reply:inputs.reply.value,overrides:Object.fromEntries(Object.entries(inputs.overrides).map(([j,entries])=>[j,{opening:entries.opening.value,reply:entries.reply.value}]))}]));
+     const eventLines=Object.fromEntries(Object.entries(eventInputs).map(([key,inputs])=>[key,{opening:inputs.opening.value,reply:inputs.reply.value,overrides:Object.fromEntries(Object.entries(inputs.overrides).map(([j,entries])=>{const openingSlots=entries.openingSlots.map(input=>input.value);const replySlots=entries.replySlots.map(input=>input.value);return[j,{opening:openingSlots[0]||'',reply:replySlots[0]||'',openingSlots,replySlots}];}))}]));
      const validRows=matrixRows.map(entry=>({entry,opening:entry.first.value.trim()})).filter(item=>item.opening);
      const openings=[...new Set(validRows.map(item=>item.opening))];
      const interactionByResident={...(r?.interactionByResident||{})};
@@ -359,7 +391,7 @@
        validRows.forEach(({entry,opening})=>{updated[opening]=entry.answers[key].answer.value;});
        next[index]={...old,interactionRepliesByResident:{...(old.interactionRepliesByResident||{}),[String(i)]:{...previous,...updated}},interactionDisabledByResident:{...(old.interactionDisabledByResident||{}),[String(i)]:{}}};
      });
-     next[i]={...r,name:name.value.trim(),gender:gender.value,age:a,month:m,day:d,image:uploadedImage,favoritePlace:Number(place.value),generalLines:generalLines.value,generalNightLines:generalNightLines.value,clickLines:clickLines.value,repeatClickLines:repeatClickLines.value,tenClickLines:tenClickLines.value,sleepClickLines:sleepClickLines.value,morningLines:morningLines.value,rainLines:rainLines.value,rainNightLines:rainNightLines.value,interactionLines:openings.join(' | '),catStrayLines:catStrayLines.value,catAdoptedLines:catAdoptedLines.value,interactionByResident,relationships,eventLines,farmOpening:farmOpening.value,farmArrival:farmArrival.value,farmRepliesByResident:Object.fromEntries(Object.entries(farmReplies).map(([key,input])=>[key,input.value])),placeLines:Object.fromEntries(Object.entries(placeLines).map(([key,entry])=>[key,entry.value])),placeNightLines:Object.fromEntries(Object.entries(placeNightLines).map(([key,entry])=>[key,entry.value])),rainPlaceLines:Object.fromEntries(Object.entries(rainPlaceLines).map(([key,entry])=>[key,entry.value])),rainPlaceNightLines:Object.fromEntries(Object.entries(rainPlaceNightLines).map(([key,entry])=>[key,entry.value]))};
+     next[i]={...r,name:name.value.trim(),gender:gender.value,age:a,month:m,day:d,image:uploadedImage,favoritePlace:Number(place.value),generalLines:generalLines.value,generalAfternoonLines:generalAfternoonLines.value,generalNightLines:generalNightLines.value,clickLines:clickLines.value,repeatClickLines:repeatClickLines.value,tenClickLines:tenClickLines.value,sleepClickLines:sleepClickLines.value,morningLines:morningLines.value,rainLines:rainLines.value,rainAfternoonLines:rainAfternoonLines.value,rainNightLines:rainNightLines.value,interactionLines:openings.join(' | '),catStrayLines:catStrayLines.value,catAdoptedLines:catAdoptedLineInputs[0]?.value||'',catAdoptedLinesBySlot:Object.fromEntries(catAdoptedLineInputs.map((input,slot)=>[String(slot),input.value])),interactionByResident,relationships,eventLines,farmOpening:farmOpening.value,farmArrival:farmArrival.value,farmRepliesByResident:Object.fromEntries(Object.entries(farmReplies).map(([key,input])=>[key,input.value])),placeLines:Object.fromEntries(Object.entries(placeLines).map(([key,entry])=>[key,entry.value])),placeAfternoonLines:Object.fromEntries(Object.entries(placeAfternoonLines).map(([key,entry])=>[key,entry.value])),placeNightLines:Object.fromEntries(Object.entries(placeNightLines).map(([key,entry])=>[key,entry.value])),rainPlaceLines:Object.fromEntries(Object.entries(rainPlaceLines).map(([key,entry])=>[key,entry.value])),rainPlaceAfternoonLines:Object.fromEntries(Object.entries(rainPlaceAfternoonLines).map(([key,entry])=>[key,entry.value])),rainPlaceNightLines:Object.fromEntries(Object.entries(rainPlaceNightLines).map(([key,entry])=>[key,entry.value]))};
      if(!stored(next)){notice.textContent='저장 공간이 부족합니다. 더 작은 이미지로 다시 등록해 주세요.';return;}
      const changes=[];for(let other=0;other<next.length;other++){if(other===i||!next[other])continue;const before=residents[i]?.relationships?.[String(other)]||residents[other]?.relationships?.[String(i)]||'아는사이';const after=next[i]?.relationships?.[String(other)]||next[other]?.relationships?.[String(i)]||'아는사이';if(before!==after)changes.push({type:'resident-relationship-change',first:next[i].name,second:next[other].name,relationship:after});}
      pairEditors.forEach(({j,stage,score})=>window.nakwonResidentPairs?.set(i,j,{love:stage.value==='love',score:Number(score.value)}));

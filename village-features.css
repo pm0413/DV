@@ -69,3 +69,7 @@ body.light-mode #village-features-dialog .vf-achievement-results .vf-primary {
   border-color: #ad8547;
   color: #22272b;
 }
+
+#village-features-dialog .vf-achievement-tab{position:relative}#village-features-dialog .vf-new-dot{position:absolute;top:4px;right:4px;width:6px;height:6px;border-radius:50%;background:#d8b84f;pointer-events:none;box-shadow:0 0 0 1px rgba(0,0,0,.25)}body.light-mode #village-features-dialog .vf-new-dot{background:#8a6117}
+
+#village-features-dialog .vf-card.vf-has-new{position:relative}#village-features-dialog .vf-achievement-new-dot{position:absolute;top:8px;right:8px;width:6px;height:6px;border-radius:50%;background:#d8b84f;pointer-events:none;box-shadow:0 0 0 1px rgba(0,0,0,.25)}body.light-mode #village-features-dialog .vf-achievement-new-dot{background:#8a6117}

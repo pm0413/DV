@@ -69,54 +69,58 @@
  };
  // 업로드한 bg 폴더의 실제 한글 파일명과 계절·시간·날씨를 1:1 매칭합니다.
  const BACKGROUNDS={
-   summer:{clear:['여름맑은아침.jpg','여름맑은밤.png'],rain:['여름비아침.png','여름비밤.png']},
-   spring:{clear:['봄맑은아침.png','봄맑은밤.png'],rain:['봄비아침.png','봄비밤.png']},
-   autumn:{clear:['가을맑은아침.png','가을맑은밤.png'],rain:['가을비아침.png','가을비밤.png']},
-   // 겨울 밤 / 눈 배경은 추후 해당 파일 추가 시 자동 전환합니다.
-   winter:{clear:['겨울맑은아침.png','겨울맑은밤.png'],rain:['겨울눈아침.png','겨울눈밤.png']}
+   // [낮, 노을, 밤] 순서. 낮→노을은 15:00~16:00, 노을→밤은 17:00~18:00에 게임 시각 기준으로 혼합합니다.
+   summer:{clear:['여름맑은아침.jpg','여름맑은노을.png','여름맑은밤.png'],rain:['여름비아침.png','여름비노을.png','여름비밤.png']},
+   spring:{clear:['봄맑은아침.png','봄맑은노을.png','봄맑은밤.png'],rain:['봄비아침.png','봄비노을.png','봄비밤.png']},
+   autumn:{clear:['가을맑은아침.png','가을맑은노을.png','가을맑은밤.png'],rain:['가을비아침.png','가을비노을.png','가을비밤.png']},
+   winter:{clear:['겨울맑은아침.png','겨울맑은노을.png','겨울맑은밤.png'],rain:['겨울눈아침.png','겨울눈노을.png','겨울눈밤.png']}
  };
  // 없는 겨울 이미지는 겨울 아침 파일로 대체; 파일을 넣으면 별도 코드 수정 필요 없음.
  const FALLBACK='겨울맑은아침.png';
- let lastSceneFile='',imageRequest=0,crossfadeCleanupTimer=0;
- function background(file,darkness){
+ let lastSceneKey='';
+ function backgroundCss(file,darkness=0){
    const nightOverlay=window.dowonSeasons?.get()?.season==='winter' && data.minute>=1080 ? .46 : 0;
    const shade=Math.min(.75,darkness+nightOverlay);
-   scene.style.backgroundImage=`linear-gradient(rgba(4,8,17,${shade.toFixed(3)}),rgba(4,8,17,${shade.toFixed(3)})),linear-gradient(180deg,rgba(5,8,13,.34),rgba(6,10,14,.18) 45%,rgba(5,8,12,.56)),url("bg/${file}")`;
+   return `linear-gradient(rgba(4,8,17,${shade.toFixed(3)}),rgba(4,8,17,${shade.toFixed(3)})),linear-gradient(180deg,rgba(5,8,13,.34),rgba(6,10,14,.18) 45%,rgba(5,8,12,.56)),url("bg/${file}")`;
  }
- // 낮/밤(또는 날씨/계절) 배경 파일이 바뀔 때 기존 화면을 위에 잠시 남겨
- // 새 배경으로 서서히 녹아들게 합니다. 첫 로드에서는 불필요한 페이드를 하지 않습니다.
- function crossfadeBackground(file,darkness){
-   const previous=scene.style.backgroundImage;
-   if(!previous){background(file,darkness);return;}
-   if(crossfadeCleanupTimer)window.clearTimeout(crossfadeCleanupTimer);
-   scene.style.setProperty('--scene-crossfade-image',previous);
-   scene.style.setProperty('--scene-crossfade-opacity','1');
-   background(file,darkness);
-   // 1프레임 안에서 1→0으로 바뀌면 브라우저가 전환을 생략할 수 있어 두 프레임 뒤 시작합니다.
-   window.requestAnimationFrame(()=>window.requestAnimationFrame(()=>{
-     scene.style.setProperty('--scene-crossfade-opacity','0');
-   }));
-   crossfadeCleanupTimer=window.setTimeout(()=>{
-     scene.style.setProperty('--scene-crossfade-image','none');
-   },5200);
+ function background(file,darkness=0){scene.style.backgroundImage=backgroundCss(file,darkness);}
+ function fallbackFile(season,weather,phase){
+   const set=(BACKGROUNDS[season]||BACKGROUNDS.summer)[weather];
+   return phase===1?set[0]:(season==='winter'?FALLBACK:BACKGROUNDS.summer[weather][phase===2?2:0]);
+ }
+ function preloadFile(file){if(!file)return;const img=new Image();img.src=`bg/${file}`;}
+ function resolveFile(season,weather,phase){
+   return (BACKGROUNDS[season]||BACKGROUNDS.summer)[weather][phase]||fallbackFile(season,weather,phase);
+ }
+ // 시간대 경계 1시간 전부터 두 장을 동시에 유지하고, 현재 게임 분으로 혼합 비율을 직접 계산합니다.
+ // 15:00=낮 100%, 15:30=낮 50%/노을 50%, 16:00=노을 100%
+ // 17:00=노을 100%, 17:30=노을 50%/밤 50%, 18:00=밤 100%
+ function sceneBlend(minute){
+   if(minute>=17*60 && minute<18*60)return {base:2,overlay:1,opacity:(18*60-minute)/60};
+   if(minute>=16*60 && minute<17*60)return {base:1,overlay:null,opacity:0};
+   if(minute>=15*60 && minute<16*60)return {base:1,overlay:0,opacity:(16*60-minute)/60};
+   if(minute>=18*60)return {base:2,overlay:null,opacity:0};
+   return {base:0,overlay:null,opacity:0};
  }
  function updateSceneBackground(){
-   const minute=data.minute,night=minute>=18*60;
+   const minute=data.minute;
    const season=window.dowonSeasons?.get()?.season||'summer';
    const weather=window.dowonWeather?.get()?.weather==='rain'?'rain':'clear';
-   const file=(BACKGROUNDS[season]||BACKGROUNDS.summer)[weather][night?1:0];
-   const darkness=minute<900?0:minute<1080?(minute-900)/180*.42:0;
-   if(lastSceneFile!==file){
-     lastSceneFile=file;
-     const request=++imageRequest;
-     const probe=new Image();
-     probe.onload=()=>{if(request===imageRequest)crossfadeBackground(file,darkness);};
-     probe.onerror=()=>{if(request===imageRequest)crossfadeBackground(season==='winter'?FALLBACK:BACKGROUNDS.summer[weather][night?1:0],darkness);};
-     probe.src=`bg/${file}`;
-   }else if(scene.style.backgroundImage){
-     // 갱신된 밝기와 밤 여부를 이미지 로딩 대기 없이 반영합니다.
-     const winterMissing=season==='winter'&&!scene.style.backgroundImage.includes(`bg/${file}`);
-     background(winterMissing?FALLBACK:file,darkness);
+   const blend=sceneBlend(minute);
+   const baseFile=resolveFile(season,weather,blend.base);
+   const overlayFile=blend.overlay===null?'':resolveFile(season,weather,blend.overlay);
+   const key=`${season}|${weather}|${baseFile}|${overlayFile}`;
+   if(lastSceneKey!==key){
+     lastSceneKey=key;
+     preloadFile(baseFile);preloadFile(overlayFile);
+   }
+   background(baseFile,0);
+   if(overlayFile){
+     scene.style.setProperty('--scene-crossfade-image',backgroundCss(overlayFile,0));
+     scene.style.setProperty('--scene-crossfade-opacity',String(Math.max(0,Math.min(1,blend.opacity))));
+   }else{
+     scene.style.setProperty('--scene-crossfade-image','none');
+     scene.style.setProperty('--scene-crossfade-opacity','0');
    }
  }
  document.addEventListener('dowon:weatherchange',updateSceneBackground);
@@ -127,7 +131,7 @@
    clockEl.textContent=`${String(hour).padStart(2,'0')}:${String(mins).padStart(2,'0')}`;
    const night=hour>=18;
    iconEl.textContent=night?'☾':'☀';
-   periodEl.textContent=hour>=24?'자정':night?'밤':hour<11?'아침':hour<15?'낮':'저녁';
+   periodEl.textContent=hour>=24?'자정':night?'밤':hour<16?'낮':'노을';
    const canSleep=minute>=22*60;
    sleepButton.hidden=!canSleep;
    sleepButton.disabled=busy||!canSleep;
@@ -177,7 +181,5 @@
   },
   get:()=>({day:data.day,minute:data.minute,paused})
  };
- const eveningButton=document.getElementById('debug-evening');
- if(eveningButton) eveningButton.addEventListener('click',()=>{window.dowonClock.jumpTo(17,50);document.getElementById('debug-close')?.click();});
  persist();render();window.setInterval(tick,1000);
 })();

@@ -4,6 +4,7 @@
  const grid=document.getElementById('warehouse-grid');
  if(!grid)return;
  const descriptions=window.dowonItemDescriptions||{};
+ const foodKeys=new Set((window.DOWON_COOKING_RECIPES||[]).map(recipe=>recipe?.output).filter(Boolean));
  const pop=document.createElement('section');
  pop.id='dw-item-pop';pop.setAttribute('role','dialog');pop.setAttribute('aria-label','아이템 정보와 판매');pop.hidden=true;
  const name=document.createElement('strong');name.className='dw-item-pop-name';
@@ -26,8 +27,9 @@
   qty.textContent=`×${count} / ${available}`;
   minus.disabled=count<=1;plus.disabled=count>=available;
   const unit=Number(descriptions[selected]?.price)||0;
-  value.textContent=unit>0?`개당 ${unit.toLocaleString('ko-KR')}원 · 합계 ${(unit*count).toLocaleString('ko-KR')}원`:'판매가 미설정';
-  sell.disabled=available<1||unit<=0||!window.dowonWallet?.refund;
+  const isFood=foodKeys.has(selected);
+  value.textContent=isFood?'요리는 직접 판매할 수 없습니다.':(unit>0?`개당 ${unit.toLocaleString('ko-KR')}원 · 합계 ${(unit*count).toLocaleString('ko-KR')}원`:'판매가 미설정');
+  sell.disabled=isFood||available<1||unit<=0||!window.dowonWallet?.refund;
  }
  function place(){
   if(!anchor||pop.hidden)return;
@@ -60,7 +62,7 @@
  sell.addEventListener('click',()=>{
    const key=selected,unit=Number(descriptions[key]?.price)||0;
    const amount=unit*count;
-   if(!key||!Number.isSafeInteger(unit)||unit<=0||!Number.isSafeInteger(amount)||!window.dowonWallet?.refund||stock(key)<count)return;
+   if(!key||foodKeys.has(key)||!Number.isSafeInteger(unit)||unit<=0||!Number.isSafeInteger(amount)||!window.dowonWallet?.refund||stock(key)<count)return;
    if(Object.prototype.hasOwnProperty.call(warehouse,key)){
      warehouse[key]-=count;
      try{saveWarehouse();}catch(error){warehouse[key]+=count;status.textContent='재고 저장 실패';return;}

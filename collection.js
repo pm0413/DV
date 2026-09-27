@@ -1,8 +1,10 @@
 (() => {
   'use strict';
   const STORAGE_KEY = 'dangcheong-dowon-collection-v1';
+  const UNREAD_KEY = 'dangcheong-dowon-collection-unread-v1';
   const $ = id => document.getElementById(id);
   const discovered = load();
+  const unread = loadUnread();
   let activeTab = 'crop';
   let selectedKey = null;
 
@@ -27,9 +29,21 @@
     try{localStorage.setItem(STORAGE_KEY,JSON.stringify(discovered));}
     catch(error){console.warn('도감 저장 실패',error);}
   }
+  function loadUnread(){
+    try{
+      const raw=JSON.parse(localStorage.getItem(UNREAD_KEY)||'null');
+      if(raw&&typeof raw==='object')return {crop:Array.isArray(raw.crop)?raw.crop:[],processed:Array.isArray(raw.processed)?raw.processed:[],cooking:Array.isArray(raw.cooking)?raw.cooking:[],fish:Array.isArray(raw.fish)?raw.fish:[],cat:Array.isArray(raw.cat)?raw.cat:[]};
+    }catch(error){console.warn('도감 새 항목 알림을 읽지 못했습니다.',error);}
+    return {crop:[],processed:[],cooking:[],fish:[],cat:[]};
+  }
+  function saveUnread(){try{localStorage.setItem(UNREAD_KEY,JSON.stringify(unread));}catch(_){} syncCollectionNewState();}
+  function hasUnread(category){return category?unread[category]?.length>0:Object.values(unread).some(list=>list.length>0);}
+  function syncCollectionNewState(){if(!window.dowonMenuNew)return;if(hasUnread())window.dowonMenuNew.mark('collection');else window.dowonMenuNew.read('collection');}
+  function markUnread(category,key){if(!unread[category]||unread[category].includes(key))return;unread[category].push(key);saveUnread();}
+  function readItem(category,key){if(!unread[category])return;const before=unread[category].length;unread[category]=unread[category].filter(x=>x!==key);if(unread[category].length!==before)saveUnread();}
   function uniquePush(category,key){
     if(!key||!discovered[category]||discovered[category].includes(key))return false;
-    discovered[category].push(key);save();return true;
+    discovered[category].push(key);save();markUnread(category,key);return true;
   }
   function cropEntries(){
     return Object.entries(cropData).map(([key,data])=>({
@@ -177,7 +191,9 @@
   function render(){
     updateSummary();
     document.querySelectorAll('[data-collection-tab]').forEach(button=>{
-      const on=button.dataset.collectionTab===activeTab;button.classList.toggle('is-active',on);button.setAttribute('aria-selected',String(on));
+      const category=button.dataset.collectionTab;const on=category===activeTab;button.classList.toggle('is-active',on);button.setAttribute('aria-selected',String(on));
+      let dot=button.querySelector('.collection-new-dot');
+      if(hasUnread(category)){if(!dot){dot=document.createElement('span');dot.className='collection-new-dot';dot.setAttribute('aria-hidden','true');button.append(dot);}}else dot?.remove();
     });
     const grid=$('collection-grid');grid.replaceChildren();
     const list=entries(activeTab); const known=new Set(discovered[activeTab]);
@@ -187,11 +203,12 @@
       const visual=document.createElement('span');visual.className='collection-card-visual';
       const img=document.createElement('img');img.src=item.image;img.alt='';if(!found)img.className='collection-item-silhouette';visual.append(img);
       const name=document.createElement('span');name.className='collection-card-name';name.textContent=found?item.name:'미발견';button.append(visual,name);
-      button.addEventListener('click',()=>{selectedKey=item.key;renderDetail(item,found);});grid.append(button);
+      if(found&&unread[activeTab]?.includes(item.key)){const dot=document.createElement('span');dot.className='collection-item-new-dot';dot.setAttribute('aria-hidden','true');button.append(dot);}
+      button.addEventListener('click',()=>{selectedKey=item.key;if(found)readItem(activeTab,item.key);render();renderDetail(item,found);});grid.append(button);
     }
     const selected=list.find(item=>item.key===selectedKey);if(selected)renderDetail(selected,known.has(selected.key));else $('collection-detail').innerHTML='<span>항목을 선택해 주세요.</span>';
   }
-  function open(){syncInventory();syncLegacyCats();syncFishing();$('collection-backdrop').hidden=false;$('collection-dialog').hidden=false;$('menu-collection')?.setAttribute('aria-expanded','true');render();}
+  function open(){syncInventory();syncLegacyCats();syncFishing();syncCollectionNewState();$('collection-backdrop').hidden=false;$('collection-dialog').hidden=false;$('menu-collection')?.setAttribute('aria-expanded','true');render();}
   function close(){$('collection-backdrop').hidden=true;$('collection-dialog').hidden=true;$('menu-collection')?.setAttribute('aria-expanded','false');}
 
   window.dowonCollection={syncInventory,discover:(category,key)=>{const changed=uniquePush(category,key);if(changed&&isOpen())render();return changed;},open,close};
@@ -200,6 +217,10 @@
   $('collection-backdrop')?.addEventListener('click',close);
   document.querySelectorAll('[data-collection-tab]').forEach(button=>button.addEventListener('click',()=>{activeTab=button.dataset.collectionTab;selectedKey=null;render();}));
   document.addEventListener('keydown',event=>{if(event.key==='Escape'&&isOpen())close();});
-  document.addEventListener('dowon:activity',event=>{if(event.detail?.type==='cat-visit'&&event.detail.catId)window.dowonCollection.discover('cat',event.detail.catId);});
-  syncInventory();syncLegacyCats();syncFishing();
+  document.addEventListener('dowon:activity',event=>{
+    if(event.detail?.type==='cat-visit'&&event.detail.catId)window.dowonCollection.discover('cat',event.detail.catId);
+    // 수확/가공/요리 등으로 창고가 갱신된 직후 새 도감 항목을 즉시 감지한다.
+    queueMicrotask(()=>syncInventory());
+  });
+  syncInventory();syncLegacyCats();syncFishing();syncCollectionNewState();
 })();
