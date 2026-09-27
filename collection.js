@@ -211,7 +211,7 @@
   function open(){syncInventory();syncLegacyCats();syncFishing();syncCollectionNewState();$('collection-backdrop').hidden=false;$('collection-dialog').hidden=false;$('menu-collection')?.setAttribute('aria-expanded','true');render();}
   function close(){$('collection-backdrop').hidden=true;$('collection-dialog').hidden=true;$('menu-collection')?.setAttribute('aria-expanded','false');}
 
-  window.dowonCollection={syncInventory,discover:(category,key)=>{const changed=uniquePush(category,key);if(changed&&isOpen())render();return changed;},open,close};
+  window.dowonCollection={syncInventory,discover:(category,key)=>{const changed=uniquePush(category,key);if(changed&&isOpen())render();return changed;},stats:()=>{syncInventory();syncLegacyCats();syncFishing();return totals();},open,close};
   $('menu-collection')?.addEventListener('click',open);
   $('collection-close')?.addEventListener('click',close);
   $('collection-backdrop')?.addEventListener('click',close);

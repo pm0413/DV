@@ -1393,7 +1393,7 @@ const SCENE_IMAGE_HEIGHT = 1080;
 const SCENE_ROUTES = [
  {name:'지붕 1',x:650,y:300,links:[3],jump:[3]},
  {name:'지붕 2',x:1250,y:200,links:[4],jump:[4]},
- {name:'별채',x:550,y:480,links:[1,5],jump:[1]},
+ {name:'별채',x:550,y:500,links:[1,5],jump:[1]},
  {name:'본채',x:1300,y:500,links:[2,5],jump:[2]},
  {name:'계단',x:1110,y:500,links:[3,4,10]},
  {name:'꽃밭',x:600,y:650,links:[8]},

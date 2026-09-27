@@ -12,10 +12,18 @@
  const wallet=()=>window.dowonWallet;
  const grantComfort=amount=>{const c=window.dowonComfort;if(!c?.get||!c?.set)return false;c.set(c.get()+amount);return true;};
  const achievementComfort=(title)=>{
-  const fifty=new Set(['풍년이로구나','손이 열 개라도 모자라','공방이 가득한 마을','백 번의 식사','요리 도감 완성','주문 해결사','마을의 해결사','안녕. 도화마을','모두 모여 살아요','한 달의 마을 생활','열세 마리의 발자국','고양이들의 아지트','오래오래 함께','손길이 익숙해졌어','계절을 한 바퀴','계절을 담은 상자','고양이를 위한 공간','모두가 좋아해']);
-  const twenty=new Set(['풍요로운 밭','땅을 넓히다','마을의 요리사','자꾸 부르게 되네','가까워진 사이','마을의 배달부','오늘은 장사가 잘되네','부탁받기 바쁜 하루','우리 마을을 꾸며요','열 번의 아침','골고루 준비했어요','쓰담쓰담','작고 소중한 것들']);
-  return fifty.has(title)?50:twenty.has(title)?20:10;
-};
+  // 초반 체험 업적은 가볍게, 장기/도감 업적은 크게 보상해 쾌적도 성장 곡선을 뒤로 옮깁니다.
+  if(title==='안녕. 도화마을')return 0;
+  if(title==='도화마을 박물지')return 300;
+  const hundred=new Set(['밭의 기록','공방의 기록','식탁의 기록','물가의 기록','발자국의 기록']);
+  if(hundred.has(title))return 100;
+  const five=new Set(['첫 수확','첫 가공','첫 요리','첫 손님','씨앗 한 알','첫인사','처음 전하는 마음','첫 주문','작은 부탁 하나','첫 마을 기록','첫 번째 장식','첫 번째 밤','첫 입질','처음 뵙겠습니다','작은 선물']);
+  if(five.has(title))return 5;
+  const fifty=new Set(['풍년이로구나','손이 열 개라도 모자라','공방이 가득한 마을','백 번의 식사','요리 도감 완성','주문 해결사','모두 모여 살아요','한 달의 마을 생활','열세 마리의 발자국','고양이들의 아지트','오래오래 함께','손길이 익숙해졌어','계절을 한 바퀴','계절을 담은 상자','고양이를 위한 공간','모두가 좋아해','환상의 물고기들','물고기 도감 완성','가공품 도감 완성','밭일이 익숙해졌어','마을의 대농장','바쁜 가공소','정성 들인 한 끼','쉬지 않는 가공소','비밀을 모두 풀다','매일 놀러 와','네 마리의 가족','고양이 급식소','고양이들의 사교 모임','고양이의 보물 도감','자꾸 부르게 되네','선물하는 즐거움','마을의 배달부','언제든 도와줄게','모든 것이 갖춰진 마을','강태공의 길','이야기가 끊이질 않아','산책이 취미','변함없는 사이','꾸미기의 달인','마을의 인기 고양이','고양이의 보물상자']);
+  if(fifty.has(title))return 50;
+  const twenty=new Set(['풍요로운 밭','땅을 넓히다','마을의 요리사','가까워진 사이','낚시가 취미','공방의 수집가','능숙한 요리사','요리 수집가','작은 정성','북적이는 도화마을','밥 먹으러 왔어요','낯익은 얼굴','고양이 친구','오늘도 함께','골고루 심어요','빈틈없는 농부','밀밭의 주인','콩 한 바구니','달콤한 수확','쌀밥의 시작','채소밭 가꾸기','매콤한 하루','땅속의 보물','달걀 한 바구니','달콤한 공방','두부 장인','곡식의 변신','오늘은 내가 요리사','새로운 맛','식탁이 풍성해졌어','손맛이 살아있네','마을 고양이 탐험가','마음의 문을 열다','고양이들의 친구','우리 집 두 번째 고양이','함께한 시간','빈 그릇이 되었어요','쓰담쓰담','장난감은 즐거워']);
+  return twenty.has(title)?20:10;
+ };
  const day=()=>window.dowonClock?.get()?.day||1;
  const residents=()=>{try{const a=JSON.parse(localStorage.getItem('dangcheong-dowon-player-residents-v1')||'[]');return Array.from({length:5},(_,i)=>a[i]?.name?{...a[i],index:i}:null);}catch(_){return Array(5).fill(null);}};
  const labels=()=>window.dowonItemDescriptions||{};
@@ -88,6 +96,14 @@
  const shopKeys=()=>{try{return Object.keys(JSON.parse(localStorage.getItem('dangcheong-dowon-shop-collection-v1')||'{}').purchased||{});}catch(_){return [];}};
  const furniture=()=>window.dowonFurniture||{};
  const reqHearts=()=>Array.from({length:2},(_,i)=>window.dowonAffinity?.get?.('mpc',i)?.hearts||0);
+ const fishingCollection=()=>{try{return JSON.parse(localStorage.getItem('dangcheong-dowon-fishing-collection-v1')||'{}')||{};}catch(_){return {};}};
+ const fishCounts=()=>Object.values(fishingCollection().counts||{}).map(Number).filter(Number.isFinite);
+ const fishCaughtTotal=()=>fishCounts().reduce((sum,count)=>sum+Math.max(0,count),0);
+ const fishDiscovered=()=>fishCounts().filter(count=>count>0).length;
+ const sFishDiscovered=()=>Array.from({length:10},(_,i)=>Number(fishingCollection().counts?.[`fish-s-${String(i+1).padStart(2,'0')}`])||0).filter(count=>count>0).length;
+ const collectionStats=()=>window.dowonCollection?.stats?.()||{result:{},found:0,total:0};
+ const collectionCount=category=>Number(collectionStats().result?.[category]?.count)||0;
+ const collectionTotal=category=>Number(collectionStats().result?.[category]?.total)||0;
  const make=(id,title,category,description,progress,target=1,reward=100)=>[id,title,category,description,progress,target,reward];
  const extraDefs=[];
  const add=(id,title,category,description,progress,target=1,reward=100)=>extraDefs.push(make('extra-'+id,title,category,description,progress,target,reward));
@@ -137,6 +153,8 @@
  add("extra-all-prods","정성 들인 한 끼","생산","서로 다른 가공품 7종 이상 수령",()=>(countKeys(Object.fromEntries(Object.entries(ex().byItem).filter(([k])=>k.startsWith("processed:"))))),7);
  add("extra-sixslots","쉬지 않는 가공소","생산","가공 슬롯 6칸을 동시에 사용",()=>(n("sixslots")),1);
  add("extra-all-workshops","공방이 가득한 마을","생산","모든 가공소 해금",()=>(builtCount()>=Object.keys(window.dowonProgression?.settings?.workshops||{}).length+1?1:0),1);
+ add("extra-prod20types","공방의 수집가","생산","서로 다른 가공품 20종 발견",()=>collectionCount("processed"),20);
+ add("extra-prodcomplete","가공품 도감 완성","생산","현재 준비된 모든 가공품 발견",()=>collectionCount("processed"),Math.max(1,collectionTotal("processed")));
  add("extra-cook10","오늘은 내가 요리사","요리","요리 누적 10회 완성",()=>(state.stats.cooked),10);
  add("extra-cook100","마을의 요리사","요리","요리 누적 100회 완성",()=>(state.stats.cooked),100);
  add("extra-cook500","백 번의 식사","요리","요리 누적 500회 완성",()=>(state.stats.cooked),500);
@@ -239,6 +257,21 @@
  add("extra-fourseasons","계절을 한 바퀴","마을","사계절 모두 경험",()=>(countKeys(ex().seasonsSeen)),4);
  add("extra-rain","비 오는 날의 풍경","마을","비 오는 날 처음 맞이하기",()=>(n("rain")),1);
  add("extra-snow","눈 내리는 마을","마을","눈 오는 날 처음 맞이하기",()=>(n("snow")),1);
+ // 낚시 업적: 실제 낚시 도감 저장값을 기준으로 계산합니다.
+ add("fish-first","첫 입질","낚시","물고기 1마리 낚기",fishCaughtTotal,1);
+ add("fish-10","낚시가 취미","낚시","낚시 누적 10회 성공",fishCaughtTotal,10);
+ add("fish-50","손맛을 알겠어","낚시","낚시 누적 50회 성공",fishCaughtTotal,50);
+ add("fish-100","강태공의 길","낚시","낚시 누적 100회 성공",fishCaughtTotal,100);
+ add("fish-s-first","환상의 첫 만남","낚시","S등급 환상어 처음 낚기",sFishDiscovered,1);
+ add("fish-s-all","환상의 물고기들","낚시","S등급 환상어 10종 모두 발견",sFishDiscovered,10);
+ add("fish-all","물고기 도감 완성","낚시","물고기 41종 모두 발견",fishDiscovered,41);
+ // 도감 업적: 도감 자체의 현재 등록 수를 그대로 사용합니다.
+ add("collection-crop","밭의 기록","도감","작물 도감 완성",()=>collectionCount("crop"),Math.max(1,collectionTotal("crop")));
+ add("collection-processed","공방의 기록","도감","가공품 도감 완성",()=>collectionCount("processed"),Math.max(1,collectionTotal("processed")));
+ add("collection-cooking","식탁의 기록","도감","요리 도감 완성",()=>collectionCount("cooking"),Math.max(1,collectionTotal("cooking")));
+ add("collection-fish","물가의 기록","도감","물고기 도감 완성",()=>collectionCount("fish"),Math.max(1,collectionTotal("fish")));
+ add("collection-cat","발자국의 기록","도감","고양이 도감 완성",()=>collectionCount("cat"),Math.max(1,collectionTotal("cat")));
+ add("collection-all","도화마을 박물지","도감","작물·가공품·요리·물고기·고양이 도감을 모두 완성",()=>collectionStats().found,Math.max(1,collectionStats().total));
  // 주민 관계 업적: 직접 설정한 관계 단계와 실제 발생한 행동 이벤트를 구분합니다.
  const registeredResidentIndices=()=>residents().filter(Boolean).map(p=>p.index);
  const residentPairs=()=>{const idx=registeredResidentIndices(),list=[];for(let i=0;i<idx.length;i++)for(let j=i+1;j<idx.length;j++)list.push({a:idx[i],b:idx[j],...window.nakwonResidentPairs?.get?.(idx[i],idx[j])});return list;};
@@ -276,6 +309,8 @@
   {name:'농사',icon:'wheat'},
   {name:'생산',icon:'box'},
   {name:'요리',icon:'award_meal'},
+  {name:'낚시',icon:'phishing'},
+  {name:'도감',icon:'developer_guide'},
   {name:'주민',icon:'groups_3'},
   {name:'마을',icon:'cottage'},
   {name:'고양이',icon:'pets'}
