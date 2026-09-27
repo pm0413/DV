@@ -22,9 +22,13 @@
      const placeNames=window.dowonPlaceNames||[];
      const makeDefault=(source,i)=>{
        const {favoritePlaceName,farmReplyToOther,...fields}=source;
-       const favoritePlace=placeNames.indexOf(favoritePlaceName)+1;
-       return {...fields,favoritePlace:favoritePlace>0?favoritePlace:0,
-         farmRepliesByResident:{[String(i===0?1:0)]:farmReplyToOther||''}};
+       const namedPlace=placeNames.indexOf(favoritePlaceName)+1;
+       const savedPlace=Number(source.favoritePlace)||0;
+       const favoritePlace=namedPlace>0?namedPlace:savedPlace;
+       const farmReplies=(source.farmRepliesByResident&&typeof source.farmRepliesByResident==='object')
+         ? source.farmRepliesByResident
+         : {[String(i===0?1:0)]:farmReplyToOther||''};
+       return {...fields,favoritePlace,farmRepliesByResident:farmReplies};
      };
      const initial=[makeDefault(defaults[0],0),makeDefault(defaults[1],1),null,null,null];
      try{localStorage.setItem(KEY,JSON.stringify(initial));existingResidentSave=JSON.stringify(initial);}

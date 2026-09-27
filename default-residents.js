@@ -1,7 +1,7 @@
 /* 새 게임 최초 실행 전용 주민 기본 설정.
  * 저장된 주민 정보는 덮어쓰지 않습니다.
- * 2026-09-27 저장 데이터에서 "대사 관련 필드만" 이식했습니다.
- * 입양냥 대사(catAdoptedLines / catAdoptedLinesBySlot)는 의도적으로 기본값 이식에서 제외합니다.
+ * 배포용 기본 주민 데이터: 기본정보 / 대사 / 상호작용 / 이벤트 / 밭반응 / 클릭반응만 포함합니다.
+ * 고양이 반응, 관계 상태, 입양 고양이 대사 등 플레이 진행/기타 데이터는 포함하지 않습니다.
  */
 window.DOWON_DEFAULT_RESIDENTS = [
   {
@@ -11,105 +11,16 @@ window.DOWON_DEFAULT_RESIDENTS = [
     "age": 76,
     "month": 5,
     "day": 17,
-    "favoritePlaceName": "지붕 1",
-    "morningLines": "(둥근해 미친거 또 떴네)|(일어나서 소셋물로 단장한다)|(아침 단장하는 중)|형님. 아침입니다. 일어나시죠|좀만 더 잘래요...(형님 꼭 껴안으며)",
+    "favoritePlace": 1,
+    "morningLines": "(둥근해 미친거 또 떴네)|(일어나서 소셋물로 단장한다)|(아침 단장하는 중)|형님. 아침입니다. 일어나시죠|좀만 더 잘래요...(형님 꼭 껴안으며)|이 말코도사는 숙취도 없나 보네",
     "generalLines": "오늘 날씨가 좋네|형님은 또 술마시러 가자 하겠지|(타박타박)|(저벅저벅)|날씨가 좋은데 \n놀러가자고 할까...",
     "generalAfternoonLines": "노을 지는게 참으로 이쁘다|(타박타박)|(저벅저벅)|노을이 이쁘니 형님은 또\n술이나 마시러 가자고 하겠지...|지붕에 올라가서 노을이나 볼까",
     "generalNightLines": "하늘에 달이 참 예쁘게 떴구나|달 보니까 형님 생각나네|(타박타박)|(저벅저벅)|(졸린듯 하다)|형님? 형니임~?",
     "rainLines": "이것도 제법 운치있구려",
     "rainAfternoonLines": "",
     "rainNightLines": "달이 안보이는건 좀 아쉬운거 같기도...",
-    "clickLines": "음?|뭐요?",
-    "repeatClickLines": "그만찌르쇼|고만 찌르쇼!",
-    "tenClickLines": "아 형님!!!!!",
-    "sleepClickLines": "(?!)",
-    "farmOpening": "(뭔가를 느낀다)|호다닥",
-    "farmArrival": "밭에 뭐 하셨습니까?|밭 건드셨수?",
-    "farmRepliesByResident": {
-      "1": "아 건들지 마쇼 좀!|아 형님 자라기 전까지 냅두랬잖소~!"
-    },
-    "interactionLines": "형님? | 도사형님! | 형님♥",
-    "interactionByResident": {
-      "1": "형님? | 도사형님! | 형님♥"
-    },
-    "interactionRepliesByResident": {
-      "1": {}
-    },
-    "catStrayLines": "쪼쪼쪼~|이리 와보련|밥은 먹었니?|(쓰다듬는다)",
-    "eventLines": {
-      "greet": {
-        "opening": "",
-        "reply": "",
-        "overrides": {
-          "1": {
-            "opening": "형님. 산채나 털러 갈까요?",
-            "reply": "저는 좋죠"
-          }
-        }
-      },
-      "awkward": {
-        "opening": "",
-        "reply": "",
-        "overrides": {
-          "1": {
-            "opening": "",
-            "reply": ""
-          }
-        }
-      },
-      "rest": {
-        "opening": "",
-        "reply": "",
-        "overrides": {
-          "1": {
-            "opening": "형님. 오늘 날씨 좋네요 그쵸?",
-            "reply": "글쎄요?"
-          }
-        }
-      },
-      "walk": {
-        "opening": "",
-        "reply": "",
-        "overrides": {
-          "1": {
-            "opening": "",
-            "reply": ""
-          }
-        }
-      },
-      "follow": {
-        "opening": "",
-        "reply": "",
-        "overrides": {
-          "1": {
-            "opening": "",
-            "reply": ""
-          }
-        }
-      },
-      "visit": {
-        "opening": "",
-        "reply": "",
-        "overrides": {
-          "1": {
-            "opening": "",
-            "reply": ""
-          }
-        }
-      },
-      "wait": {
-        "opening": "",
-        "reply": "",
-        "overrides": {
-          "1": {
-            "opening": "형님. 당보 기다리고 있잖아요.",
-            "reply": "금방 가요~"
-          }
-        }
-      }
-    },
     "placeLines": {
-      "1": "빌어먹을 말코\n여기 있으면 안들키겠지!!|(도사형님 피해 숨어있기)|(지붕에서 일광욕중)|엇 다람쥐",
+      "1": "빌어먹을 말코\n여기 있으면 안들키겠지!!|(도사형님 피해 숨어있기)|(지붕에서 일광욕중)|엇 다람쥐|햇빛에 피부 다 타겠소",
       "2": "빌어먹을 말코\n여기 있으면 안들키겠지!!|(도사형님 피해 숨어있기)|(지붕에서 일광욕중)|엇 다람쥐",
       "3": "(서책들을 정리하고 있다)|(물건들을 정리하고 있다)|(암기들을 정리하고 있다)|(장부 정리 중)",
       "4": "(본채에서 시간을 보내고 있다)|(본채에서 나른하게 누워\n낮 시간을 즐기는 중)|(할 거 다하고 누워있는 중)",
@@ -120,8 +31,8 @@ window.DOWON_DEFAULT_RESIDENTS = [
       "9": "(연못에 비친 본인을 보고\n옷을 단장한다)|(수면을 돌아다니는\n물고기들을 감상한다)",
       "10": "(다음 목적지로 향하는 중)|앗 저기 형님이다.|형님!(크게 부르며)",
       "11": "(고양이들 밥 그릇이\n비었나 확인한다)|(고양이들 물그릇을 채우며)",
-      "12": "(물주고있다)|♪~|♬~|(흥얼흥얼)|(밭을 관리하는 중)|(밭에 난 잡초 정리 중)",
-      "13": "",
+      "12": "(물주고있다)|♪~|♬~|(흥얼흥얼)|(밭을 관리하는 중)|(밭에 난 잡초 정리 중)|내가 말코도사 먹여살리려고\\n 땡볕에서 이렇게나",
+      "13": "형님 잠깐 여기 와보시오",
       "14": ""
     },
     "placeAfternoonLines": {
@@ -146,14 +57,14 @@ window.DOWON_DEFAULT_RESIDENTS = [
       "3": "헛! (잠에서 깨며)|(형님 없는지 둘러보고 간다)|(형님을 별채로 끌고 올까 생각중)|(나쁜 생각중)",
       "4": "형님? 형님?|(형님 찾는 중)|아이 형님 어디 계신담|(호롱불에 불을 붙인다)",
       "5": "(타박타박)|(저벅저벅)|(천천히 이동하다 계단에\n서서 잠시 달을 바라본다)",
-      "6": "",
+      "6": "그러니까 여기서 공력을 한 번 돌려서...|밤에 하는 꽃놀이가 제법이지요",
       "7": "",
       "8": "(달빛에 흐드러지는\n윤슬을 감상한다)|달이 뜬 연못을 감상한다)|",
       "9": "(달빛에 흐드러지는\n윤슬을 감상한다)|달이 뜬 연못을 감상한다)|",
       "10": "(타박타박)|(저벅저벅)|(마당에 서서 밤하늘을 올려다 본다)",
       "11": "(고양이들 밥 그릇이 비었나 확인한다)|(고양이들 물그릇을 채우며)",
-      "12": "(서리 하러 오는\n못된 형님 없나 순찰중)|(잠시 머물다 간다)",
-      "13": "",
+      "12": "(서리 하러 오는\n못된 형님 없나 순찰중)|(잠시 머물다 간다)|내가 말코도사 먹여살리려고\\n달빛 아래서 이렇게나",
+      "13": "형님 잠깐 여기 와보시오",
       "14": ""
     },
     "rainPlaceLines": {
@@ -201,8 +112,233 @@ window.DOWON_DEFAULT_RESIDENTS = [
       "10": "",
       "11": "",
       "12": "",
-      "13": ""
-    }
+      "13": "",
+      "14": ""
+    },
+    "interactionLines": "형님? | 도사형님! | 형님♥ | 비무 한 판? 한 판? | 한 잔 하시겠소?",
+    "interactionByResident": {
+      "1": "형님? | 도사형님! | 형님♥ | 비무 한 판? 한 판? | 한 잔 하시겠소?"
+    },
+    "interactionRepliesByResident": {
+      "1": {
+        "오, 일수탈명": "으악! 그 말 좀 하지 말라니까요!",
+        "술 마시러 가자!": "형님이 사는 거요?",
+        "산채 털러 가자!": "다 털렸소 이 근방엔!",
+        "용돈 받은거 없냐?(뒤적)": "아 그렇게 뒤지지 마시라구요!"
+      }
+    },
+    "interactionDisabledByResident": {
+      "1": {}
+    },
+    "eventLines": {
+      "hate": {
+        "opening": "",
+        "reply": "",
+        "overrides": {
+          "1": {
+            "opening": "",
+            "reply": "",
+            "openingSlots": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "bad": {
+        "opening": "",
+        "reply": "",
+        "overrides": {
+          "1": {
+            "opening": "",
+            "reply": "",
+            "openingSlots": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "greet": {
+        "opening": "",
+        "reply": "",
+        "overrides": {
+          "1": {
+            "opening": "형님. 산채나 털러 갈까요?",
+            "reply": "저는 좋죠",
+            "openingSlots": [
+              "형님. 산채나 털러 갈까요?",
+              "",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "저는 좋죠",
+              "",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "awkward": {
+        "opening": "",
+        "reply": "",
+        "overrides": {
+          "1": {
+            "opening": "",
+            "reply": "",
+            "openingSlots": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "rest": {
+        "opening": "",
+        "reply": "",
+        "overrides": {
+          "1": {
+            "opening": "형님. 오늘 날씨 좋네요 그쵸?",
+            "reply": "그러게다~",
+            "openingSlots": [
+              "형님. 오늘 날씨 좋네요 그쵸?",
+              "형님. 오늘은 저쪽 산채나 털까요?",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "그러게다~",
+              "좋지? 당장가자",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "walk": {
+        "opening": "",
+        "reply": "",
+        "overrides": {
+          "1": {
+            "opening": "형님이랑 이렇게 걷고 있으니 완전 연인같네요~",
+            "reply": "우리 연인이야 멍청아(콩)",
+            "openingSlots": [
+              "형님이랑 이렇게 걷고 있으니 완전 연인같네요~",
+              "(옆구리에 폭 낀다)",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "우리 연인이야 멍청아(콩)",
+              "(늠름한서방님같은자세)",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "follow": {
+        "opening": "",
+        "reply": "",
+        "overrides": {
+          "1": {
+            "opening": "형~님♥",
+            "reply": "아잇 떨어져",
+            "openingSlots": [
+              "형~님♥",
+              "(뒤에서 폭 안는다)",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "아잇 떨어져",
+              "(늠름하게 받아낸다)\\n무거워 이놈아",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "visit": {
+        "opening": "",
+        "reply": "",
+        "overrides": {
+          "1": {
+            "opening": "달이 이렇게 아름다운데 비무신청을 안 주시다니요",
+            "reply": "어차피 깨질놈이?",
+            "openingSlots": [
+              "달이 이렇게 아름다운데 비무신청을 안 주시다니요",
+              "주무시러 가시죠?",
+              "어디 말코에게 먹일 것 좀 없나?",
+              ""
+            ],
+            "replySlots": [
+              "어차피 깨질놈이?",
+              "졸리긴 하네",
+              "백주로 내놔라",
+              ""
+            ]
+          }
+        }
+      },
+      "wait": {
+        "opening": "",
+        "reply": "",
+        "overrides": {
+          "1": {
+            "opening": "형님. 당보 기다리고 있잖아요.",
+            "reply": "간다 이놈아!",
+            "openingSlots": [
+              "형님. 당보 기다리고 있잖아요.",
+              "형님~",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "간다 이놈아!",
+              "그렇게 보채지 않아도 간다!",
+              "",
+              ""
+            ]
+          }
+        }
+      }
+    },
+    "farmOpening": "(뭔가를 느낀다)|호다닥",
+    "farmArrival": "밭에 뭐 하셨습니까?|밭 건드셨수?",
+    "farmRepliesByResident": {
+      "1": "건들지마세요!!|뭐 건드셨습니까?|겠어요!?"
+    },
+    "clickLines": "음?|뭐요?",
+    "repeatClickLines": "그만찌르쇼|고만 찌르쇼!",
+    "tenClickLines": "아 형님!!!!!",
+    "sleepClickLines": "(?!)"
   },
   {
     "name": "청명",
@@ -211,7 +347,7 @@ window.DOWON_DEFAULT_RESIDENTS = [
     "age": 82,
     "month": 10,
     "day": 10,
-    "favoritePlaceName": "계단",
+    "favoritePlace": 5,
     "morningLines": "(벌떡 기상한다)|당보야 일어나라 아침이다!|(도로롱)|(오늘 따라 늦게 일어나는 중)",
     "generalLines": "날씨 좋네~|술이나 한 병 깔까|화음 내려가서\n장 봐오면 좋겠는걸|당보는 어딨지?|방금 고양이?|🎵~|🎶~|(흥얼흥얼)|",
     "generalAfternoonLines": "",
@@ -219,99 +355,6 @@ window.DOWON_DEFAULT_RESIDENTS = [
     "rainLines": "아침부터 비야...|오늘 훈련은 땡쳐야지",
     "rainAfternoonLines": "",
     "rainNightLines": "거 운치있네|당보 요놈 어디있나",
-    "clickLines": "뭐야?|뭐냐?",
-    "repeatClickLines": "찌르지마라|죽고싶냐?",
-    "tenClickLines": "(서걱)|(푹!)",
-    "sleepClickLines": "뭐야..?",
-    "farmOpening": "어라?|오호?",
-    "farmArrival": "당보야 이거 건드려도 되냐!|이거 뭐지(콕콕)",
-    "farmRepliesByResident": {
-      "0": "나 안건들였어!|몰라?"
-    },
-    "interactionLines": "",
-    "interactionByResident": {
-      "0": ""
-    },
-    "interactionRepliesByResident": {
-      "0": {
-        "형님?": "오냐 왜?",
-        "도사형님!": "왜 불러?",
-        "형님♥": "징그럽게 왜 이래! 떨어져!"
-      }
-    },
-    "catStrayLines": "",
-    "eventLines": {
-      "greet": {
-        "opening": "",
-        "reply": "",
-        "overrides": {
-          "0": {
-            "opening": "",
-            "reply": ""
-          }
-        }
-      },
-      "awkward": {
-        "opening": "",
-        "reply": "",
-        "overrides": {
-          "0": {
-            "opening": "",
-            "reply": ""
-          }
-        }
-      },
-      "rest": {
-        "opening": "",
-        "reply": "",
-        "overrides": {
-          "0": {
-            "opening": "",
-            "reply": ""
-          }
-        }
-      },
-      "walk": {
-        "opening": "",
-        "reply": "",
-        "overrides": {
-          "0": {
-            "opening": "",
-            "reply": ""
-          }
-        }
-      },
-      "follow": {
-        "opening": "",
-        "reply": "",
-        "overrides": {
-          "0": {
-            "opening": "",
-            "reply": ""
-          }
-        }
-      },
-      "visit": {
-        "opening": "당보놈 어디있지",
-        "reply": "(당보가 올텐데)",
-        "overrides": {
-          "0": {
-            "opening": "",
-            "reply": ""
-          }
-        }
-      },
-      "wait": {
-        "opening": "",
-        "reply": "",
-        "overrides": {
-          "0": {
-            "opening": "당보야. 형님 기다린다.",
-            "reply": "어어 곧 가마."
-          }
-        }
-      }
-    },
     "placeLines": {
       "1": "",
       "2": "",
@@ -405,7 +448,233 @@ window.DOWON_DEFAULT_RESIDENTS = [
       "10": "",
       "11": "",
       "12": "",
-      "13": ""
-    }
+      "13": "",
+      "14": ""
+    },
+    "interactionLines": "오, 일수탈명 | 술 마시러 가자! | 산채 털러 가자! | 용돈 받은거 없냐?(뒤적)",
+    "interactionByResident": {
+      "0": "오, 일수탈명 | 술 마시러 가자! | 산채 털러 가자! | 용돈 받은거 없냐?(뒤적)"
+    },
+    "interactionRepliesByResident": {
+      "0": {
+        "형님?": "오냐 왜?",
+        "도사형님!": "왜 불러?",
+        "형님♥": "징그럽게 왜 이래! 떨어져!",
+        "비무 한 판? 한 판?": "어차피 질 놈이?",
+        "한 잔 하시겠소?": "네가 사면"
+      }
+    },
+    "interactionDisabledByResident": {
+      "0": {}
+    },
+    "eventLines": {
+      "hate": {
+        "opening": "🤬",
+        "reply": "🤬",
+        "overrides": {
+          "0": {
+            "opening": "",
+            "reply": "",
+            "openingSlots": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "bad": {
+        "opening": "🤨|😒|😑",
+        "reply": "🤨|😒|😑",
+        "overrides": {
+          "0": {
+            "opening": "",
+            "reply": "",
+            "openingSlots": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "greet": {
+        "opening": "👋|🙂",
+        "reply": "👋|🙂",
+        "overrides": {
+          "0": {
+            "opening": "",
+            "reply": "",
+            "openingSlots": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "awkward": {
+        "opening": "😓|😶|😅",
+        "reply": "😓|😶|😅",
+        "overrides": {
+          "0": {
+            "opening": "",
+            "reply": "",
+            "openingSlots": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "rest": {
+        "opening": "🎶|🎵",
+        "reply": "🎶|🎵",
+        "overrides": {
+          "0": {
+            "opening": "",
+            "reply": "",
+            "openingSlots": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "walk": {
+        "opening": "😙|🚶",
+        "reply": "😙|🚶",
+        "overrides": {
+          "0": {
+            "opening": "",
+            "reply": "",
+            "openingSlots": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "follow": {
+        "opening": "🤭|😚",
+        "reply": "🤭|😚",
+        "overrides": {
+          "0": {
+            "opening": "",
+            "reply": "",
+            "openingSlots": [
+              "",
+              "",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "",
+              "",
+              "",
+              ""
+            ]
+          }
+        }
+      },
+      "visit": {
+        "opening": "",
+        "reply": "",
+        "overrides": {
+          "0": {
+            "opening": "당보놈 어디있지",
+            "reply": "저 여기 있어요~",
+            "openingSlots": [
+              "당보놈 어디있지",
+              "당보야!",
+              "오. 일수탈명!",
+              ""
+            ],
+            "replySlots": [
+              "저 여기 있어요~",
+              "네?",
+              "아 제발요!!",
+              ""
+            ]
+          }
+        }
+      },
+      "wait": {
+        "opening": "",
+        "reply": "",
+        "overrides": {
+          "0": {
+            "opening": "당보야. 형님 기다린다.",
+            "reply": "네~ 가요~",
+            "openingSlots": [
+              "당보야. 형님 기다린다.",
+              "뭐해? 가자",
+              "",
+              ""
+            ],
+            "replySlots": [
+              "네~ 가요~",
+              "❤️",
+              "",
+              ""
+            ]
+          }
+        }
+      }
+    },
+    "farmOpening": "어라?|오호?",
+    "farmArrival": "당보야 이거 건드려도 되냐!|이거 뭐지(콕콕)",
+    "farmRepliesByResident": {
+      "0": "나 아니다~|(안들린척)|글쎄?"
+    },
+    "clickLines": "뭐야?|뭐냐?",
+    "repeatClickLines": "찌르지마라|죽고싶냐?",
+    "tenClickLines": "(서걱)|(푹!)",
+    "sleepClickLines": "뭐야..?"
   }
 ];
