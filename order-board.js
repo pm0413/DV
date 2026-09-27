@@ -297,7 +297,7 @@
     const edit = e('button', 'order-edit-trigger', '이름·이미지 수정'); edit.type = 'button'; edit.addEventListener('click', () => {editing = true; editingResident=currentSlot.resident; showEditor(r);}); header.appendChild(edit); detail.appendChild(header);
     const items = e('div', 'order-items');
     let enough = true;
-    // 동일한 품목·수량을 창고에서 직접 판매한 총액의 120% (동전 단위 올림).
+    // 동일한 품목·수량을 창고에서 직접 판매한 총액의 150% (동전 단위 올림).
     const payout = requestItems.orderReward(r.order);
     for (const line of r.order) {
       const info = CATALOG[line.key]; const owned = Number(warehouse[line.key] || 0);
@@ -306,7 +306,7 @@
       const ownedLabel=e('span', `owned-count ${owned >= line.qty ? 'sufficient' : 'insufficient'}`, `보유 ${owned}개`);
       cell.append(icon, e('strong', '', info.name), e('span', '', `필요 ${line.qty}개`), ownedLabel); items.appendChild(cell);
     }
-    detail.appendChild(items); const reward = e('div','order-reward'); reward.append('납품 보상 (일반 판매가 +20%)  ◈ '); reward.appendChild(e('b','',payout.toLocaleString('ko-KR')));
+    detail.appendChild(items); const reward = e('div','order-reward'); reward.append('납품 보상 (일반 판매가 +50%)  ◈ '); reward.appendChild(e('b','',payout.toLocaleString('ko-KR')));
     const submit = e('button', '', '주문 제출'); submit.disabled = !enough; submit.type = 'button';
     submit.addEventListener('click', () => {
       if (!validOrder(r.order) || r.order.some(line => (warehouse[line.key] || 0) < line.qty)) {status.textContent = '재고가 부족합니다.'; render(); return;}

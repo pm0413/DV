@@ -50,6 +50,6 @@
     catalog, keys:Object.freeze(Object.keys(catalog)), has, isAvailable,qtyRange,drawQty,validQty,
     availableKeys:() => Object.keys(catalog).filter(isAvailable),
     saleTotal:lines => lines.reduce((sum,line) => sum + (catalog[line.key]?.price||0)*line.qty, 0),
-    orderReward:lines => Math.ceil(lines.reduce((sum,line) => sum + (catalog[line.key]?.price||0)*line.qty, 0)*1.2)
+    orderReward:lines => Math.ceil(lines.reduce((sum,line) => sum + (catalog[line.key]?.price||0)*line.qty, 0)*1.5)
   });
 })();

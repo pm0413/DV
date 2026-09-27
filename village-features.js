@@ -38,6 +38,22 @@
  delete state.day; delete state.quests; delete state.bonusClaimed; if(state.stats)delete state.stats.requests;
  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(state));return true;}catch(e){console.warn('생활 기록 저장 실패',e);return false;}};
  const emit=(type,detail={})=>document.dispatchEvent(new CustomEvent('dowon:activity',{detail:{type,...detail}}));
+ // 공통 활동 기록: 업적의 기본 누적치와 요리 도감을 갱신합니다.
+ // 수확/가공 이벤트의 count는 밭 업그레이드 등 실제 획득 수량을 그대로 반영합니다.
+ function record(type,detail={}){
+  const count=Math.max(0,Number(detail.count)||1);
+  if(type==='harvest')state.stats.harvest+=count;
+  else if(type==='processed')state.stats.processed+=count;
+  else if(type==='cook'){
+   state.stats.cooked+=1;
+   const recipeId=String(detail.recipeId||'');
+   if(recipeId){
+    const entry=state.collection[recipeId]||(state.collection[recipeId]={firstDay:day(),total:0,perfect:0});
+    entry.total=(Number(entry.total)||0)+1;
+    if(detail.perfect)entry.perfect=(Number(entry.perfect)||0)+1;
+   }
+  }
+ }
  const node=(tag,cls,text)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(text!==undefined)el.textContent=text;return el;};
  const button=(text,run,cls='')=>{const b=node('button',cls,text);b.type='button';b.addEventListener('click',run);return b;};
  const available=()=>Object.keys(labels()).filter(k=>inv()?.get(k)>0&&!window.dowonGiftItems?.isExcluded?.(k));
