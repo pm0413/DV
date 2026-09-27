@@ -1671,29 +1671,7 @@ body.light-mode #debug-dialog .debug-actions #debug-reset-all:hover {
 }
 
 /* 주민 만남에서는 각자 말풍선 대신 중앙의 말풍선 하나만 보입니다. */
-#main-area .resident-meeting-bubble {
-    position: absolute;
-    z-index: 100;
-    transform: translate(-50%, -100%);
-    max-width: min(260px, 80vw);
-    min-width: 44px;
-    box-sizing: border-box;
-    padding: 8px 12px;
-    background: rgba(251, 251, 251, .97);
-    color: #232323;
-    border: 1px solid rgba(240, 240, 240, .95);
-    border-radius: 10px;
-    box-shadow: 0 5px 14px #0006;
-    text-align: center;
-    white-space: pre-line;
-    overflow-wrap: anywhere;
-    font: 600 13px/1.5 'Paperozi', sans-serif;
-    pointer-events: none;
-}
 
-#main-area .resident-meeting-bubble[hidden] {
-    display: none !important;
-}
 
 #main-area .resident-avatar .resident-nap-bubble {
     position: absolute;
@@ -2717,58 +2695,7 @@ body.light-mode #top-right.top-utility-controls>button:hover{background:#eee8dd!
    기존 부탁 표시의 검정 바탕과 클릭 기능은 유지합니다. */
 /* 주민 부탁 말풍선: 대사형 흰 배경, 무테 (모든 부탁 상태 공통) */
 /* 주민 관계 행동 아이콘: 연인을 찾아가는 중/기다리는 중에는 해당 주민 머리 위에 표시 */
-#main-area .resident-avatar .resident-action-emoji {
-    position: absolute;
-    z-index: 101;
-    left: 50%;
-    bottom: calc(100% + 7px);
-    transform: translateX(-50%);
-    min-width: 30px;
-    height: 30px;
-    box-sizing: border-box;
-    display: grid;
-    place-items: center;
-    padding: 3px 6px;
-    border-radius: 11px;
-    background: rgba(251, 251, 251, .97);
-    border: 0;
-    box-shadow: 0 3px 9px #0005;
-    font-size: 19px;
-    line-height: 1;
-    white-space: nowrap;
-    pointer-events: none;
-}
-#main-area .resident-avatar .resident-action-emoji[hidden] { display: none !important; }
-#main-area .resident-avatar .resident-action-emoji::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid transparent;
-    border-top-color: rgba(251, 251, 251, .97);
-}
 
-/* 주민 둘이 함께 행동할 때 공유하는 이모지 말풍선 */
-#main-area .resident-meeting-bubble.meeting-bubble-event-emoji {
-    min-width: 34px;
-    max-width: none;
-    padding: 6px 8px;
-    border: 0;
-    border-radius: 11px;
-    font-size: 21px;
-    line-height: 1;
-    white-space: nowrap;
-}
-#main-area .resident-meeting-bubble.meeting-bubble-event-emoji::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid transparent;
-    border-top-color: rgba(251, 251, 251, .97);
-}
 
 
 /* 주민 ↔ 유저 호감도 하트 툴팁: 상세 기본정보의 하트 전체에 hover/focus */

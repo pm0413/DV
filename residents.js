@@ -335,8 +335,8 @@
          for(let slot=0;slot<4;slot++){
            const opening=document.createElement('textarea');opening.rows=2;opening.maxLength=3000;opening.value=openingSlots[slot]||'';opening.placeholder='대사가 없으면 비워두세요';
            const reply=document.createElement('textarea');reply.rows=2;reply.maxLength=3000;reply.value=replySlots[slot]||'';reply.placeholder='대사가 없으면 비워두세요';
-           openingRow.append(makeLabel(`${person.name}에게 먼저 말하기 ${slot+1}`,opening));
-           replyRow.append(makeLabel(`${person.name}에게 답하기 ${slot+1}`,reply));
+           openingRow.append(makeLabel(`내가 ${person.name}에게 말하기 ${slot+1}`,opening));
+           replyRow.append(makeLabel(`${person.name}의 답변 ${slot+1}`,reply));
            entries.openingSlots.push(opening);entries.replySlots.push(reply);
          }
          pairBlock.append(openingRow,replyRow);overrideWrap.append(pairBlock);inputs.overrides[String(index)]=entries;
