@@ -2647,7 +2647,7 @@ body.light-mode #top-hud-stack #village-sleep.village-sleep-bubble:hover:not(:di
 body.light-mode #main-area .resident-request-reminder{background:rgba(255,249,237,.62);color:#382f24;border-color:rgba(183,169,142,.75);border-left-color:#A1885E;box-shadow:0 5px 16px #0002;}
 body.light-mode #main-area .resident-request-reminder-detail{color:#6f665a;}
 @media(max-width:700px){
- #main-area .resident-request-reminder{right:8px;top:68px;width:142px;min-height:52px;padding:7px 8px;gap:2px 5px;}
+ #main-area .resident-request-reminder{right:8px;top:10px;width:142px;min-height:52px;padding:7px 8px;gap:2px 5px;}
  #main-area .resident-request-reminder-title{font-size:10px;}
  #main-area .resident-request-reminder-detail,#main-area .resident-request-reminder-progress{font-size:9px;}
 }

@@ -1,6 +1,6 @@
 /* 모바일 가공소 전체 패널 접기/펼치기. PC 레이아웃에는 관여하지 않습니다. */
 (()=>{
-  const mq=window.matchMedia('(max-width:700px)');
+  const mq=window.matchMedia('(max-width:700px), (orientation:landscape) and (max-width:1100px) and (max-height:700px)');
   const panel=document.getElementById('right-area');
   const heading=panel?.querySelector('.workshop-panel-heading');
   const list=document.getElementById('workshop-list');
