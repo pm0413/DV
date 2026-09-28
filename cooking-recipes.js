@@ -76,13 +76,12 @@ window.DOWON_COOKING_RECIPES = [
         level: 1,
         name: '맑은채소배추국',
         ingredients: {
-            두부: 1,
-            절임채소: 1
+            배추: 5
         },
         output: 'food_Clear_Napa_Cabbage_Soup',
         emoji: '🥘',
         icon: 'item/요리/맑은배추국.png',
-        price: 36
+        price: 30
     },
     {
         id: 'Egg_Fried_Rice',
