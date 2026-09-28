@@ -1392,10 +1392,10 @@ const SCENE_IMAGE_WIDTH = 1920;
 const SCENE_IMAGE_HEIGHT = 1080;
 const SCENE_ROUTES = [
  {name:'지붕 1',x:650,y:300,links:[14],jump:[14]},
- {name:'지붕 2',x:1250,y:210,links:[4],jump:[4]},
+ {name:'지붕 2',x:1250,y:210,links:[5],jump:[5]},
  {name:'별채',x:550,y:520,links:[5,14]},
- {name:'본채',x:1300,y:520,links:[2,5],jump:[2]},
- {name:'계단',x:1110,y:520,links:[3,4,10,14]},
+ {name:'본채',x:1300,y:520,links:[5]},
+ {name:'계단',x:1110,y:520,links:[2,3,4,10,14],jump:[2]},
  {name:'꽃밭',x:600,y:650,links:[8]},
  {name:'장독대',x:500,y:700,links:[8,9]},
  {name:'연못 1',x:700,y:740,links:[6,7,10]},
